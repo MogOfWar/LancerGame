@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://br22133ulvc1"]
+
+[ext_resource type="Script" uid="uid://dpvb1pl8dpc5f" path="res://unit.gd" id="1_btf8p"]
+[ext_resource type="Texture2D" uid="uid://dst43rj35jh6" path="res://art/selection_ring.png" id="2_ctwoc"]
+[ext_resource type="PackedScene" uid="uid://y47cukr5cwop" path="res://floating_health_bar.tscn" id="2_davkp"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_k4y1u"]
+height = 0.2
+radial_segments = 6
+
+[sub_resource type="Gradient" id="Gradient_davkp"]
+interpolation_mode = 1
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5wnup"]
+gradient = SubResource("Gradient_davkp")
+width = 128
+height = 60
+
+[sub_resource type="Gradient" id="Gradient_5wnup"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.03448276, 1)
+colors = PackedColorArray(0.81960785, 0, 0, 1, 0.9427091, 4.47616e-06, 1.732707e-06, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_davkp"]
+gradient = SubResource("Gradient_5wnup")
+width = 128
+height = 60
+fill_from = Vector2(1, 0)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_g4v7s"]
+viewport_path = NodePath("UI_Anchor/SubViewport")
+
+[node name="Unit" type="Node3D" unique_id=722785469]
+script = ExtResource("1_btf8p")
+health_bar_scene = ExtResource("2_davkp")
+
+[node name="Visuals" type="Node3D" parent="." unique_id=1002284540]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Visuals" unique_id=15529931]
+mesh = SubResource("CylinderMesh_k4y1u")
+
+[node name="SelectionRing" type="Sprite3D" parent="." unique_id=2072324230]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+visible = false
+cast_shadow = 0
+modulate = Color(1, 1, 0.43529412, 1)
+pixel_size = 0.006
+axis = 1
+texture = ExtResource("2_ctwoc")
+
+[node name="UI_Anchor" type="Marker3D" parent="." unique_id=1936155746]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4726407, 0)
+metadata/_edit_group_ = true
+
+[node name="SubViewport" type="SubViewport" parent="UI_Anchor" unique_id=1060701361]
+transparent_bg = true
+size = Vector2i(128, 4)
+
+[node name="UI_Root" type="VBoxContainer" parent="UI_Anchor/SubViewport" unique_id=1709606995]
+custom_minimum_size = Vector2(128, 16)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HPBar" type="TextureProgressBar" parent="UI_Anchor/SubViewport/UI_Root" unique_id=691451828]
+layout_mode = 2
+value = 100.0
+texture_under = SubResource("GradientTexture2D_5wnup")
+texture_progress = SubResource("GradientTexture2D_davkp")
+
+[node name="Sprite3D" type="Sprite3D" parent="UI_Anchor" unique_id=1637138766]
+visible = false
+billboard = 2
+no_depth_test = true
+texture = SubResource("ViewportTexture_g4v7s")

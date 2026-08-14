@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://r08pl0x7hfc0"]
+
+[ext_resource type="Shader" uid="uid://ddbib6t7kymqk" path="res://uv_blender.gdshader" id="1_vwvsg"]
+[ext_resource type="Script" uid="uid://4wkmf0p1l6n6" path="res://hex_cursor.gd" id="2_m00j4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1bvp3"]
+render_priority = 0
+shader = ExtResource("1_vwvsg")
+shader_parameter/albedo = Color(0.9137255, 0.21176471, 0, 1)
+shader_parameter/center_transparency = 0.14400000684
+shader_parameter/radius = 1.0
+shader_parameter/edge_intensity = 1.9050000429875
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_g4v7s"]
+height = 0.01
+radial_segments = 6
+
+[node name="HexCursor" type="MeshInstance3D" unique_id=1499558277]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_1bvp3")
+mesh = SubResource("CylinderMesh_g4v7s")
+script = ExtResource("2_m00j4")

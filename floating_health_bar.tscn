@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://y47cukr5cwop"]
+
+[ext_resource type="Script" uid="uid://ch3126fb2q1qg" path="res://floating_health_bar.gd" id="1_tvexk"]
+
+[sub_resource type="Gradient" id="Gradient_ctwoc"]
+interpolation_mode = 1
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tvexk"]
+gradient = SubResource("Gradient_ctwoc")
+width = 128
+height = 60
+
+[sub_resource type="Gradient" id="Gradient_davkp"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.03448276, 1)
+colors = PackedColorArray(0.81960785, 0, 0, 1, 0.9427091, 4.47616e-06, 1.732707e-06, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_srvg6"]
+gradient = SubResource("Gradient_davkp")
+width = 128
+height = 60
+fill_from = Vector2(1, 0)
+
+[node name="FloatingHealthBar" type="Control" unique_id=1210173238]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 80.0
+offset_bottom = 10.0
+script = ExtResource("1_tvexk")
+
+[node name="HPBar" type="TextureProgressBar" parent="." unique_id=1705841585]
+layout_mode = 1
+offset_right = 80.0
+offset_bottom = 10.0
+value = 100.0
+nine_patch_stretch = true
+texture_under = SubResource("GradientTexture2D_tvexk")
+texture_progress = SubResource("GradientTexture2D_srvg6")

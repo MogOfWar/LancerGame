@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://due6g0ko08p51"]
+
+[ext_resource type="Script" uid="uid://bard10jwtpg2h" path="res://hud.gd" id="1_37p78"]
+
+[node name="HUD" type="CanvasLayer" unique_id=1124325718]
+script = ExtResource("1_37p78")
+
+[node name="ActionMenu" type="PanelContainer" parent="." unique_id=2062615166]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -35.0
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_group_ = true
+
+[node name="VBoxContainer" type="HBoxContainer" parent="ActionMenu" unique_id=281191149]
+layout_mode = 2
+alignment = 1
+
+[node name="AttackButton" type="Button" parent="ActionMenu/VBoxContainer" unique_id=979061846]
+layout_mode = 2
+text = "Attack"
+
+[node name="MoveButton" type="Button" parent="ActionMenu/VBoxContainer" unique_id=1034484713]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Move
+"
+
+[connection signal="pressed" from="ActionMenu/VBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]

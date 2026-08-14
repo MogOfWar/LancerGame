@@ -1,0 +1,33 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
+[application]
+
+config/name="3D grid experiment"
+config/description="In this game, your goal is to chase and kick out the creeps!"
+run/main_scene="uid://2wap0283yk0r"
+config/features=PackedStringArray("4.7")
+config/icon="res://icon.webp"
+
+[autoload]
+
+SignalBus="*uid://cmlyntwnc2xdx"
+
+[filesystem]
+
+import/blender/enabled=false
+
+[rendering]
+
+anti_aliasing/quality/msaa_3d=2

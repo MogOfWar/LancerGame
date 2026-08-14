@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bgihhwsnt11kd"]
+
+[ext_resource type="Script" uid="uid://ctuvgkqxgemg8" path="res://projectile.gd" id="1_a85iw"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_akgne"]
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yf5fn"]
+diffuse_mode = 1
+emission_enabled = true
+emission = Color(0, 0.9843137, 0.83137256, 1)
+emission_energy_multiplier = 13.94
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_g4v7s"]
+material = SubResource("StandardMaterial3D_yf5fn")
+radius = 0.02
+section_length = 0.03
+
+[node name="Projectile" type="Node3D" unique_id=121255371]
+script = ExtResource("1_a85iw")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=844903378]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+amount = 50
+lifetime = 0.2
+trail_enabled = true
+trail_lifetime = 0.02
+process_material = SubResource("ParticleProcessMaterial_akgne")
+draw_pass_1 = SubResource("TubeTrailMesh_g4v7s")

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bj7p0riw1yf1s"]
+
+[ext_resource type="Script" uid="uid://e6dvvmrhrn8o" path="res://game_board.gd" id="1_i37i2"]
+[ext_resource type="PackedScene" uid="uid://c3n0x4jc5wkom" path="res://terrian.tscn" id="1_xrvgy"]
+[ext_resource type="PackedScene" uid="uid://bfrl0khn7468q" path="res://ui_manager.tscn" id="3_17g6i"]
+
+[node name="GameBoard" type="Node3D" unique_id=1003491304]
+script = ExtResource("1_i37i2")
+
+[node name="Terrian" parent="." unique_id=852825957 instance=ExtResource("1_xrvgy")]
+grid_width = 50
+grid_height = 50
+
+[node name="UI_Manager" parent="." unique_id=1476479355 instance=ExtResource("3_17g6i")]
