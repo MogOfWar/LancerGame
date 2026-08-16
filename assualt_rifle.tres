@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WeaponType" format=3 uid="uid://b6vm36d2xmg1s"]
+
+[ext_resource type="Script" uid="uid://ce6ms41q13kg1" path="res://weapon.gd" id="1_8q6ym"]
+[ext_resource type="PackedScene" uid="uid://bgihhwsnt11kd" path="res://projectile.tscn" id="1_dnrci"]
+
+[resource]
+script = ExtResource("1_8q6ym")
+weapon_name_ = "Assault Rifle"
+damage = Array[int]([0, 1])
+weapon_scene = ExtResource("1_dnrci")
+range = 10
+target_mode_ = 1
+target_mode_radius_ = 1
+metadata/_custom_type_script = "uid://ce6ms41q13kg1"
