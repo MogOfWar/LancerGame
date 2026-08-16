@@ -3,6 +3,17 @@ extends RefCounted
 
 const hex_size: float = 1.0
 
+static func get_blast_hexes(center: Vector2i, radius: int) -> Array[Vector2i]:
+	var results: Array[Vector2i] = []
+	
+	# Loop through a bounding box and check hex distance
+	for x in range(-radius, radius + 1):
+		for y in range(max(-radius, -x - radius), min(radius, -x + radius) + 1):
+			var offset = Vector2i(x, y)
+			results.append(center + offset) # (Assuming offset coordinates)
+			
+	return results
+
 static func axial_to_world(hex: Vector2) -> Vector3:
 	var q = hex.x
 	var r = hex.y

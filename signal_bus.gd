@@ -4,6 +4,9 @@ extends Node
 signal unit_selected(unit)
 signal unit_finished_ability(unit)
 signal unit_cleared()
+signal end_turn()
+signal unit_attacking()
+signal unit_weapon_selected(unit: Unit, weapon: WeaponType)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

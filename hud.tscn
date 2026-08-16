@@ -10,23 +10,54 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -35.0
+offset_left = 205.0
+offset_top = -42.0
+offset_right = -329.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 0
 metadata/_edit_group_ = true
 
-[node name="VBoxContainer" type="HBoxContainer" parent="ActionMenu" unique_id=281191149]
+[node name="HBoxContainer" type="HBoxContainer" parent="ActionMenu" unique_id=281191149]
 layout_mode = 2
 alignment = 1
 
-[node name="AttackButton" type="Button" parent="ActionMenu/VBoxContainer" unique_id=979061846]
+[node name="AttackButton" type="Button" parent="ActionMenu/HBoxContainer" unique_id=979061846]
 layout_mode = 2
 text = "Attack"
 
-[node name="MoveButton" type="Button" parent="ActionMenu/VBoxContainer" unique_id=1034484713]
+[node name="MoveButton" type="Button" parent="ActionMenu/HBoxContainer" unique_id=1034484713]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Move
 "
 
-[connection signal="pressed" from="ActionMenu/VBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]
+[node name="HBoxContainer" type="VBoxContainer" parent="." unique_id=424140670]
+offset_left = 988.0
+offset_top = 7.0
+offset_right = 1145.0
+offset_bottom = 435.0
+metadata/_edit_group_ = true
+
+[node name="EndTurnButton" type="Button" parent="HBoxContainer" unique_id=369340358]
+layout_mode = 2
+text = "End Turn"
+
+[node name="WeaponsMenu" type="PanelContainer" parent="." unique_id=1582566547]
+offset_left = 406.0
+offset_top = 555.0
+offset_right = 592.0
+offset_bottom = 595.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WeaponsMenu" unique_id=1673005578]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="WeaponsMenu/HBoxContainer" unique_id=661482771]
+layout_mode = 2
+text = "Back"
+
+[node name="WeaponsList" type="HBoxContainer" parent="WeaponsMenu/HBoxContainer" unique_id=1333972200]
+layout_mode = 2
+
+[connection signal="pressed" from="ActionMenu/HBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/EndTurnButton" to="." method="_on_end_turn_button_pressed"]

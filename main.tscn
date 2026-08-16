@@ -17,9 +17,10 @@ shadow_enabled = true
 
 [node name="CameraPivot" parent="." unique_id=1886546349 instance=ExtResource("2_0xm2m")]
 
-[node name="GridSellector" parent="." unique_id=2134454702 node_paths=PackedStringArray("camera_pivot", "hex_cursor") instance=ExtResource("4_1bvp3")]
+[node name="GridSellector" parent="." unique_id=2134454702 node_paths=PackedStringArray("camera_pivot", "single_hex_cursor", "game_board") instance=ExtResource("4_1bvp3")]
 camera_pivot = NodePath("../CameraPivot")
-hex_cursor = NodePath("../HexCursor")
+single_hex_cursor = NodePath("../HexCursor")
+game_board = NodePath("../GameBoard")
 
 [node name="HexCursor" parent="." unique_id=1499558277 instance=ExtResource("2_1bvp3")]
 
