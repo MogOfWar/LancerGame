@@ -16,7 +16,7 @@ var current_shape_: HighlightShape = HighlightShape.new()
 var terrain_: TerrainGrid = null
 
 func _ready() -> void:
-	SignalBus.unit_weapon_selected.connect(_on_unit_weapon_selected)
+	SignalBus.ui_draw_highlights.connect(_on_draw_highlights)
 	
 func _on_unit_weapon_selected(unit: Unit, w: WeaponType):
 	current_shape_.template = w.target_mode_
@@ -32,6 +32,22 @@ func clear_highlighters():
 # ---------------------------------------------------------
 # DRAWING LOGIC (Only runs when the hex actually changes)
 # ---------------------------------------------------------
+func _on_draw_highlights(hexes_to_draw: Array[Vector3]) -> void:
+	clear_highlighters()
+	if len(hexes_to_draw) == 0:
+		#hide everything has cursor off map
+		single_hex_cursor.visible = false
+	elif len(hexes_to_draw) == 1:
+		single_hex_cursor.visible = true
+		single_hex_cursor.global_position = hexes_to_draw[0]
+		print(single_hex_cursor.global_position)
+	else:
+		single_hex_cursor.visible = false
+		for hex_pos in hexes_to_draw:
+			var cursor = hex_cursor_scene_.instantiate()
+			container.add_child(cursor)
+			cursor.global_position = hex_pos
+
 func update_highlight(hex_coord: Vector2i, world_pos: Vector3 = Vector3.ZERO):
 	if current_shape_.template == WeaponType.TargetMode.Single:
 		# Mode: Single. Clear containers and just move the permanent cursor.
@@ -43,38 +59,6 @@ func update_highlight(hex_coord: Vector2i, world_pos: Vector3 = Vector3.ZERO):
 		# Mode: Blast/Cone. Hide the single cursor and spawn multiples.
 		single_hex_cursor.visible = false
 		draw_multi_highlight(hex_coord)
-
-func get_hexes_in_custom_cone(origin_hex: Vector2i, target_hex: Vector2i, radius: int, cone_angle_degrees: float) -> Array[Vector2i]:
-	var hexes_in_cone: Array[Vector2i] = []
-	
-	# 1. Get the world-space vectors
-	var origin_world: Vector3 = HexUtils.axial_to_world(origin_hex)
-	var target_world: Vector3 = HexUtils.axial_to_world(HexUtils.clamp_to_dist(origin_hex, target_hex, radius))
-
-	# 2. Get the continuous forward direction
-	var forward_dir: Vector3 = (target_world - origin_world).normalized()
-
-	# 3. Iterate over a bounding box of radius
-	for q in range(-radius, radius + 1):
-		for r in range(max(-radius, -q - radius), min(radius, -q + radius) + 1):
-			var current_hex = origin_hex + Vector2i(q, r)
-			
-			if current_hex == origin_hex:
-				continue # Skip the origin tile if desired
-				
-			# 4. Check the angle
-			var current_world: Vector3 = HexUtils.axial_to_world(current_hex)
-			var current_dir: Vector3 = (current_world - origin_world).normalized()
-			
-			# Use the dot product to find the angle between the vectors
-			var angle_rads: float = acos(forward_dir.dot(current_dir))
-			var angle_degs: float = rad_to_deg(angle_rads)
-			
-			# If the angle is less than half the total cone width, it's inside
-			if angle_degs <= (cone_angle_degrees / 2.0):
-				hexes_in_cone.append(current_hex)
-				
-	return hexes_in_cone
 
 func draw_multi_highlight(center_hex: Vector2i):
 	clear_highlighters()
@@ -96,17 +80,14 @@ func draw_multi_highlight(center_hex: Vector2i):
 			hexes_to_draw.append(HexUtils.cube_round(pos.x, pos.y))
 	elif current_shape_.template == WeaponType.TargetMode.Cone:
 		var origin_hex: Vector2i = HexUtils.world_to_axial(current_shape_.origin_pos)
-		hexes_to_draw = get_hexes_in_custom_cone(origin_hex, center_hex, current_shape_.radius, 60)
+		#hexes_to_draw = get_hexes_in_custom_cone(origin_hex, center_hex, current_shape_.radius, 60)
 			
-	for hex_pos in hexes_to_draw:
-		var cursor = hex_cursor_scene_.instantiate()
-		container.add_child(cursor)
-		cursor.global_position = HexUtils.axial_to_world(hex_pos) # Convert back to world space
-		cursor.global_position.y = terrain_grid.get_y_height(hex_pos) + 0.05
+	
 # ---------------------------------------------------------
 # PROCESS LOGIC (Raycasting)
 # ---------------------------------------------------------
 func _process(delta: float) -> void:
+	return
 	var camera = get_viewport().get_camera_3d()
 	var mouse_pos = get_viewport().get_mouse_position()
 	var ray_origin = camera.project_ray_origin(mouse_pos)
@@ -129,16 +110,18 @@ func _process(delta: float) -> void:
 		if hovered_hex != current_hovered_hex:
 			current_hovered_hex = hovered_hex
 			
-			var local_target_pos = HexUtils.axial_to_world(hovered_hex)
-			var target_position = terrain_body.to_global(local_target_pos)
-			target_position.y = hit_position.y + 0.05
+			SignalBus.hex_hovered.emit(hovered_hex)
+			
+			#var local_target_pos = HexUtils.axial_to_world(hovered_hex)
+			#var target_position = terrain_body.to_global(local_target_pos)
+			#target_position.y = hit_position.y + 0.05
 			
 			# Call our draw logic
-			update_highlight(hovered_hex, target_position)
+			#update_highlight(hovered_hex, target_position)
 			
-	else:
+	#else:
 		# Hide everything if mouse goes off the map
-		if current_hovered_hex != Vector2i(-9999, -9999):
-			current_hovered_hex = Vector2i(-9999, -9999)
-			single_hex_cursor.visible = false
-			clear_highlighters()
+		#if current_hovered_hex != Vector2i(-9999, -9999):
+		#	current_hovered_hex = Vector2i(-9999, -9999)
+		#	single_hex_cursor.visible = false
+		#	clear_highlighters()

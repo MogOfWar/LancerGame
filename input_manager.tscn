@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bpmkawp4exddv"]
+
+[ext_resource type="Script" uid="uid://do8f7t346uh45" path="res://input_manager.gd" id="1_5aitx"]
+
+[node name="InputManager" type="Node" unique_id=240328072]
+script = ExtResource("1_5aitx")

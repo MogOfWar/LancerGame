@@ -1,6 +1,6 @@
 extends Node
 
-#emitted when player selects a unit
+# logic signals
 signal unit_selected(unit)
 signal unit_finished_ability(unit)
 signal unit_cleared()
@@ -9,6 +9,11 @@ signal unit_attacking()
 signal unit_weapon_selected(unit: Unit, weapon: WeaponType)
 signal unit_spawned(unit: Unit)
 signal unit_died(unit: Unit)
+
+# input/ui signals
+signal ui_hex_hovered(hovered_hex: Vector2i)
+signal ui_hex_selected(selected_hex: Vector2i)
+signal ui_draw_highlights(hexes_to_draw)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

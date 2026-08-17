@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bj7p0riw1yf1s" path="res://game_board.tscn" id="1_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://cx8cib5gkp3ij" path="res://camera_pivot.tscn" id="2_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bfrl0khn7468q" path="res://ui_manager.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://bpmkawp4exddv" path="res://input_manager.tscn" id="5_7mycd"]
 [ext_resource type="PackedScene" uid="uid://due6g0ko08p51" path="res://hud.tscn" id="5_lquwl"]
 
 [node name="Main" type="Node" unique_id=106247582]
@@ -24,3 +25,5 @@ shadow_enabled = true
 camera_controller = NodePath("../CameraPivot")
 
 [node name="CameraPivot" parent="World3D" unique_id=1886546349 instance=ExtResource("2_0xm2m")]
+
+[node name="InputManager" parent="." unique_id=240328072 instance=ExtResource("5_7mycd")]

@@ -50,6 +50,38 @@ static func clamp_to_dist(a: Vector2i, b: Vector2i, dist: int) -> Vector2i:
 	var step: float = 1.0 / axial_dist
 	var target: Vector2 = float_origin.lerp(float_end, dist * step)
 	return cube_round(target.x, target.y)
+	
+static func get_hexes_in_custom_cone(origin_hex: Vector2i, target_hex: Vector2i, radius: int, cone_angle_degrees: float) -> Array[Vector2i]:
+	var hexes_in_cone: Array[Vector2i] = []
+	
+	# 1. Get the world-space vectors
+	var origin_world: Vector3 = HexUtils.axial_to_world(origin_hex)
+	var target_world: Vector3 = HexUtils.axial_to_world(HexUtils.clamp_to_dist(origin_hex, target_hex, radius))
+
+	# 2. Get the continuous forward direction
+	var forward_dir: Vector3 = (target_world - origin_world).normalized()
+
+	# 3. Iterate over a bounding box of radius
+	for q in range(-radius, radius + 1):
+		for r in range(max(-radius, -q - radius), min(radius, -q + radius) + 1):
+			var current_hex = origin_hex + Vector2i(q, r)
+			
+			if current_hex == origin_hex:
+				continue # Skip the origin tile if desired
+				
+			# 4. Check the angle
+			var current_world: Vector3 = HexUtils.axial_to_world(current_hex)
+			var current_dir: Vector3 = (current_world - origin_world).normalized()
+			
+			# Use the dot product to find the angle between the vectors
+			var angle_rads: float = acos(forward_dir.dot(current_dir))
+			var angle_degs: float = rad_to_deg(angle_rads)
+			
+			# If the angle is less than half the total cone width, it's inside
+			if angle_degs <= (cone_angle_degrees / 2.0):
+				hexes_in_cone.append(current_hex)
+				
+	return hexes_in_cone
 
 static func cube_round(fractional_q: float, fractional_r: float) -> Vector2i:
 	var q_float = fractional_q
