@@ -3,18 +3,24 @@ extends CanvasLayer
 
 # A dictionary to link 3D units to their 2D UI widgets
 var active_widgets: Dictionary = {}
+@export var widget_health_scene_: PackedScene
 @export var ui_scale_factor: float = 15.0
 
-func register_unit(unit: Node3D, widget_scene: PackedScene) -> Control:
-	# 1. Spawn the 2D widget
-	var widget = widget_scene.instantiate()
-	add_child(widget)
+func _ready():
+	SignalBus.unit_spawned.connect(_on_unit_spawned)
+	SignalBus.unit_died.connect(_on_unit_died)
+	
+func _on_unit_spawned(unit: Unit):
+	var health_widget = widget_health_scene_.instantiate()
+	add_child(health_widget)
 	
 	# 2. Store the pair in our dictionary
-	active_widgets[unit] = widget
-	return widget
+	active_widgets[unit] = health_widget
+	health_widget.setup(unit.hp_)
+	unit.register_health_bar(health_widget)
 
-func unregister_unit(unit: Node3D):
+
+func _on_unit_died(unit: Unit):
 	# Clean up the UI when the unit dies or is removed
 	if active_widgets.has(unit):
 		active_widgets[unit].queue_free()

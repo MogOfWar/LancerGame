@@ -2,27 +2,25 @@
 
 [ext_resource type="PackedScene" uid="uid://bj7p0riw1yf1s" path="res://game_board.tscn" id="1_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://cx8cib5gkp3ij" path="res://camera_pivot.tscn" id="2_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://r08pl0x7hfc0" path="res://hex_cursor.tscn" id="2_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://cslh42hrrs0mv" path="res://grid_sellector.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://bfrl0khn7468q" path="res://ui_manager.tscn" id="4_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://due6g0ko08p51" path="res://hud.tscn" id="5_lquwl"]
 
 [node name="Main" type="Node" unique_id=106247582]
 
-[node name="GameBoard" parent="." unique_id=1003491304 node_paths=PackedStringArray("camera_controller") instance=ExtResource("1_1bvp3")]
-camera_controller = NodePath("../CameraPivot")
+[node name="UI" type="Node" parent="." unique_id=1637612958]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=296550313]
-transform = Transform3D(0.70710665, 0.6063504, 0.3637846, 0.3535536, -0.7487184, 0.5607322, 0.6123725, -0.2678803, -0.7438013, 17.94648, 27.627613, -6.9796066)
+[node name="HUD" parent="UI" unique_id=1124325718 instance=ExtResource("5_lquwl")]
+layer = 2
+
+[node name="UI_Manager" parent="UI" unique_id=1476479355 instance=ExtResource("4_1bvp3")]
+
+[node name="World3D" type="Node3D" parent="." unique_id=354764008]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World3D" unique_id=296550313]
+transform = Transform3D(0.70710665, 0.6063506, 0.36378455, 0.3535536, -0.7487184, 0.5607323, 0.6123725, -0.2678802, -0.7438011, 17.94648, 27.627613, -6.9796066)
 shadow_enabled = true
 
-[node name="CameraPivot" parent="." unique_id=1886546349 instance=ExtResource("2_0xm2m")]
+[node name="GameBoard" parent="World3D" unique_id=1003491304 node_paths=PackedStringArray("camera_controller") instance=ExtResource("1_1bvp3")]
+camera_controller = NodePath("../CameraPivot")
 
-[node name="GridSellector" parent="." unique_id=2134454702 node_paths=PackedStringArray("camera_pivot", "single_hex_cursor", "game_board") instance=ExtResource("4_1bvp3")]
-camera_pivot = NodePath("../CameraPivot")
-single_hex_cursor = NodePath("../HexCursor")
-game_board = NodePath("../GameBoard")
-
-[node name="HexCursor" parent="." unique_id=1499558277 instance=ExtResource("2_1bvp3")]
-
-[node name="HUD" parent="." unique_id=1124325718 instance=ExtResource("5_lquwl")]
-layer = 2
+[node name="CameraPivot" parent="World3D" unique_id=1886546349 instance=ExtResource("2_0xm2m")]

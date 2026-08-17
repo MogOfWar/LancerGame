@@ -57,6 +57,9 @@ func _ready() -> void:
 	
 	pass # Replace with function body.
 
+func get_position_in_world():
+	return position
+
 func load_mech_type(mech_type: MechChassis) -> void:
 	mech_type_ = mech_type
 	hp_ = mech_type.max_hp_
@@ -68,16 +71,15 @@ func load_mech_type(mech_type: MechChassis) -> void:
 	#	else:
 	#		mounts_[mount.mount_type] = MountPoint.new(mount.mount_type, mount.count)
 
-func initalize(loc: Vector2i, terr: TerrainGrid, ui_manager: CanvasLayer, mech_type: MechChassis) -> void:
+func initalize(loc: Vector2i, terr: TerrainGrid, mech_type: MechChassis) -> void:
 	terrain_ = terr
 	var y_height = terrain_.get_y_height(loc)
 	set_location(loc, y_height)
-	ui_manager_ = ui_manager
-	ui_widgets["health_bar"] = (ui_manager.register_unit(self,health_bar_scene))
-	ui_widgets["health_bar"].setup(hp_)
+	SignalBus.unit_spawned.emit(self)
 	load_mech_type(mech_type)
 
-
+func register_health_bar(health_bar) -> void:
+	ui_widgets["health_bar"] = health_bar
 
 func add_weapon(gun: WeaponType, mount: MechChassis.MountType ):
 	var valid_mounts = mech_type_.mounts_.filter(func(x): return x.mount_type == mount and x.count > 0 )
@@ -183,6 +185,6 @@ func prepare_move():
 
 func _exit_tree():
 	# Important: Tell the manager to delete the UI when this unit is destroyed    
-	ui_manager_.unregister_unit(self)
+	SignalBus.unit_died.emit(self)
 	
 	

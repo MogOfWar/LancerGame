@@ -1,7 +1,7 @@
 extends Resource
 class_name WeaponType
 
-enum TargetMode {Single, Blast, Cone, Burst}
+enum TargetMode {Single, Blast, Cone, Burst, Line}
 
 @export var weapon_name_: String = ""
 @export var damage: Array[int] = []

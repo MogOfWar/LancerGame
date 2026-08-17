@@ -3,11 +3,11 @@ extends Node3D
 class HighlightShape:
 	var template: WeaponType.TargetMode = WeaponType.TargetMode.Single
 	var radius: int = 0
+	var origin_pos
 
-@export var camera_pivot: CameraPivot
 @export var hex_cursor_scene_: PackedScene
-@export var single_hex_cursor: Node3D # Make sure this points to a mesh already in your scene!
-@export var game_board: Node3D = null
+@export var terrain_grid: TerrainGrid = null
+@onready var single_hex_cursor: Node3D = $HexCursor
 @onready var container = $ActiveCursorsContainer
 
 # Tracks the hex currently under the mouse to prevent redundant animations
@@ -21,7 +21,7 @@ func _ready() -> void:
 func _on_unit_weapon_selected(unit: Unit, w: WeaponType):
 	current_shape_.template = w.target_mode_
 	current_shape_.radius = w.target_mode_radius_
-	
+	current_shape_.origin_pos = unit.get_position_in_world()
 	# Force an update immediately so the shape changes before the mouse moves
 	update_highlight(current_hovered_hex)
 	
@@ -44,24 +44,70 @@ func update_highlight(hex_coord: Vector2i, world_pos: Vector3 = Vector3.ZERO):
 		single_hex_cursor.visible = false
 		draw_multi_highlight(hex_coord)
 
+func get_hexes_in_custom_cone(origin_hex: Vector2i, target_hex: Vector2i, radius: int, cone_angle_degrees: float) -> Array[Vector2i]:
+	var hexes_in_cone: Array[Vector2i] = []
+	
+	# 1. Get the world-space vectors
+	var origin_world: Vector3 = HexUtils.axial_to_world(origin_hex)
+	var target_world: Vector3 = HexUtils.axial_to_world(HexUtils.clamp_to_dist(origin_hex, target_hex, radius))
+
+	# 2. Get the continuous forward direction
+	var forward_dir: Vector3 = (target_world - origin_world).normalized()
+
+	# 3. Iterate over a bounding box of radius
+	for q in range(-radius, radius + 1):
+		for r in range(max(-radius, -q - radius), min(radius, -q + radius) + 1):
+			var current_hex = origin_hex + Vector2i(q, r)
+			
+			if current_hex == origin_hex:
+				continue # Skip the origin tile if desired
+				
+			# 4. Check the angle
+			var current_world: Vector3 = HexUtils.axial_to_world(current_hex)
+			var current_dir: Vector3 = (current_world - origin_world).normalized()
+			
+			# Use the dot product to find the angle between the vectors
+			var angle_rads: float = acos(forward_dir.dot(current_dir))
+			var angle_degs: float = rad_to_deg(angle_rads)
+			
+			# If the angle is less than half the total cone width, it's inside
+			if angle_degs <= (cone_angle_degrees / 2.0):
+				hexes_in_cone.append(current_hex)
+				
+	return hexes_in_cone
+
 func draw_multi_highlight(center_hex: Vector2i):
 	clear_highlighters()
-	
+	var hexes_to_draw = []
 	if current_shape_.template == WeaponType.TargetMode.Blast:
-		# Replace this with your actual Blast math function
-		var blast_hexes = HexUtils.get_blast_hexes(center_hex, current_shape_.radius)
+		hexes_to_draw = HexUtils.get_blast_hexes(center_hex, current_shape_.radius)
 		
-		for hex_pos in blast_hexes:
-			var cursor = hex_cursor_scene_.instantiate()
-			container.add_child(cursor)
-			cursor.global_position = HexUtils.axial_to_world(hex_pos) # Convert back to world space
-			# (Note: you may need to apply terrain offset to Y here)
-
+		
+	elif current_shape_.template == WeaponType.TargetMode.Line:
+		var origin_hex: Vector2i = HexUtils.world_to_axial(current_shape_.origin_pos)
+		var axial_dist: int = HexUtils.get_axial_distance(origin_hex, center_hex)
+		var nudge := Vector2(1e-6, 1e-6)
+		var float_origin: Vector2 = Vector2(origin_hex) + nudge
+		var float_end: Vector2 = Vector2(center_hex) + nudge
+		var step: float = 1.0 / axial_dist
+		for i in range(current_shape_.radius):
+			var t = i * step
+			var pos = float_origin.lerp(float_end, t)
+			hexes_to_draw.append(HexUtils.cube_round(pos.x, pos.y))
+	elif current_shape_.template == WeaponType.TargetMode.Cone:
+		var origin_hex: Vector2i = HexUtils.world_to_axial(current_shape_.origin_pos)
+		hexes_to_draw = get_hexes_in_custom_cone(origin_hex, center_hex, current_shape_.radius, 60)
+			
+	for hex_pos in hexes_to_draw:
+		var cursor = hex_cursor_scene_.instantiate()
+		container.add_child(cursor)
+		cursor.global_position = HexUtils.axial_to_world(hex_pos) # Convert back to world space
+		cursor.global_position.y = terrain_grid.get_y_height(hex_pos) + 0.05
 # ---------------------------------------------------------
 # PROCESS LOGIC (Raycasting)
 # ---------------------------------------------------------
 func _process(delta: float) -> void:
-	var camera = camera_pivot.get_camera()
+	var camera = get_viewport().get_camera_3d()
 	var mouse_pos = get_viewport().get_mouse_position()
 	var ray_origin = camera.project_ray_origin(mouse_pos)
 	var ray_end = ray_origin + camera.project_ray_normal(mouse_pos) * 1000.0

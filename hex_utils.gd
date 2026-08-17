@@ -33,6 +33,23 @@ static func world_to_axial(world_pos: Vector3) -> Vector2i:
 	var r_frac = (2.0 / 3.0 * z) / HexUtils.hex_size
 	
 	return cube_round(q_frac, r_frac)
+	
+static func get_axial_distance(hex_a: Vector2i, hex_b: Vector2i) -> int:
+	var dq: int = hex_a.x - hex_b.x
+	var dr: int = hex_a.y - hex_b.y
+	
+	# Distance is the maximum of the absolute differences
+	return max(abs(dq), abs(dr), abs(dq + dr))
+
+# returns a hex that is on the line BA exactly dist hexes from a
+static func clamp_to_dist(a: Vector2i, b: Vector2i, dist: int) -> Vector2i:
+	var axial_dist = get_axial_distance(b, a)
+	var nudge := Vector2(1e-6, 1e-6)
+	var float_origin: Vector2 = Vector2(a) + nudge
+	var float_end: Vector2 = Vector2(b) + nudge
+	var step: float = 1.0 / axial_dist
+	var target: Vector2 = float_origin.lerp(float_end, dist * step)
+	return cube_round(target.x, target.y)
 
 static func cube_round(fractional_q: float, fractional_r: float) -> Vector2i:
 	var q_float = fractional_q

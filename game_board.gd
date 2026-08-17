@@ -1,7 +1,7 @@
 extends Node3D
 const UnitScene = preload("res://unit.tscn")
 
-@onready var terrain: TerrainGrid = $Terrian
+@onready var terrain: TerrainGrid = $TerrainGrid
 @onready var grid_width = terrain.grid_width
 @onready var grid_height = terrain.grid_height
 @export var camera_controller: CameraPivot
@@ -49,7 +49,7 @@ func add_unit(r: int, q: int, mech_type: MechChassis) -> Unit:
 	var location_vec = Vector2i(r,q)
 	var new_unit: Unit = UnitScene.instantiate()
 	add_child(new_unit)
-	new_unit.initalize(location_vec, terrain, $UI_Manager, mech_type)
+	new_unit.initalize(location_vec, terrain, mech_type)
 	units[location_vec] = new_unit
 	return new_unit
 

@@ -7,6 +7,8 @@ signal unit_cleared()
 signal end_turn()
 signal unit_attacking()
 signal unit_weapon_selected(unit: Unit, weapon: WeaponType)
+signal unit_spawned(unit: Unit)
+signal unit_died(unit: Unit)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
