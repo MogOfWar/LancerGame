@@ -16,10 +16,9 @@ class TargetState:
 
 const UnitScene = preload("res://unit.tscn")
 
-@onready var terrain: TerrainGrid = $TerrainGrid
+@export var terrain: TerrainGrid = null
 @onready var grid_width = terrain.grid_width
 @onready var grid_height = terrain.grid_height
-@export var camera_controller: CameraPivot
 var floating_text_scene_ = preload("res://floating_text.tscn")
 var num_players: int = 2
 
@@ -74,7 +73,13 @@ func get_affected_hexes(center_hex: Vector2i, target_state: TargetState) -> Arra
 		var origin_hex: Vector2i = HexUtils.world_to_axial(target_state.get_origin_pos())
 		affected_hexes = HexUtils.get_hexes_in_custom_cone(origin_hex, center_hex, target_state.get_radius(), 60) 
 	return affected_hexes
-	
+
+func initalize():
+	var a = add_unit(16, 10, mech_types_["Everest"])
+	var b = add_unit(13, 14, mech_types_["Everest"])
+	var ass_rifle = load("res://assualt_rifle.tres")
+	a.add_weapon(ass_rifle, MechChassis.MountType.HEAVY)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.end_turn.connect(_on_end_turn)
@@ -84,10 +89,7 @@ func _ready() -> void:
 	SignalBus.unit_move_button_pressed.connect(_on_move_button_pressed)
 	
 	load_unit_types()
-	var a = add_unit(16, 10, mech_types_["Everest"])
-	var b = add_unit(13, 14, mech_types_["Everest"])
-	var ass_rifle = load("res://assualt_rifle.tres")
-	a.add_weapon(ass_rifle, MechChassis.MountType.HEAVY)
+	
 
 func _on_hex_hovered(hovered_hex: Vector2i) -> void:
 	# If off-map or not targeting, clear all highlights

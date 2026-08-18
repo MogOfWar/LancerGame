@@ -1,29 +1,7 @@
 [gd_scene format=3 uid="uid://2wap0283yk0r"]
 
-[ext_resource type="PackedScene" uid="uid://bj7p0riw1yf1s" path="res://game_board.tscn" id="1_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://cx8cib5gkp3ij" path="res://camera_pivot.tscn" id="2_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://bfrl0khn7468q" path="res://ui_manager.tscn" id="4_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://bpmkawp4exddv" path="res://input_manager.tscn" id="5_7mycd"]
-[ext_resource type="PackedScene" uid="uid://due6g0ko08p51" path="res://hud.tscn" id="5_lquwl"]
+[ext_resource type="PackedScene" uid="uid://b7f8wfvkrnor0" path="res://client_level.tscn" id="1_ig7tw"]
 
 [node name="Main" type="Node" unique_id=106247582]
 
-[node name="UI" type="Node" parent="." unique_id=1637612958]
-
-[node name="HUD" parent="UI" unique_id=1124325718 instance=ExtResource("5_lquwl")]
-layer = 2
-
-[node name="UI_Manager" parent="UI" unique_id=1476479355 instance=ExtResource("4_1bvp3")]
-
-[node name="World3D" type="Node3D" parent="." unique_id=354764008]
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World3D" unique_id=296550313]
-transform = Transform3D(0.70710665, 0.6063506, 0.36378455, 0.3535536, -0.7487184, 0.5607323, 0.6123725, -0.2678802, -0.7438011, 17.94648, 27.627613, -6.9796066)
-shadow_enabled = true
-
-[node name="GameBoard" parent="World3D" unique_id=1003491304 node_paths=PackedStringArray("camera_controller") instance=ExtResource("1_1bvp3")]
-camera_controller = NodePath("../CameraPivot")
-
-[node name="CameraPivot" parent="World3D" unique_id=1886546349 instance=ExtResource("2_0xm2m")]
-
-[node name="InputManager" parent="." unique_id=240328072 instance=ExtResource("5_7mycd")]
+[node name="Level" parent="." unique_id=420519130 instance=ExtResource("1_ig7tw")]
