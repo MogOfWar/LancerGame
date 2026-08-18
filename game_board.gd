@@ -37,31 +37,6 @@ var current_target_mode_: TargetState = TargetState.new()
 var current_player: int = 0
 var last_clicked_hex_: Vector2i = Vector2i(-9999, -9999)
 
-func pick_hex_at_mouse():
-	var camera = camera_controller.get_camera()
-	if not camera:
-		return null
-		
-	# 1. Get mouse position and project a ray into 3D space
-	var mouse_pos = get_viewport().get_mouse_position()
-	var ray_origin = camera.project_ray_origin(mouse_pos)
-	var ray_end = ray_origin + camera.project_ray_normal(mouse_pos) * 1000.0
-	
-	# 2. Query Godot's physics space state
-	var space_state = get_world_3d().direct_space_state
-	var query = PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
-	query.collide_with_bodies = true
-	
-	var result = space_state.intersect_ray(query)
-	
-	# 3. If the ray hits our terrain body
-	if result and result.collider is StaticBody3D:
-		var hit_position = result.position # Exact Vector3 point on the terrain slope
-		var clicked_hex = HexUtils.world_to_axial(hit_position)
-		print("Successfully clicked Hex -> q: ", clicked_hex.x, ", r: ", clicked_hex.y)
-		return clicked_hex
-	return null
-		
 func add_unit(r: int, q: int, mech_type: MechChassis) -> Unit:
 	var location_vec = Vector2i(r,q)
 	var new_unit: Unit = UnitScene.instantiate()
@@ -99,6 +74,7 @@ func get_affected_hexes(center_hex: Vector2i, target_state: TargetState) -> Arra
 		var origin_hex: Vector2i = HexUtils.world_to_axial(target_state.get_origin_pos())
 		affected_hexes = HexUtils.get_hexes_in_custom_cone(origin_hex, center_hex, target_state.get_radius(), 60) 
 	return affected_hexes
+	
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.end_turn.connect(_on_end_turn)
