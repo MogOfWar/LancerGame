@@ -4,6 +4,9 @@ extends CanvasLayer
 @onready var action_menu = $ActionMenu
 @onready var weapons_menu_ = $WeaponsMenu
 @onready var weapons_list_ = $WeaponsMenu/HBoxContainer/WeaponsList
+@onready var stats_menu_ = $Stats
+@onready var actions_display_ = $Stats/HBoxContainer/Actions
+@onready var movement_display_ = $Stats/HBoxContainer/Movement
 var current_selected_unit: Node3D
 
 func _ready():
@@ -15,11 +18,18 @@ func _ready():
 	# Hide the menu by default
 	action_menu.hide()
 	weapons_menu_.hide()
+	stats_menu_.hide()
 
 # Call this function when the player clicks on a valid unit
-func show_menu_for_unit(unit: Node3D):
+func show_menu_for_unit(unit: Unit):
 	current_selected_unit = unit
+	update_stats_menu()
 	action_menu.show()
+	stats_menu_.show()
+
+func update_stats_menu() -> void:
+	actions_display_.text = ("Actions: %s/%s" % current_selected_unit.get_actions())
+	movement_display_.text = ("Movement: %s" % current_selected_unit.get_movement())
 
 # Connected via the Godot Inspector to the Button's "pressed" signal
 func _on_attack_button_pressed():
@@ -41,7 +51,9 @@ func _on_attack_button_pressed():
 			weapons_list_.add_child(btn)
 		
 func _on_unit_finished_ability(unit: Unit):
+	update_stats_menu()
 	action_menu.show()
+	stats_menu_.show()
 	weapons_menu_.hide()
 	
 func _on_weapon_selected(w: Unit.WeaponInstance):
@@ -54,9 +66,11 @@ func _on_unit_selected(unit: Node3D):
 
 func _on_unit_deselected():
 	action_menu.hide()
-
+	stats_menu_.hide()
 
 func _on_end_turn_button_pressed() -> void:
 	action_menu.hide()
 	SignalBus.end_turn.emit()
 	
+func _on_move_button_pressed() -> void:
+	SignalBus.unit_move_button_pressed.emit(current_selected_unit)

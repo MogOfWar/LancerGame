@@ -26,11 +26,16 @@ var num_players: int = 2
 var units = {}
 var mech_types_ = {}
 
-enum State { PLAYER_IDLE, PLAYER_UNIT_SELECTED, PLAYER_TARGETING}
+enum State { 	PLAYER_IDLE, 
+				PLAYER_UNIT_SELECTED, 
+				PLAYER_TARGETING, 
+				PLAYER_MOVING,
+				PLAYER_MOVING_2}
 var current_state : State = State.PLAYER_IDLE
 var current_selected_unit: Unit = null
 var current_target_mode_: TargetState = TargetState.new()
 var current_player: int = 0
+var last_clicked_hex_: Vector2i = Vector2i(-9999, -9999)
 
 func pick_hex_at_mouse():
 	var camera = camera_controller.get_camera()
@@ -100,6 +105,7 @@ func _ready() -> void:
 	SignalBus.unit_weapon_selected.connect(_on_unit_weapon_selected)
 	SignalBus.ui_hex_hovered.connect(_on_hex_hovered)
 	SignalBus.ui_hex_selected.connect(_on_hex_selected)
+	SignalBus.unit_move_button_pressed.connect(_on_move_button_pressed)
 	
 	load_unit_types()
 	var a = add_unit(16, 10, mech_types_["Everest"])
@@ -139,7 +145,42 @@ func handle_select_unit(unit: Unit) -> void:
 	current_selected_unit = unit
 	current_state = State.PLAYER_UNIT_SELECTED
 	SignalBus.unit_selected.emit(unit)
+
+func handle_deselect_unit() -> void:
+	current_selected_unit.deselect()
+	current_selected_unit = null
+	SignalBus.unit_cleared.emit()
+	current_state = State.PLAYER_IDLE
+
+func get_move_path(start_world_pos: Vector3, end_world_pos: Vector3, dist: int):
+	var path: Array[Vector3] = []
+	var t: float = 1.0/dist
+	for i in range(dist):
+		var float_pos: Vector3 = start_world_pos.lerp(end_world_pos, i * t)
+		path.append(float_pos)
+	return path
 	
+
+func handle_move_first_phase(clicked_hex: Vector2i) -> void:
+	var unit_world_pos: Vector3 = current_selected_unit.get_position_in_world()
+	var target_world_pos: Vector3 = HexUtils.axial_to_world(clicked_hex)
+	var dist: int = HexUtils.get_axial_distance(clicked_hex, HexUtils.world_to_axial(current_selected_unit.get_position_in_world()))
+	if dist <= current_selected_unit.get_movement():
+		var path: Array[Vector3] = get_move_path(unit_world_pos, target_world_pos, dist)
+		current_state = State.PLAYER_MOVING_2
+		last_clicked_hex_ = clicked_hex
+		SignalBus.tol_path_calculated.emit(path)
+		
+func handle_move_second_phase(clicked_hex: Vector2i) -> void:
+	if last_clicked_hex_ == clicked_hex:
+		# player confirmed movement
+		SignalBus.tol_path_cleared.emit()
+		var dist: int = HexUtils.get_axial_distance(clicked_hex, HexUtils.world_to_axial(current_selected_unit.get_position_in_world()))
+		current_selected_unit.set_location(clicked_hex, terrain.get_y_height(clicked_hex))
+		current_selected_unit.move_points -= dist
+		current_state = State.PLAYER_UNIT_SELECTED
+		SignalBus.unit_finished_ability.emit(current_selected_unit)
+		
 func handle_click_hex(clicked_hex: Vector2i) -> void:
 	match current_state:
 		State.PLAYER_IDLE:
@@ -150,21 +191,39 @@ func handle_click_hex(clicked_hex: Vector2i) -> void:
 			if clicked_hex in units:
 				var picked_unit = units[clicked_hex]
 				if picked_unit == current_selected_unit:
-					picked_unit.deselect()
-					SignalBus.unit_cleared.emit()
-					current_state = State.PLAYER_IDLE
+					handle_deselect_unit()
 				else:
 					handle_select_unit(picked_unit)
 		State.PLAYER_TARGETING:
-					if current_selected_unit.targeting_:
-						var picked_unit = units[clicked_hex]
-						var damage: int = await current_selected_unit.quick_attack(picked_unit)
-						SignalBus.unit_finished_ability.emit(picked_unit)
-						var dmg_text = floating_text_scene_.instantiate()
-						get_tree().current_scene.add_child(dmg_text)
-						# 4. WAIT for the floating number to finish animating
-						await dmg_text.display(str(damage), picked_unit.global_position, true)
+				if clicked_hex in units:
+					var picked_unit = units[clicked_hex]
+					var damage: int = await current_selected_unit.quick_attack(picked_unit)
+					SignalBus.unit_finished_ability.emit(picked_unit)
+					var dmg_text = floating_text_scene_.instantiate()
+					get_tree().current_scene.add_child(dmg_text)
+					# 4. WAIT for the floating number to finish animating
+					await dmg_text.display(str(damage), picked_unit.global_position, true)
+		State.PLAYER_MOVING:
+				if clicked_hex in units:
+					var picked_unit = units[clicked_hex]
+					if picked_unit == current_selected_unit:
+						handle_deselect_unit()
+				else:
+					handle_move_first_phase(clicked_hex)
+		State.PLAYER_MOVING_2:
+				if clicked_hex in units:
+					var picked_unit = units[clicked_hex]
+					if picked_unit == current_selected_unit:
+						handle_deselect_unit()
+				else:
+					handle_move_second_phase(clicked_hex)
+			
 	return
+
+func _on_move_button_pressed(unit: Unit) -> void:
+	if unit != current_selected_unit:
+		print("ERROR: wierd stuff")
+	current_state = State.PLAYER_MOVING
 
 func _on_unit_weapon_selected(unit: Unit, weapon: WeaponType) -> void:
 	current_target_mode_.weapon_ = weapon

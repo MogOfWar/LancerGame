@@ -57,6 +57,12 @@ func _ready() -> void:
 	
 	pass # Replace with function body.
 
+func get_actions() -> Array[int]:
+	return [full_actions, quick_actions]
+
+func get_movement() -> int:
+	return move_points
+
 func get_position_in_world():
 	return position
 
@@ -64,6 +70,7 @@ func load_mech_type(mech_type: MechChassis) -> void:
 	mech_type_ = mech_type
 	hp_ = mech_type.max_hp_
 	evasion_ = mech_type.evasion_
+	move_points = mech_type.speed_
 	
 	#for mount in mech_type.mounts_:
 	#	if mount.mount_type in mounts_.keys():
