@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://c3u58stqeqdmt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d0u6y"]
+shading_mode = 0
+diffuse_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_57qmd"]
+
+[node name="PathDot" type="Node3D" unique_id=464464253]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1969445003]
+material_override = SubResource("StandardMaterial3D_d0u6y")
+mesh = SubResource("QuadMesh_57qmd")
