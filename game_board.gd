@@ -128,10 +128,7 @@ func _on_hex_hovered(hovered_hex: Vector2i) -> void:
 	var draw_hexes: Array[Vector3] = []
 
 	for x in affected_hexes:
-		var global_pos: Vector3 = HexUtils.axial_to_world(x)
-		global_pos.y = terrain.get_y_height(x)
-		var local_pos: Vector3 = terrain.to_local(global_pos)
-		local_pos.y += 0.05
+		var local_pos: Vector3 = convert_hex_to_terrain_coords(x)
 		draw_hexes.append(local_pos)
 	
 	SignalBus.ui_draw_highlights.emit(draw_hexes)	
@@ -152,21 +149,32 @@ func handle_deselect_unit() -> void:
 	SignalBus.unit_cleared.emit()
 	current_state = State.PLAYER_IDLE
 
-func get_move_path(start_world_pos: Vector3, end_world_pos: Vector3, dist: int):
+func convert_hex_to_terrain_coords(hex: Vector2i) -> Vector3:
+	var global_pos: Vector3 = HexUtils.axial_to_world(hex)
+	global_pos.y = terrain.get_y_height(Vector2i(hex)) + 0.05
+	return terrain.to_local(global_pos)
+
+func get_move_path(start_world_pos: Vector2i, end_world_pos: Vector2i, dist: int):
 	var path: Array[Vector3] = []
+	var nudge := Vector2(1e-6, 1e-6)
+	var float_origin: Vector2 = Vector2(start_world_pos) + nudge
+	var float_end: Vector2 = Vector2(end_world_pos) + nudge
 	var t: float = 1.0/dist
-	for i in range(dist):
-		var float_pos: Vector3 = start_world_pos.lerp(end_world_pos, i * t)
-		path.append(float_pos)
+	for i in range(dist+1): #add +1 so we get full lerped
+		var float_pos: Vector2 = float_origin.lerp(float_end, i * t)
+		var lerped_hex: Vector2i = HexUtils.cube_round(float_pos.x, float_pos.y)
+	
+		path.append(convert_hex_to_terrain_coords(lerped_hex))
 	return path
 	
 
 func handle_move_first_phase(clicked_hex: Vector2i) -> void:
 	var unit_world_pos: Vector3 = current_selected_unit.get_position_in_world()
-	var target_world_pos: Vector3 = HexUtils.axial_to_world(clicked_hex)
-	var dist: int = HexUtils.get_axial_distance(clicked_hex, HexUtils.world_to_axial(current_selected_unit.get_position_in_world()))
+	var unit_axial_pos = HexUtils.world_to_axial(unit_world_pos)
+	
+	var dist: int = HexUtils.get_axial_distance(clicked_hex, unit_axial_pos)
 	if dist <= current_selected_unit.get_movement():
-		var path: Array[Vector3] = get_move_path(unit_world_pos, target_world_pos, dist)
+		var path: Array[Vector3] = get_move_path(unit_axial_pos, clicked_hex, dist)
 		current_state = State.PLAYER_MOVING_2
 		last_clicked_hex_ = clicked_hex
 		SignalBus.tol_path_calculated.emit(path)
