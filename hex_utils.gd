@@ -83,6 +83,19 @@ static func get_hexes_in_custom_cone(origin_hex: Vector2i, target_hex: Vector2i,
 				
 	return hexes_in_cone
 
+static func axial_to_arr_idx(axial: Vector2i) -> Vector2i:
+	var r = axial.y
+	var q = axial.x
+	var row = r
+	var col = q + (row/2)
+	return Vector2i(col, row)
+	
+static func arr_idx_to_axial(col: int, row: int) -> Vector2i:
+	var r = row
+	var q = col - (row/2)
+	return Vector2i(q,r)
+	
+
 static func cube_round(fractional_q: float, fractional_r: float) -> Vector2i:
 	var q_float = fractional_q
 	var r_float = fractional_r

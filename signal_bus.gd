@@ -10,6 +10,7 @@ signal unit_weapon_selected(unit: Unit, weapon: WeaponType)
 signal unit_spawned(unit: Unit)
 signal unit_died(unit: Unit)
 signal unit_move_button_pressed(unit: Unit)
+signal unit_action_selected(unit: UnitData, ability: Ability)
 
 # input/ui signals
 signal ui_hex_hovered(hovered_hex: Vector2i)

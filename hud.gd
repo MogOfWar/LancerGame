@@ -2,12 +2,13 @@
 extends CanvasLayer
 
 @onready var action_menu = $ActionMenu
+@onready var action_menu_container_ = $ActionMenu/HBoxContainer
 @onready var weapons_menu_ = $WeaponsMenu
 @onready var weapons_list_ = $WeaponsMenu/HBoxContainer/WeaponsList
 @onready var stats_menu_ = $Stats
 @onready var actions_display_ = $Stats/HBoxContainer/Actions
 @onready var movement_display_ = $Stats/HBoxContainer/Movement
-var current_selected_unit: Node3D
+var current_selected_unit: UnitData
 
 func _ready():
 	# Connect to the global signals
@@ -20,15 +21,23 @@ func _ready():
 	weapons_menu_.hide()
 	stats_menu_.hide()
 
+func update_action_menu(unit: UnitData) -> void:
+	var abilities : Array[Ability] = unit.get_ability_list()
+	for ability in abilities:
+		var btn = Button.new()
+		btn.text = ability.get_ui_name()
+		btn.pressed.connect(_on_action_button_pressed.bind(ability, unit))
+
 # Call this function when the player clicks on a valid unit
-func show_menu_for_unit(unit: Unit):
+func show_menu_for_unit(unit: UnitData):
 	current_selected_unit = unit
 	update_stats_menu()
+	update_action_menu(unit)
 	action_menu.show()
 	stats_menu_.show()
 
 func update_stats_menu() -> void:
-	actions_display_.text = ("Actions: %s/%s" % current_selected_unit.get_actions())
+	actions_display_.text = ("Actions: None")
 	movement_display_.text = ("Movement: %s" % current_selected_unit.get_movement())
 
 # Connected via the Godot Inspector to the Button's "pressed" signal
@@ -60,7 +69,7 @@ func _on_weapon_selected(w: Unit.WeaponInstance):
 	current_selected_unit.prepare_attack(w)
 	SignalBus.unit_weapon_selected.emit(current_selected_unit, w.weapon_)
 	
-func _on_unit_selected(unit: Node3D):
+func _on_unit_selected(unit: UnitData):
 	# Only show the menu if the unit belongs to the player
 	show_menu_for_unit(unit)
 
@@ -74,3 +83,6 @@ func _on_end_turn_button_pressed() -> void:
 	
 func _on_move_button_pressed() -> void:
 	SignalBus.unit_move_button_pressed.emit(current_selected_unit)
+	
+func _on_action_button_pressed(ability: Ability, unit: UnitData) -> void:
+	SignalBus.unit_action_selected.emit(unit, ability)

@@ -32,7 +32,7 @@ class MountPoint:
 		else:
 			print("Too many weapons naughty boy")
 			
-	func get_weapon_instance(index: int) -> WeaponInstance:
+	func get_weapon_instance(index: int) -> Unit.WeaponInstance:
 		return WeaponInstance.new(weapons_[index], type_)
 			
 	var type_: MechChassis.MountType = MechChassis.MountType.UNDEFINED
@@ -50,7 +50,7 @@ class WeaponInstance:
 	func get_ui_string() -> String:
 		var text = "mount%s \n weapon: %s" % [MechChassis.get_mount_type_name(mount_), weapon_.weapon_name_]
 		return text
-
+		
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	print("building Unit")
@@ -59,9 +59,6 @@ func _ready() -> void:
 
 func get_actions() -> Array[int]:
 	return [full_actions, quick_actions]
-
-func get_movement() -> int:
-	return move_points
 
 func get_position_in_world():
 	return position

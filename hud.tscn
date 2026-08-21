@@ -23,10 +23,12 @@ layout_mode = 2
 alignment = 1
 
 [node name="AttackButton" type="Button" parent="ActionMenu/HBoxContainer" unique_id=979061846]
+visible = false
 layout_mode = 2
 text = "Attack"
 
 [node name="MoveButton" type="Button" parent="ActionMenu/HBoxContainer" unique_id=1034484713]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Move

@@ -3,8 +3,9 @@
 [ext_resource type="Script" uid="uid://du1kocyr7nwjp" path="res://client_level.gd" id="1_4drit"]
 [ext_resource type="PackedScene" uid="uid://bj7p0riw1yf1s" path="res://game_board.tscn" id="1_dmbbd"]
 [ext_resource type="PackedScene" uid="uid://c3n0x4jc5wkom" path="res://terrian.tscn" id="2_xx6f5"]
-[ext_resource type="PackedScene" uid="uid://cslh42hrrs0mv" path="res://tactical_overlay.tscn" id="2_xymuu"]
+[ext_resource type="PackedScene" uid="uid://b44q2so32ho0m" path="res://tactical_overlay.tscn" id="2_xymuu"]
 [ext_resource type="PackedScene" uid="uid://cx8cib5gkp3ij" path="res://camera_pivot.tscn" id="2_ysdrd"]
+[ext_resource type="Script" uid="uid://53ssjnkb8m8o" path="res://turn_manager.gd" id="3_ij4ns"]
 [ext_resource type="PackedScene" uid="uid://due6g0ko08p51" path="res://hud.tscn" id="5_fa1qs"]
 [ext_resource type="PackedScene" uid="uid://bfrl0khn7468q" path="res://ui_manager.tscn" id="6_4drit"]
 [ext_resource type="PackedScene" uid="uid://bpmkawp4exddv" path="res://input_manager.tscn" id="7_fa1qs"]
@@ -18,9 +19,14 @@ script = ExtResource("1_4drit")
 unique_name_in_owner = true
 terrain = NodePath("../../Visuals/Terrian")
 
+[node name="TurnManager" type="Node" parent="Logic" unique_id=408960088]
+unique_name_in_owner = true
+script = ExtResource("3_ij4ns")
+
 [node name="Visuals" type="Node3D" parent="." unique_id=1671634100]
 
-[node name="TacticalOverlay" parent="Visuals" unique_id=2134454702 instance=ExtResource("2_xymuu")]
+[node name="TacticalOverlay" parent="Visuals" unique_id=2134454702 node_paths=PackedStringArray("terrain_grid") instance=ExtResource("2_xymuu")]
+terrain_grid = NodePath("../Terrian")
 
 [node name="CameraPivot" parent="Visuals" unique_id=1886546349 instance=ExtResource("2_ysdrd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 6, 28.137)
@@ -40,4 +46,6 @@ transform = Transform3D(1, 0, 0, 0, -0.25881913, 0.96592593, 0, -0.96592593, -0.
 
 [node name="Input" type="Node" parent="." unique_id=890294974]
 
-[node name="InputManager" parent="Input" unique_id=240328072 instance=ExtResource("7_fa1qs")]
+[node name="InputManager" parent="Input" unique_id=240328072 node_paths=PackedStringArray("game_board_", "tactical_overlay_") instance=ExtResource("7_fa1qs")]
+game_board_ = NodePath("../../Logic/GameBoard")
+tactical_overlay_ = NodePath("../../Visuals/TacticalOverlay")

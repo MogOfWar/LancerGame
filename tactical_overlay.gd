@@ -1,5 +1,7 @@
 extends Node3D
 
+class_name TacticalOverlay
+
 class HighlightShape:
 	var template: WeaponType.TargetMode = WeaponType.TargetMode.Single
 	var radius: int = 0
@@ -44,8 +46,13 @@ func _on_draw_highlights(hexes_to_draw: Array[Vector3]) -> void:
 			var cursor = hex_cursor_scene_.instantiate()
 			container.add_child(cursor)
 			cursor.global_position = hex_pos
-	
-func draw_breadcrumbs(hex_positions: Array[Vector3]):
+
+func convert_hex_to_terrain_coords(hex: Vector2i) -> Vector3:
+	var global_pos: Vector3 = HexUtils.axial_to_world(hex)
+	global_pos.y = terrain_grid.get_y_height(hex)
+	return terrain_grid.to_local(global_pos)
+
+func draw_breadcrumbs(hex_positions: Array[Vector2i]):
 	# 1. Clean up any existing path first
 	clear_breadcrumbs()
 	
@@ -56,10 +63,10 @@ func draw_breadcrumbs(hex_positions: Array[Vector3]):
 		# Add it to the container instead of self
 		breadcrumb_container.add_child(dot)
 		
-		dot.global_position = hex_positions[i] + Vector3(0, 0.1, 0)
+		dot.global_position = convert_hex_to_terrain_coords(hex_positions[i]) + Vector3(0, 0.1, 0)
 		
 		if i < hex_positions.size() - 1:
-			var next_pos = hex_positions[i + 1] + Vector3(0, 0.1, 0)
+			var next_pos = convert_hex_to_terrain_coords(hex_positions[i + 1]) + Vector3(0, 0.1, 0)
 			dot.look_at(next_pos, Vector3.UP)
 
 func clear_breadcrumbs():
