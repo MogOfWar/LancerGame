@@ -8,7 +8,7 @@ extends Node3D
 @export_group("Zoom Settings")
 @export var zoom_speed: float = 2.0
 @export var min_zoom: float = 5.0
-@export var max_zoom: float = 35.0
+@export var max_zoom: float = 75.0
 @export var zoom_smoothness: float = 10.0
 
 @onready var camera: Camera3D = $CameraArm/Camera3D

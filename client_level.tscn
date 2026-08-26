@@ -15,9 +15,8 @@ script = ExtResource("1_4drit")
 
 [node name="Logic" type="Node" parent="." unique_id=971196223]
 
-[node name="GameBoard" parent="Logic" unique_id=1003491304 node_paths=PackedStringArray("terrain") instance=ExtResource("1_dmbbd")]
+[node name="GameBoard" parent="Logic" unique_id=1003491304 instance=ExtResource("1_dmbbd")]
 unique_name_in_owner = true
-terrain = NodePath("../../Visuals/Terrian")
 
 [node name="TurnManager" type="Node" parent="Logic" unique_id=408960088]
 unique_name_in_owner = true
@@ -29,14 +28,14 @@ script = ExtResource("3_ij4ns")
 terrain_grid = NodePath("../Terrian")
 
 [node name="CameraPivot" parent="Visuals" unique_id=1886546349 instance=ExtResource("2_ysdrd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 6, 28.137)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 6, 9.136999)
 
 [node name="Terrian" parent="Visuals" unique_id=852825957 instance=ExtResource("2_xx6f5")]
-grid_width = 50
-grid_height = 50
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Visuals" unique_id=537285467]
 transform = Transform3D(1, 0, 0, 0, -0.25881913, 0.96592593, 0, -0.96592593, -0.25881913, 54, 33, -3)
+
+[node name="Entities" type="Node" parent="Visuals" unique_id=1877057957]
 
 [node name="UI" type="Node" parent="." unique_id=1234916430]
 
@@ -46,6 +45,4 @@ transform = Transform3D(1, 0, 0, 0, -0.25881913, 0.96592593, 0, -0.96592593, -0.
 
 [node name="Input" type="Node" parent="." unique_id=890294974]
 
-[node name="InputManager" parent="Input" unique_id=240328072 node_paths=PackedStringArray("game_board_", "tactical_overlay_") instance=ExtResource("7_fa1qs")]
-game_board_ = NodePath("../../Logic/GameBoard")
-tactical_overlay_ = NodePath("../../Visuals/TacticalOverlay")
+[node name="InputManager" parent="Input" unique_id=240328072 instance=ExtResource("7_fa1qs")]

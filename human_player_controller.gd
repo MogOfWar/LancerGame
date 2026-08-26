@@ -3,7 +3,8 @@ class_name HumanPlayerController
 
 enum State { IDLE, TARGETING_1, TARGETING_2 }
 
-signal picked_hex(hex)
+signal picked_hex(hex_qr: Vector2i)
+signal preview_hex(hex_qr: Vector2i)
 
 var input_manager_: InputManager
 var tactical_overlay_: TacticalOverlay
@@ -11,7 +12,7 @@ var current_state_: State = State.IDLE
 var current_viable_hexes_: Array[Vector2i]
 var current_context: ActionContext = null
 var current_selected_hex_ = null
-var current_selected_unit_: Unit = null
+var current_selected_unit_: UnitData = null
 
 func _ready() -> void:
 	SignalBus.unit_action_selected.connect(_on_unit_action_selected)
@@ -33,41 +34,46 @@ func _on_unit_action_selected(unit: UnitData, ability: Ability) -> void:
 func handle_select_unit(target_unit: UnitData) -> void:
 	if current_selected_unit_ != null:
 		current_selected_unit_.deselect()
-	target_unit.unit_.select()
-	SignalBus.unit_selected.emit(target_unit.unit_)	
-	current_selected_unit_ = target_unit.unit_
+	target_unit.select()
+	SignalBus.unit_selected.emit(target_unit)	
+	current_selected_unit_ = target_unit
+
+func draw_preview(context: ActionContext, target_qr: Vector2i, effect: Effect):
+	if context.ability_.action_type_ == Ability.ActionType.MOVEMENT:
+		tactical_overlay_.clear_breadcrumbs()
+		var move_path = context.game_board_.get_move_path(context.source_unit_.get_pos_qr(), target_qr)
+		tactical_overlay_.draw_breadcrumbs(move_path)
 
 # --- THE EXECUTION COROUTINE ---
-func get_picked_hexes(context: ActionContext, viable_hexes: Array[Vector2i]) -> Array[Vector2i]:
+func get_picked_hexes(context: ActionContext, viable_hexes: Array[Vector2i], effect: Effect) -> Array[Vector2i]:
 	current_viable_hexes_ = viable_hexes
 	current_context = context
 	current_state_ = State.TARGETING_1
-	
-	var draw_hexes: Array[Vector3] = []
-	for x in viable_hexes:
-		var local_pos: Vector3 = context.game_board_.convert_hex_to_terrain_coords(x)
-		draw_hexes.append(local_pos)
-	tactical_overlay_._on_draw_highlights(draw_hexes)
+
+	tactical_overlay_.draw_highlights(viable_hexes, Color.FIREBRICK, TacticalOverlay.CursorGroup.PREVIEW)
 	
 	# 2. Yield until the state machine emits this signal
-	var target = await self.picked_hex
+	var target = await self.preview_hex
+	draw_preview(context, target, effect)
 	
+	var confiremed_hex = await self.picked_hex
 	# 3. Cleanup and return
-	#tactical_overlay.clear()
+	tactical_overlay_.clear_preview()
 	current_viable_hexes_ = []
 	current_context = null
-	return target
-	
+	return [target]
+
+func handle_hover(hovered_hex_qr) -> void:
+	if hovered_hex_qr != Vector2i(-9999, -9999):
+		tactical_overlay_.draw_highlights([hovered_hex_qr], Color.WHITE, TacticalOverlay.CursorGroup.ACTIVE)
+		
 	
 # --- THE STATE MACHINE ---
 func _on_tactical_input(action: InputManager.Action, hex: Vector2i) -> void:
 	match action:
 		InputManager.Action.HOVER:
-			if current_state_ == State.TARGETING_1 and hex in current_viable_hexes_:
-				# Show what WOULD happen if they clicked here
-				pass		
-				#tactical_overlay.draw_hover_preview(_active_context.effect.get_preview(hex))
-				
+			handle_hover(hex)
+			
 		InputManager.Action.CLICK:
 			handle_click(hex)
 			
@@ -89,7 +95,7 @@ func handle_click(hex: Vector2i) -> void:
 			if hex in current_viable_hexes_:
 				current_selected_hex_ = hex
 				current_state_ = State.TARGETING_2
-				#tactical_overlay.draw_locked_preview(_active_context.effect.get_preview(hex))
+				preview_hex.emit(hex)
 				
 		State.TARGETING_2:
 			# Second click: Confirm or cancel

@@ -21,24 +21,31 @@ func _ready():
 	weapons_menu_.hide()
 	stats_menu_.hide()
 
+func clear_menu(menu: Container):
+	for child in menu.get_children():
+		child.queue_free()
+
 func update_action_menu(unit: UnitData) -> void:
+	clear_menu(action_menu_container_)
 	var abilities : Array[Ability] = unit.get_ability_list()
 	for ability in abilities:
 		var btn = Button.new()
 		btn.text = ability.get_ui_name()
 		btn.pressed.connect(_on_action_button_pressed.bind(ability, unit))
+		action_menu_container_.add_child(btn)
+		
 
 # Call this function when the player clicks on a valid unit
 func show_menu_for_unit(unit: UnitData):
 	current_selected_unit = unit
-	update_stats_menu()
+	update_stats_menu(unit)
 	update_action_menu(unit)
 	action_menu.show()
 	stats_menu_.show()
 
-func update_stats_menu() -> void:
+func update_stats_menu(unit: UnitData) -> void:
 	actions_display_.text = ("Actions: None")
-	movement_display_.text = ("Movement: %s" % current_selected_unit.get_movement())
+	movement_display_.text = ("Movement: %s" % unit.get_movement_points())
 
 # Connected via the Godot Inspector to the Button's "pressed" signal
 func _on_attack_button_pressed():
@@ -55,19 +62,19 @@ func _on_attack_button_pressed():
 			btn.text = weapon_ui.get_ui_string()
 			
 			# Connect the button and pass the SPECIFIC weapon to the function
-			btn.pressed.connect(_on_weapon_selected.bind(weapon_ui))
+			#btn.pressed.connect(_on_weapon_selected.bind(weapon_ui))
 			
 			weapons_list_.add_child(btn)
 		
-func _on_unit_finished_ability(unit: Unit):
-	update_stats_menu()
+func _on_unit_finished_ability(unit: UnitData):
+	update_stats_menu(unit)
 	action_menu.show()
 	stats_menu_.show()
 	weapons_menu_.hide()
 	
-func _on_weapon_selected(w: Unit.WeaponInstance):
-	current_selected_unit.prepare_attack(w)
-	SignalBus.unit_weapon_selected.emit(current_selected_unit, w.weapon_)
+#func _on_weapon_selected(w: Unit.WeaponInstance):
+#	current_selected_unit.prepare_attack(w)
+#	SignalBus.unit_weapon_selected.emit(current_selected_unit, w.weapon_)
 	
 func _on_unit_selected(unit: UnitData):
 	# Only show the menu if the unit belongs to the player

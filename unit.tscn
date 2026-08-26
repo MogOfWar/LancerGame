@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dpvb1pl8dpc5f" path="res://unit.gd" id="1_btf8p"]
 [ext_resource type="Texture2D" uid="uid://dst43rj35jh6" path="res://art/selection_ring.png" id="2_ctwoc"]
-[ext_resource type="PackedScene" uid="uid://y47cukr5cwop" path="res://floating_health_bar.tscn" id="2_davkp"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_k4y1u"]
 height = 0.2
@@ -32,7 +31,6 @@ viewport_path = NodePath("UI_Anchor/SubViewport")
 
 [node name="Unit" type="Node3D" unique_id=722785469]
 script = ExtResource("1_btf8p")
-health_bar_scene = ExtResource("2_davkp")
 
 [node name="Visuals" type="Node3D" parent="." unique_id=1002284540]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)

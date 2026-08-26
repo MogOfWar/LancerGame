@@ -3,25 +3,18 @@ class_name TerrainGrid
 extends StaticBody3D
 
 var hex_size: float = HexUtils.hex_size
-@export var grid_radius: int = 15
-@export var height_multiplier: float = 5.0
-@export var noise: FastNoiseLite
-@export var grid_width: int = 50
-@export var grid_height: int = 50
-var grid_height_map = []
+
+@export var grid_: GridData = null
+
 func _ready() -> void:
-	if not noise:
-		noise = FastNoiseLite.new()
-		noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
-		noise.seed = randi()
-	
-	for r in range(grid_height):
-		grid_height_map.append([])
-		for q in range(grid_width):
-			grid_height_map[r].append(0)
-			
-	generate_rectangle_hex_grid(grid_width, grid_height)
-	
+	if grid_:	
+		generate_rectangle_hex_grid(grid_)
+
+func initalize(grid: GridData) -> void:
+	if grid_:
+		Utils.log_error("GridData: grid already initalized")
+	grid_ = grid
+	generate_rectangle_hex_grid(grid_)
 	
 			
 func finalize_mesh(st: SurfaceTool):
@@ -37,16 +30,16 @@ func get_y_height(grid_loc: Vector2i) -> float:
 	var q = grid_loc.x
 	var row = r
 	var col = q + (row/2)
-	return grid_height_map[row][col]
+	return grid_.get_height_from_cr(col, row)
 	
-func generate_rectangle_hex_grid(width: int, height: int) -> void:
+func generate_rectangle_hex_grid(grid: GridData) -> void:
 	# 1. Initialize the SurfaceTool
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
+	var height: int = grid.height_
+	var width: int = grid.width_
 	var current_vertex_index: int = 0
 	for row in range(height):
-		
 		for col in range(width):
 			# THE MAGIC FORMULA:
 			# integer division (row / 2) automatically drops the decimal.
@@ -54,42 +47,21 @@ func generate_rectangle_hex_grid(width: int, height: int) -> void:
 			var q = col - (row / 2) 
 			var r = row
 
-			var y_height = draw_hex(st, q, r, current_vertex_index)
+			draw_hex(st, q, r, current_vertex_index, grid.get_height_from_cr(col, row))
 			current_vertex_index += 7
-			grid_height_map[row][col] = y_height
 			
 	# 3. Finalize the mesh
 	st.generate_normals() # Automatically calculates lighting/shading
 	var new_mesh = finalize_mesh(st)
 	$MeshInstance3D.mesh = new_mesh
-	
 
-func generate_hexagon_hex_grid() -> void:
-	# 1. Initialize the SurfaceTool
-	var st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	var current_vertex_index: int = 0
-	
-	# 2. Iterate through axial coordinates
-	for q in range(-grid_radius, grid_radius + 1):
-		for r in range(-grid_radius, grid_radius + 1):
-			if abs(q + r) <= grid_radius:
-				draw_hex(st, q, r, current_vertex_index)
-				
-				current_vertex_index += 7
-	# 3. Finalize the mesh
-	st.generate_normals() # Automatically calculates lighting/shading
-	finalize_mesh(st)
-
-func draw_hex(st: SurfaceTool, q: int, r: int, center_index: int) -> float:
+func draw_hex(st: SurfaceTool, q: int, r: int, center_index: int, y_height: float) -> void:
 	# Calculate world center for this hex
 	var center = HexUtils.axial_to_world(Vector2(q,r))
 	var center_x = center.x#hex_size * sqrt(3.0) * (q + r / 2.0)
 	var center_z = center.z#hex_size * (3.0 / 2.0) * r
 	
-	# Sample height at the center
-	var y_height : float  = noise.get_noise_2d(center_x, center_z) * height_multiplier
+	# Sample height at the center	
 	var center_pos = Vector3(center_x, y_height, center_z)
 	
 	# Add Center Vertex
@@ -129,7 +101,6 @@ func draw_hex(st: SurfaceTool, q: int, r: int, center_index: int) -> float:
 			
 		# Next corner goes LAST now
 		st.add_index(next_corner)
-	return y_height
 
 # Helper function to color the vertices
 func get_biome_color(y: float) -> Color:

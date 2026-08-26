@@ -4,6 +4,8 @@
 
 [node name="CameraPivot" type="Node3D" unique_id=1886546349]
 script = ExtResource("1_4djmu")
+min_zoom = 1.0
+max_zoom = 1000.0
 
 [node name="CameraArm" type="Node3D" parent="." unique_id=1734854866]
 transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)

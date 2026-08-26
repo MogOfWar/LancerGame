@@ -15,16 +15,15 @@ func _init(logic_node: Node) -> void:
 func _process(delta: float) -> void:
 	pass
 
-@abstract func get_picked_hexes(context: ActionContext, viable_hexes: Array[Vector2i]) -> Array[Vector2i]
-
-	
+@abstract func get_picked_hexes(context: ActionContext, viable_hexes: Array[Vector2i], effect: Effect) -> Array[Vector2i]
 
 func execute_ability(ability: Ability, unit: UnitData) -> void:
 	var context: ActionContext = ActionContext.new(game_board_, unit, ability)
 	for effect: Effect in ability.get_effects():
-		if effect.require_target():
-			var viable_hexes = effect.get_viable_targets(context)
+		if effect.require_targeting():
+			var viable_hexes: Array[Vector2i] = effect.get_viable_targets(context)
 			
-			var picked_hexes = await get_picked_hexes(context, viable_hexes)
+			var picked_hexes = await get_picked_hexes(context, viable_hexes, effect)
 			
-		
+			effect.apply(context, picked_hexes)
+	SignalBus.unit_finished_ability.emit(unit)

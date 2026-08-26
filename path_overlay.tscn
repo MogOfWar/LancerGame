@@ -1,13 +1,16 @@
 [gd_scene format=3 uid="uid://c3u58stqeqdmt"]
 
+[ext_resource type="Script" uid="uid://co17mh4wtu2l1" path="res://path_overlay.gd" id="1_6h2rt"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d0u6y"]
 shading_mode = 0
 diffuse_mode = 1
 
-[sub_resource type="QuadMesh" id="QuadMesh_57qmd"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_yf5fn"]
 
-[node name="PathDot" type="Node3D" unique_id=464464253]
+[node name="PathOverlay" type="Node3D" unique_id=464464253]
+script = ExtResource("1_6h2rt")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1969445003]
 material_override = SubResource("StandardMaterial3D_d0u6y")
-mesh = SubResource("QuadMesh_57qmd")
+mesh = SubResource("ImmediateMesh_yf5fn")

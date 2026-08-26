@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode blend_mix, cull_disabled;
 
-uniform vec3 albedo : source_color = vec3(0.0, 0.6, 1.0);
+instance uniform vec3 albedo : source_color = vec3(1.0, 1.0, 1.0);
 uniform float center_transparency : hint_range(0.0, 1.0) = 0.1;
 uniform float radius;
 uniform float edge_intensity : hint_range(1.0, 2.0) = 1.5;
@@ -21,7 +21,7 @@ void fragment() {
     // Normalize it based on your actual radius (0.0 at center, 1.0 at outer edge)
     float edge_factor = pow(clamp(dist_from_center / radius, 0.0, 1.0), edge_intensity);
 
-    ALBEDO = vec3(edge_factor, edge_factor, edge_factor);
+    ALBEDO = albedo*vec3(edge_factor, edge_factor, edge_factor);
     
     // Fades smoothly from the center transparency to fully opaque at the edges
     ALPHA = mix(center_transparency, 1.0, edge_factor);

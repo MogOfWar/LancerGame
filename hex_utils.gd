@@ -3,6 +3,14 @@ extends RefCounted
 
 const hex_size: float = 1.0
 
+const AXIAL_DIRECTIONS: Array[Vector2i] = [
+	Vector2i(1, 0),   # Right
+	Vector2i(1, -1),  # Top-right
+	Vector2i(0, -1),  # Top-left
+	Vector2i(-1, 0),  # Left
+	Vector2i(-1, 1),  # Bottom-left
+	Vector2i(0, 1)    # Bottom-right
+]
 static func get_blast_hexes(center: Vector2i, radius: int) -> Array[Vector2i]:
 	var results: Array[Vector2i] = []
 	

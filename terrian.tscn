@@ -32,8 +32,6 @@ data = PackedVector3Array(0, 0, 0, 0.866, 0, -0.5, 0.866, 0, 0.5, 0, 0, 0, 0.866
 [node name="Terrian" type="StaticBody3D" unique_id=852825957]
 script = ExtResource("1_8xpmn")
 noise = SubResource("FastNoiseLite_ktu6h")
-grid_width = null
-grid_height = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2018636715]
 material_override = SubResource("ShaderMaterial_ld24l")

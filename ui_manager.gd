@@ -16,7 +16,7 @@ func _on_unit_spawned(unit: Unit):
 	
 	# 2. Store the pair in our dictionary
 	active_widgets[unit] = health_widget
-	health_widget.setup(unit.hp_)
+	health_widget.setup(unit.unit_data_.hp_)
 	unit.register_health_bar(health_widget)
 
 
