@@ -38,4 +38,3 @@ static func get_mount_type_name(m: MountType) -> String:
 @export var max_system_point_: int = 0
 @export var heat_cap_: int = 0
 @export var mounts_: Array[ChassisMount] = []
-@export var traits_: Array[Trait] = []
