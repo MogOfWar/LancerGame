@@ -1,6 +1,6 @@
 extends Node
 
-var floating_text_scene_: PackedScene = preload("res://floating_text.tscn")
+var floating_text_scene_: PackedScene = preload(Constants.VFX_PATH + "//floating_text.tscn")
 
 # Called when the node enters the scene tree for the first time.
 

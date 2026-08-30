@@ -7,7 +7,7 @@ class HexData:
 @onready var grid_width: int = 0
 @onready var grid_height: int = 0
 
-var floating_text_scene_ = preload("res://floating_text.tscn")
+var floating_text_scene_ = preload(Constants.VFX_PATH + "//floating_text.tscn")
 var grid_ : GridData
 var units: Dictionary[Vector2i, UnitData] = {}
 var mech_types_ = {}
