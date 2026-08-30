@@ -1,8 +1,9 @@
 [gd_resource type="Resource" script_class="MechChassis" format=3 uid="uid://df6j13yfloq6r"]
 
-[ext_resource type="Script" uid="uid://dveh4dobbdtqk" path="res://mech_chassis.gd" id="1_06ydq"]
-[ext_resource type="Script" uid="uid://cxbp04m8uq5me" path="res://chassis_mount.gd" id="1_w30oy"]
-[ext_resource type="Script" uid="uid://chqxvwkut21wc" path="res://trait.gd" id="2_06ydq"]
+[ext_resource type="Script" uid="uid://dveh4dobbdtqk" path="res://mechs/mech_chassis.gd" id="1_06ydq"]
+[ext_resource type="Script" uid="uid://cxbp04m8uq5me" path="res://mechs/chassis_mount.gd" id="1_w30oy"]
+[ext_resource type="Script" path="res://trait.gd" id="2_06ydq"]
+
 
 [sub_resource type="Resource" id="Resource_37p78"]
 script = ExtResource("1_w30oy")

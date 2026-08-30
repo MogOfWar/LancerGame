@@ -6,12 +6,11 @@ var mech_types_ = {}
 var units = []
 # function to load all abilities at start
 func load_unit_types():
-	const MECH_TYPE_PATH = "res://"
 	var mechs_to_load = [
 		"everest.tres",
 	]
 	for mtl in mechs_to_load:
-		var mech: MechChassis = load(MECH_TYPE_PATH + mtl)
+		var mech: MechChassis = load(Constants.MECH_PATH + "//" + mtl)
 		mech_types_[mech.chassis_name_] = mech
 		
 # Called when the node enters the scene tree for the first time.
