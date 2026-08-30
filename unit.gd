@@ -3,7 +3,6 @@ extends Node3D
 
 var targeting_: bool = false
 var unit_data_: UnitData
-var ui_widgets = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,18 +15,7 @@ func _ready() -> void:
 func initalize(unit_data: UnitData) -> void:
 	unit_data_ = unit_data
 	set_location(unit_data_.get_pos_qry())
-	
-func get_position_in_world():
-	return position
 
-
-func register_health_bar(health_bar) -> void:
-	ui_widgets["health_bar"] = health_bar
-		
-
-func quick_action_prolouge() -> void:
-	pass
-	
 #func quick_action_epilog() -> void:
 #	quick_actions = max(quick_actions - 1, 0)
 #	full_actions = max(full_actions - 1, 0)
@@ -86,12 +74,6 @@ func select():
 
 func deselect():
 	$SelectionRing.visible = false
-	
-#func apply_damage(damage: int) -> void:
-#	hp_ -= damage
-#	hp_ = max(hp_, 0)
-#	if hp_ > 0:
-#		ui_widgets["health_bar"].update_health(hp_)
 	
 func _on_move(hex_qry: Vector3):
 	set_location(hex_qry)
