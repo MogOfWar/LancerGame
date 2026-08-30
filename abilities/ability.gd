@@ -24,6 +24,9 @@ var charges_: int = 0
 var max_charges_: int = 0
 var refresh_policy_: RefreshPolicy = RefreshPolicy.ON_TURN_START
 
+func refresh():
+	charges_ = max_charges_
+
 func _init(name: String, ac_type: ActionType, max_charges: int):
 	ability_name_ = name
 	action_type_ = ac_type

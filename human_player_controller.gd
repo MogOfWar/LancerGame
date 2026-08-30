@@ -14,22 +14,29 @@ var current_context: ActionContext = null
 var current_selected_hex_ = null
 var current_selected_unit_: UnitData = null
 var current_effect_: Effect = null
+var current_playing_: bool = false
 
 func _ready() -> void:
 	SignalBus.unit_action_selected.connect(_on_unit_action_selected)
+	SignalBus.start_turn.connect(_on_start_turn)
 	input_manager_.tactical_input.connect(_on_tactical_input)
 	pass # Replace with function body.
+
+func _on_start_turn(player_number: int) -> void:
+	if player_number != player_id_:
+		current_playing_ = false
+	else:
+		current_playing_ = true
 
 func _init(logic_node : Node, input_manager: InputManager, tac_overlay: TacticalOverlay) -> void:
 	super._init(logic_node)
 	input_manager_ = input_manager
 	tactical_overlay_ = tac_overlay
 	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 func _on_unit_action_selected(unit: UnitData, ability: Ability, sub_name: String) -> void:
+	if not current_playing_:
+		return
 	if game_board_.is_ability_executable(unit, ability):
 		execute_ability(ability, unit, sub_name)
 	else:
@@ -37,20 +44,27 @@ func _on_unit_action_selected(unit: UnitData, ability: Ability, sub_name: String
 		VFXManager.spawn_text({"text_to_show" : "not enough action points", "global_position" : visual_unit.global_position})
 
 func handle_select_unit(target_unit: UnitData) -> void:
+	if not current_playing_:
+		return
 	if current_selected_unit_ != null:
 		current_selected_unit_.deselect()
+		SignalBus.unit_deselected.emit(current_selected_unit_)
 	target_unit.select()
 	SignalBus.unit_selected.emit(target_unit)	
 	current_selected_unit_ = target_unit
 
 func draw_preview(context: ActionContext, target_qr: Vector2i, effect: Effect):
+	if not current_playing_:
+		return
 	if context.ability_.action_type_ == Ability.ActionType.MOVEMENT:
 		tactical_overlay_.clear_breadcrumbs()
-		var move_path = context.game_board_.get_move_path(context.source_unit_.get_pos_qr(), target_qr)
+		var move_path = context.game_board_.get_move_path(context.source_unit_, context.source_unit_.get_pos_qr(), target_qr)
 		tactical_overlay_.draw_breadcrumbs(move_path)
 
 # --- THE EXECUTION COROUTINE ---
 func get_picked_hexes(context: ActionContext, viable_hexes: Array[Vector2i], effect: Effect) -> Vector2i:
+	if not current_playing_:
+		return Vector2i(-1, -1)
 	current_viable_hexes_ = viable_hexes
 	current_context = context
 	current_state_ = State.TARGETING_1
@@ -69,6 +83,8 @@ func get_picked_hexes(context: ActionContext, viable_hexes: Array[Vector2i], eff
 	return target
 
 func handle_hover(hovered_hex_qr) -> void:
+	if not current_playing_:
+		return
 	var active_draw : Array[Vector2i] = []
 	if hovered_hex_qr != Vector2i(-9999, -9999):
 		if current_state_ == State.TARGETING_1 or current_state_ == State.TARGETING_2:
@@ -80,6 +96,8 @@ func handle_hover(hovered_hex_qr) -> void:
 	
 # --- THE STATE MACHINE ---
 func _on_tactical_input(action: InputManager.Action, hex: Vector2i) -> void:
+	if not current_playing_:
+		return
 	match action:
 		InputManager.Action.HOVER:
 			handle_hover(hex)
@@ -93,6 +111,8 @@ func _on_tactical_input(action: InputManager.Action, hex: Vector2i) -> void:
 				picked_hex.emit(null) # Emitting null cleanly aborts the ability
 
 func handle_click(hex: Vector2i) -> void:
+	if not current_playing_:
+		return
 	match current_state_:
 		State.IDLE:
 			# Normal gameplay clicks (selecting units, checking stats, etc.)

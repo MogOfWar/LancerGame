@@ -3,14 +3,16 @@ extends Node
 # logic signals
 signal unit_selected(unit: UnitData)
 signal unit_finished_ability(unit)
-signal unit_cleared()
-signal end_turn()
+signal unit_deselected(unit: UnitData)
+
 signal unit_attacking(unit: UnitData, hit: bool)
 signal unit_damaged(unit: UnitData, damage_val: int)
 signal unit_died(unit: UnitData)
 signal unit_action_selected(unit: UnitData, ability: Ability, sub_name: String)
 
-
+signal end_turn()
+signal start_round(round_number: int)
+signal start_turn(player_number: int)
 
 # visual signals
 signal vis_unit_spawned(unit: Unit)

@@ -45,6 +45,9 @@ metadata/_edit_group_ = true
 layout_mode = 2
 text = "End Turn"
 
+[node name="RoundInfo" type="Label" parent="HBoxContainer" unique_id=1980380079]
+layout_mode = 2
+
 [node name="SubAbilityMenu" type="PanelContainer" parent="." unique_id=1582566547]
 offset_left = 390.0
 offset_top = 538.0
@@ -82,6 +85,20 @@ layout_mode = 2
 size_flags_vertical = 0
 text = "Movement"
 
+[node name="InfoBanner" type="PanelContainer" parent="." unique_id=781237982]
+visible = false
+offset_left = 215.0
+offset_top = 76.0
+offset_right = 789.0
+offset_bottom = 125.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="InfoBanner" unique_id=1615445856]
+layout_mode = 2
+
+[node name="InfoBannerTimer" type="Timer" parent="InfoBanner" unique_id=1437105728]
+wait_time = 2.0
+
 [connection signal="pressed" from="ActionMenu/HBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]
 [connection signal="pressed" from="ActionMenu/HBoxContainer/MoveButton" to="." method="_on_move_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/EndTurnButton" to="." method="_on_end_turn_button_pressed"]
+[connection signal="timeout" from="InfoBanner/InfoBannerTimer" to="." method="_on_info_banner_timer_timeout"]

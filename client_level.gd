@@ -15,26 +15,36 @@ func load_unit_types():
 		
 # Called when the node enters the scene tree for the first time.
 
-func add_unit(chassis: MechChassis, pos_qr: Vector2i, height: float) -> UnitData:
+func add_unit(chassis: MechChassis, pos_qr: Vector2i, height: float, own_player: PlayerController) -> UnitData:
 	var new_unit_data: UnitData = UnitData.new(chassis, pos_qr, height)
+	new_unit_data.own_player_id_ = own_player.player_id_
 	var new_unit_scene: Unit = UnitScene.instantiate()
 	new_unit_scene.initalize(new_unit_data)
 	$Visuals/Entities.add_child(new_unit_scene)
 	return new_unit_data
 	
 func _ready() -> void:
-	load_unit_types()
-	# DEBUG just debug stuff for start
 	var grid = NoiseGrid.new(10,10, null)
-	var unit_a: UnitData = add_unit(mech_types_["Everest"], Vector2i(0,0), 0)
-	var unit_b: UnitData = add_unit(mech_types_["Everest"], Vector2i(2,3), 0)
-	unit_a.add_weapon(load("res://weapons/assualt_rifle.tres"), MechChassis.MountType.HEAVY)
-	%GameBoard.initalize(grid)
-	%GameBoard.add_unit(unit_a)
-	%GameBoard.add_unit(unit_b)
 	%TurnManager.initalize()
+	%GameBoard.initalize(grid)
 	
 	var player_1 : HumanPlayerController = HumanPlayerController.new($Logic, $Input/InputManager, $Visuals/TacticalOverlay)
+	var player_2 : HumanPlayerController = HumanPlayerController.new($Logic, $Input/InputManager, $Visuals/TacticalOverlay)
 	%TurnManager.add_player(player_1, 0)
+	%TurnManager.add_player(player_2, 0)
+	
+	load_unit_types()
+	# DEBUG just debug stuff for start
+	var unit_a: UnitData = add_unit(mech_types_["Everest"], Vector2i(0,0), 0, player_1)
+	var unit_b: UnitData = add_unit(mech_types_["Everest"], Vector2i(2,3), 0, player_2)
+	unit_a.add_weapon(load("res://weapons/assualt_rifle.tres"), MechChassis.MountType.HEAVY)
+	
+	%GameBoard.add_unit(unit_a)
+	%GameBoard.add_unit(unit_b)
+	
+	
+	
 	$Visuals/Terrian.initalize(grid)
 	# for now init a flat terrain for debug
+	
+	%TurnManager.start_battle()

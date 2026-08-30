@@ -80,7 +80,7 @@ func _ready() -> void:
 	SignalBus.end_turn.connect(_on_end_turn)
 	
 func move_unit(unit: UnitData, target_hex: Vector2i) -> int:
-	var move_path = get_move_path(unit.get_pos_qr(), target_hex)
+	var move_path = get_move_path(unit, unit.get_pos_qr(), target_hex)
 	var hexes_moved: int = 0
 	for hex_qr in move_path:
 		if hex_qr == unit.get_pos_qr():
@@ -92,7 +92,8 @@ func move_unit(unit: UnitData, target_hex: Vector2i) -> int:
 			hexes_moved += 1
 	return hexes_moved
 
-func get_move_path(start_world_pos: Vector2i, end_world_pos: Vector2i) -> Array[Vector2i]:
+#function that return an array of the hexes in the move path
+func get_move_path2(start_world_pos: Vector2i, end_world_pos: Vector2i) -> Array[Vector2i]:
 	var dist: int = HexUtils.get_axial_distance(start_world_pos, end_world_pos)
 	var path: Array[Vector2i] = []
 	var nudge := Vector2(1e-6, 1e-6)
@@ -103,20 +104,28 @@ func get_move_path(start_world_pos: Vector2i, end_world_pos: Vector2i) -> Array[
 		var float_pos: Vector2 = float_origin.lerp(float_end, i * t)
 		var lerped_hex: Vector2i = HexUtils.cube_round(float_pos.x, float_pos.y)
 	
-		#path.append(convert_hex_to_terrain_coords(lerped_hex))
 		path.append(lerped_hex)
 	return path
 
-"""func get_unit_move_path(unit: Unit, target_hex: Vector2i) -> Array[Vector2i]:
-	var unit_world_pos: Vector3 = unit.get_position_in_world()
-	var unit_axial_pos = HexUtils.world_to_axial(unit_world_pos)
-	var dist: int = HexUtils.get_axial_distance(target_hex, unit_axial_pos)
-	if dist <= unit.get_movement():
-		var path: Array[Vector2i] = get_move_path(unit_axial_pos, target_hex, dist)
-		if len(path) <= unit.get_movement():
-			return path
-	return []
-"""
+func get_move_path(moving_unit: UnitData, start_pos_qr: Vector2i, end_pos_qr: Vector2i) -> Array[Vector2i]:
+	var temporarily_solid_hexes: Array[int] = []
+	for other_unit: UnitData in units.values():
+		if other_unit == moving_unit:
+			continue
+		var hex_index: int = grid_.get_grid_index(other_unit.get_pos_qr())
+		grid_.astar_.set_point_disabled(hex_index, true)
+		temporarily_solid_hexes.append(hex_index) # Track it!
+	
+	var path = grid_.astar_.get_id_path(grid_.get_grid_index(start_pos_qr), grid_.get_grid_index(end_pos_qr))
+	
+	#resotre 
+	for t in temporarily_solid_hexes:
+		grid_.astar_.set_point_disabled(t, false)
+		
+	var ret: Array[Vector2i]
+	for p in path:
+		ret.append(grid_.get_position(p))
+	return ret
 
 func _on_end_turn() -> void:
 	pass
@@ -137,6 +146,9 @@ func get_movement_range(source_hex: Vector2i, range: int) -> Array[Vector2i]:
 		var current_hex_index = frontier.pop_front()
 		var current_mp = reachable[current_hex_index]
 		for neighbour in grid_.get_neighbours(current_hex_index):
+			# cant move through any units
+			if units.has(grid_.get_position(neighbour)):
+				continue
 			var cost = grid_.get_cost(neighbour)
 			var next_mp = current_mp - cost
 			

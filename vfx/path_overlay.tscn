@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c3u58stqeqdmt"]
 
-[ext_resource type="Script" uid="uid://co17mh4wtu2l1" path="res://path_overlay.gd" id="1_6h2rt"]
+[ext_resource type="Script" uid="uid://co17mh4wtu2l1" path="res://vfx/path_overlay.gd" id="1_6h2rt"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d0u6y"]
 shading_mode = 0

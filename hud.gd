@@ -9,12 +9,15 @@ extends CanvasLayer
 @onready var actions_display_ = $Stats/HBoxContainer/Actions
 @onready var movement_display_ = $Stats/HBoxContainer/Movement
 var current_selected_unit: UnitData
+var current_player_turn_: int = -1
 
 func _ready():
 	# Connect to the global signals
 	SignalBus.unit_selected.connect(_on_unit_selected)
-	SignalBus.unit_cleared.connect(_on_unit_deselected)
+	SignalBus.unit_deselected.connect(_on_unit_deselected)
 	SignalBus.unit_finished_ability.connect(_on_unit_finished_ability)
+	SignalBus.start_round.connect(_on_start_round)
+	SignalBus.start_turn.connect(_on_start_turn)
 	
 	# Hide the menu by default
 	action_menu.hide()
@@ -48,6 +51,15 @@ func update_stats_menu(unit: UnitData) -> void:
 	movement_display_.text = ("Movement: %s" % unit.get_movement_points())
 
 
+func _on_start_round(round_number: int) -> void:
+	$HBoxContainer/RoundInfo.text = "round: %s" % round_number
+
+func _on_start_turn(player_number: int) -> void:
+	current_player_turn_ = player_number
+	$InfoBanner/InfoBannerTimer.start()
+	$InfoBanner.show()
+	$InfoBanner/RichTextLabel.text = "Player %s turn" % player_number
+
 func _on_unit_finished_ability(unit: UnitData):
 	update_stats_menu(unit)
 	action_menu.show()
@@ -56,14 +68,18 @@ func _on_unit_finished_ability(unit: UnitData):
 	
 func _on_unit_selected(unit: UnitData):
 	# Only show the menu if the unit belongs to the player
-	show_menu_for_unit(unit)
+	if unit.own_player_id_ == current_player_turn_:
+		show_menu_for_unit(unit)
 
-func _on_unit_deselected():
+func _on_unit_deselected(unit: UnitData):
 	action_menu.hide()
 	stats_menu_.hide()
+	sub_ability_menu_.hide()
 
 func _on_end_turn_button_pressed() -> void:
 	action_menu.hide()
+	stats_menu_.hide()
+	sub_ability_menu_.hide()
 	SignalBus.end_turn.emit()
 	
 func _on_action_button_pressed(ability: Ability, unit: UnitData) -> void:
@@ -82,3 +98,7 @@ func _on_action_button_pressed(ability: Ability, unit: UnitData) -> void:
 			
 func _on_sub_action_button_pressed(ability: Ability, unit: UnitData, sub_key: String) -> void:
 	SignalBus.unit_action_selected.emit(unit, ability, sub_key)
+
+
+func _on_info_banner_timer_timeout() -> void:
+	$InfoBanner.hide()

@@ -44,6 +44,7 @@ var mech_type_: MechChassis = null
 var curr_select_weapon_: WeaponInstance = null
 var pos_qr_: Vector2i
 var height_: float
+var own_player_id_: int = -1
 
 
 @export var chassis: MechChassis
@@ -63,6 +64,11 @@ class IdGenerator:
 		_mutex.unlock()
 		return id
 
+func refresh_action_points() -> void:
+	action_points_[Ability.ActionType.QUICK_ACTION] = 2
+	action_points_[Ability.ActionType.FULL_ACTION] = 1
+	action_points_[Ability.ActionType.MOVEMENT] = mech_type_.speed_
+
 func _init(mech_type: MechChassis, pos_qr: Vector2i, height: float) -> void:
 	unit_id_ = IdGenerator.get_next_id()
 	abilities_.append(MoveAbility.new())
@@ -71,9 +77,15 @@ func _init(mech_type: MechChassis, pos_qr: Vector2i, height: float) -> void:
 	height_ = height
 	load_mech_type(mech_type)
 	action_points_.resize(Ability.ActionType.NUM_ACTION_TYPES)
-	action_points_[Ability.ActionType.QUICK_ACTION] = 2
-	action_points_[Ability.ActionType.FULL_ACTION] = 1
-	action_points_[Ability.ActionType.MOVEMENT] = mech_type_.speed_
+	refresh_action_points()
+	
+	SignalBus.start_round.connect(_on_start_round)
+
+func _on_start_round(round_number: int) -> void:
+	refresh_action_points()
+	for ability: Ability in abilities_:
+		if ability.refresh_policy_ == Ability.RefreshPolicy.ON_TURN_START:
+			ability.refresh()
 
 func get_pos_qry() -> Vector3:
 	return Vector3(pos_qr_.x, pos_qr_.y, height_)
