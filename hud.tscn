@@ -46,10 +46,10 @@ layout_mode = 2
 text = "End Turn"
 
 [node name="SubAbilityMenu" type="PanelContainer" parent="." unique_id=1582566547]
-offset_left = 406.0
-offset_top = 555.0
-offset_right = 592.0
-offset_bottom = 595.0
+offset_left = 390.0
+offset_top = 538.0
+offset_right = 587.0
+offset_bottom = 585.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SubAbilityMenu" unique_id=1673005578]
 layout_mode = 2

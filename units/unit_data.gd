@@ -117,6 +117,9 @@ func load_mech_type(mech_type: MechChassis) -> void:
 	evasion_ = mech_type.evasion_
 	
 func add_weapon(gun: WeaponType, mount: MechChassis.MountType ):
+	if not gun:
+		Utils.log_error("invalid gun")
+		return
 	var valid_mounts = mech_type_.mounts_.filter(func(x): return x.mount_type == mount and x.count > 0 )
 	if len(valid_mounts) == 0:
 		print("Cant add gun no valid mount")
