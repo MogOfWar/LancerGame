@@ -24,6 +24,7 @@ config/icon="res://icon.webp"
 
 SignalBus="*uid://cmlyntwnc2xdx"
 Utils="*uid://ci0glvd70u4rn"
+VFXManager="*uid://1c8o4cy0ki2e"
 
 [filesystem]
 

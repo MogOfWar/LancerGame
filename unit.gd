@@ -5,13 +5,10 @@ var targeting_: bool = false
 var unit_data_: UnitData
 var ui_widgets = {}
 
-
-
-		
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	print("building Unit")
-	SignalBus.unit_spawned.emit(self)
+	SignalBus.vis_unit_spawned.emit(self)
 	unit_data_.unit_selected.connect(select)
 	unit_data_.unit_deselected.connect(deselect)
 	unit_data_.unit_moved.connect(_on_move)
@@ -30,7 +27,7 @@ func register_health_bar(health_bar) -> void:
 
 func quick_action_prolouge() -> void:
 	pass
-
+	
 #func quick_action_epilog() -> void:
 #	quick_actions = max(quick_actions - 1, 0)
 #	full_actions = max(full_actions - 1, 0)

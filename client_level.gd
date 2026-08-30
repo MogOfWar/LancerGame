@@ -29,7 +29,7 @@ func _ready() -> void:
 	var grid = NoiseGrid.new(10,10, null)
 	var unit_a: UnitData = add_unit(mech_types_["Everest"], Vector2i(0,0), 0)
 	var unit_b: UnitData = add_unit(mech_types_["Everest"], Vector2i(2,3), 0)
-	
+	unit_a.add_weapon(load("res://assualt_rifle.tres"), MechChassis.MountType.HEAVY)
 	%GameBoard.initalize(grid)
 	%GameBoard.add_unit(unit_a)
 	%GameBoard.add_unit(unit_b)

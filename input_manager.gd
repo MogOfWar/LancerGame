@@ -22,8 +22,8 @@ func _process(_delta: float) -> void:
 	# Only emit when crossing hex boundaries (prevents spam)
 	if hovered_hex != current_hovered_hex:
 		current_hovered_hex = hovered_hex
-		#SignalBus.ui_hex_hovered.emit(current_hovered_hex)
 		tactical_input.emit(Action.HOVER, current_hovered_hex)
+		print("hovering hex %s" % hovered_hex)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:

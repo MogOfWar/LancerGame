@@ -3,8 +3,8 @@ extends CanvasLayer
 
 @onready var action_menu = $ActionMenu
 @onready var action_menu_container_ = $ActionMenu/HBoxContainer
-@onready var weapons_menu_ = $WeaponsMenu
-@onready var weapons_list_ = $WeaponsMenu/HBoxContainer/WeaponsList
+@onready var sub_ability_menu_ = $SubAbilityMenu
+@onready var sub_ability_list_ = $SubAbilityMenu/HBoxContainer/SubAbilityList
 @onready var stats_menu_ = $Stats
 @onready var actions_display_ = $Stats/HBoxContainer/Actions
 @onready var movement_display_ = $Stats/HBoxContainer/Movement
@@ -18,7 +18,7 @@ func _ready():
 	
 	# Hide the menu by default
 	action_menu.hide()
-	weapons_menu_.hide()
+	sub_ability_menu_.hide()
 	stats_menu_.hide()
 
 func clear_menu(menu: Container):
@@ -47,34 +47,12 @@ func update_stats_menu(unit: UnitData) -> void:
 	actions_display_.text = ("Actions: None")
 	movement_display_.text = ("Movement: %s" % unit.get_movement_points())
 
-# Connected via the Godot Inspector to the Button's "pressed" signal
-func _on_attack_button_pressed():
-	if current_selected_unit:
-		# Tell the unit to enter targeting mode
-		
-		action_menu.hide()
-		weapons_menu_.show()
-		for child in weapons_list_.get_children():
-			child.queue_free()
-			
-		for weapon_ui in current_selected_unit.get_mounts():
-			var btn = Button.new()
-			btn.text = weapon_ui.get_ui_string()
-			
-			# Connect the button and pass the SPECIFIC weapon to the function
-			#btn.pressed.connect(_on_weapon_selected.bind(weapon_ui))
-			
-			weapons_list_.add_child(btn)
-		
+
 func _on_unit_finished_ability(unit: UnitData):
 	update_stats_menu(unit)
 	action_menu.show()
 	stats_menu_.show()
-	weapons_menu_.hide()
-	
-#func _on_weapon_selected(w: Unit.WeaponInstance):
-#	current_selected_unit.prepare_attack(w)
-#	SignalBus.unit_weapon_selected.emit(current_selected_unit, w.weapon_)
+	sub_ability_menu_.hide()
 	
 func _on_unit_selected(unit: UnitData):
 	# Only show the menu if the unit belongs to the player
@@ -88,8 +66,19 @@ func _on_end_turn_button_pressed() -> void:
 	action_menu.hide()
 	SignalBus.end_turn.emit()
 	
-func _on_move_button_pressed() -> void:
-	SignalBus.unit_move_button_pressed.emit(current_selected_unit)
-	
 func _on_action_button_pressed(ability: Ability, unit: UnitData) -> void:
-	SignalBus.unit_action_selected.emit(unit, ability)
+	var sub_group_names: Array[String] = ability.get_effect_groups_names()
+	if !ability.has_optional_abilities():
+		SignalBus.unit_action_selected.emit(unit, ability, sub_group_names[0])
+	else:
+		sub_ability_menu_.show()
+		for child in sub_ability_list_.get_children():
+			child.queue_free()
+		for effect_group_name in sub_group_names:
+			var btn = Button.new()
+			btn.text = effect_group_name
+			btn.pressed.connect(_on_sub_action_button_pressed.bind(ability, unit, effect_group_name))
+			sub_ability_list_.add_child(btn)
+			
+func _on_sub_action_button_pressed(ability: Ability, unit: UnitData, sub_key: String) -> void:
+	SignalBus.unit_action_selected.emit(unit, ability, sub_key)

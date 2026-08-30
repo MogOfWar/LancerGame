@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cbs75d632et1c"]
+
+[ext_resource type="Script" uid="uid://cq4dat7jtvhak" path="res://visual_manager.gd" id="1_nybtt"]
+
+[node name="VisualManager" type="Node" unique_id=425750451]
+script = ExtResource("1_nybtt")

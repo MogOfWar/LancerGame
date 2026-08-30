@@ -10,10 +10,10 @@ class MountPoint:
 		if len(weapons_) < num_:
 			weapons_.append(wp)
 		else:
-			print("Too many weapons naughty boy")
+			Utils.log_error("Too many weapons naughty boy")
 			
 	func get_weapon_instance(index: int) -> UnitData.WeaponInstance:
-		return WeaponInstance.new(weapons_[index], type_)
+		return WeaponInstance.new(weapons_[index], type_, index)
 			
 	var type_: MechChassis.MountType = MechChassis.MountType.UNDEFINED
 	var num_: int = 0
@@ -22,13 +22,15 @@ class MountPoint:
 class WeaponInstance:
 	var weapon_: WeaponType
 	var mount_: MechChassis.MountType
+	var index_: int = 0
 	
-	func _init(w: WeaponType, m: MechChassis.MountType):
+	func _init(w: WeaponType, m: MechChassis.MountType, index: int):
 		weapon_ = w
 		mount_ = m
+		index_ = index
 	
 	func get_ui_string() -> String:
-		var text = "mount%s \n weapon: %s" % [MechChassis.get_mount_type_name(mount_), weapon_.weapon_name_]
+		var text = "mount%s:%s \n weapon: %s" % [MechChassis.get_mount_type_name(mount_), index_, weapon_.weapon_name_]
 		return text
 
 var unit_id_: int = -1
@@ -36,9 +38,7 @@ var abilities_: Array[Ability] = []
 var hp_: int = 10
 var structure_: int = 4
 var evasion_: int = 5
-var move_points: int = 0
-var quick_actions: int = 2
-var full_actions: int = 1
+var action_points_: Array[int]
 var mounts_: Dictionary[MechChassis.MountType, MountPoint] = {}
 var mech_type_: MechChassis = null
 var curr_select_weapon_: WeaponInstance = null
@@ -66,9 +66,14 @@ class IdGenerator:
 func _init(mech_type: MechChassis, pos_qr: Vector2i, height: float) -> void:
 	unit_id_ = IdGenerator.get_next_id()
 	abilities_.append(MoveAbility.new())
+	abilities_.append(SkirimishAbility.new(self))
 	pos_qr_ = pos_qr
 	height_ = height
 	load_mech_type(mech_type)
+	action_points_.resize(Ability.ActionType.NUM_ACTION_TYPES)
+	action_points_[Ability.ActionType.QUICK_ACTION] = 2
+	action_points_[Ability.ActionType.FULL_ACTION] = 1
+	action_points_[Ability.ActionType.MOVEMENT] = mech_type_.speed_
 
 func get_pos_qry() -> Vector3:
 	return Vector3(pos_qr_.x, pos_qr_.y, height_)
@@ -80,28 +85,36 @@ func get_ability_list() -> Array[Ability]:
 	return abilities_
 	
 func get_movement_points() -> int:
-	return move_points
+	return get_action_points(Ability.ActionType.MOVEMENT)
 
 func select():
 	unit_selected.emit()
 
 func deselect():
 	unit_deselected.emit()
+
+func finished_ability(ability: Ability):
+	if ability.action_type_ == Ability.ActionType.QUICK_ACTION:
+		action_points_[Ability.ActionType.QUICK_ACTION] -= 1
+		action_points_[Ability.ActionType.FULL_ACTION] -= 1
+	elif ability.action_type_ == Ability.ActionType.FULL_ACTION:
+		action_points_[Ability.ActionType.QUICK_ACTION] = 0
+		action_points_[Ability.ActionType.FULL_ACTION] -= 1
+		
+		
+func move(dest_hex_qry: Vector3, dist: int):
 	
-func move(hex_qry: Vector3, dist: int):
-	
-	if move_points - dist < 0:
+	if action_points_[Ability.ActionType.MOVEMENT] - dist < 0:
 		Utils.log_error("Moved more units than allowed %s %s %s" % [self.unit_id_, pos_qr_, dist])
-	move_points -= dist
-	pos_qr_ = Vector2i(hex_qry.x, hex_qry.y)
-	height_ = hex_qry.z
-	unit_moved.emit(hex_qry)
+	action_points_[Ability.ActionType.MOVEMENT] -= dist
+	pos_qr_ = Vector2i(dest_hex_qry.x, dest_hex_qry.y)
+	height_ = dest_hex_qry.z
+	unit_moved.emit(dest_hex_qry)
 
 func load_mech_type(mech_type: MechChassis) -> void:
 	mech_type_ = mech_type
 	hp_ = mech_type.max_hp_
 	evasion_ = mech_type.evasion_
-	move_points = mech_type.speed_
 	
 func add_weapon(gun: WeaponType, mount: MechChassis.MountType ):
 	var valid_mounts = mech_type_.mounts_.filter(func(x): return x.mount_type == mount and x.count > 0 )
@@ -117,10 +130,13 @@ func add_weapon(gun: WeaponType, mount: MechChassis.MountType ):
 	var mount_to_add: MountPoint = mounts_[mount_data.mount_type]
 	mount_to_add.add_weapon(gun)
 	
-func get_mounts():
-	var ret = []
+func get_mounts() -> Array[WeaponInstance]:
+	var ret: Array[WeaponInstance] = []
 	for mount in mounts_.values():
 		for i in range(mount.num_):
-			var weapon_ui = mount.get_weapon_instance(i)
-			ret.append(weapon_ui)
+			var weapon: WeaponInstance = mount.get_weapon_instance(i)
+			ret.append(weapon)
 	return ret
+	
+func get_action_points(action_type: Ability.ActionType) -> int:
+	return action_points_[action_type]

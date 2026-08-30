@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://due6g0ko08p51" path="res://hud.tscn" id="5_fa1qs"]
 [ext_resource type="PackedScene" uid="uid://bfrl0khn7468q" path="res://ui_manager.tscn" id="6_4drit"]
 [ext_resource type="PackedScene" uid="uid://bpmkawp4exddv" path="res://input_manager.tscn" id="7_fa1qs"]
+[ext_resource type="PackedScene" uid="uid://cbs75d632et1c" path="res://visual_manager.tscn" id="7_ij4ns"]
 
 [node name="Level" type="Node" unique_id=420519130]
 script = ExtResource("1_4drit")
@@ -36,6 +37,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 6, 9.136999)
 transform = Transform3D(1, 0, 0, 0, -0.25881913, 0.96592593, 0, -0.96592593, -0.25881913, 54, 33, -3)
 
 [node name="Entities" type="Node" parent="Visuals" unique_id=1877057957]
+
+[node name="VisualManager" parent="Visuals" unique_id=425750451 instance=ExtResource("7_ij4ns")]
 
 [node name="UI" type="Node" parent="." unique_id=1234916430]
 

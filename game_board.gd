@@ -2,21 +2,7 @@ extends Node
 class_name GameBoard
 
 class HexData:
-	var unit: UnitData
-		
-class TargetState:
-	var weapon_: WeaponType = null
-	var origin_pos_: Vector3 # position in world coords
-	var targeting_: bool = false
-	
-	func get_target_mode() -> WeaponType.TargetMode:
-		return weapon_.target_mode_
-		
-	func get_radius() -> int:
-		return weapon_.target_mode_radius_
-	
-	func get_origin_pos() -> Vector3:
-		return origin_pos_
+	var unit: UnitData = null
 
 @onready var grid_width: int = 0
 @onready var grid_height: int = 0
@@ -38,40 +24,64 @@ func get_hex_data(hex: Vector2i) -> HexData:
 func add_unit(unit_data: UnitData) -> void:
 	units[unit_data.get_pos_qr()] = unit_data
 
-func get_affected_hexes(center_hex: Vector2i, target_state: TargetState) -> Array[Vector2i]:
+func roll_attack(attacking_unit: UnitData, defending_unit: UnitData, accuracy: int) -> bool:
+	var attack_roll: int = randi_range(1, 20) 
+	var acc_val: int = 0
+	for i in range(abs(accuracy)):
+		acc_val = max(acc_val, randi_range(1,6))
+	attack_roll += sign(accuracy) * acc_val
+	var hit: bool = attack_roll > 10 or true
+	SignalBus.unit_attacking.emit(attacking_unit, hit)
+	return hit
+
+func is_ability_executable(unit: UnitData, ability: Ability) -> bool:
+	var action_point = unit.get_action_points(ability.action_type_) 
+	if action_point == 0:
+		return false
+	if ability.charges_ <= 0:
+		return false
+	return true
+		
+
+func damage_unit(unit: UnitData, damage_val: int) -> void:
+	unit.hp_ -= damage_val
+	if unit.hp_ > 0:
+		SignalBus.unit_damaged.emit(unit, damage_val)
+	if unit.hp_ <= 0:
+		SignalBus.unit_died.emit(unit)
+
+func unit_finished_ability(unit: UnitData, ability: Ability) -> void:
+	match ability.action_type_:
+		Ability.ActionType.MOVEMENT:
+			ability.charges_ = unit.get_movement_points()
+		Ability.ActionType.QUICK_ACTION:
+			ability.charges_ -= 1
+	unit.finished_ability(ability)
+
+func get_affected_hexes(center_hex: Vector2i, effect: Effect, origin_hex: Vector2i) -> Array[Vector2i]:
 	var affected_hexes: Array[Vector2i]
-	if target_state.get_target_mode() == WeaponType.TargetMode.Blast:
-		affected_hexes = HexUtils.get_blast_hexes(center_hex, target_state.get_radius())
-	elif target_state.get_target_mode() == WeaponType.TargetMode.Line:
-		var origin_hex: Vector2i = HexUtils.world_to_axial(target_state.get_origin_pos())
-		var axial_dist: int = HexUtils.get_axial_distance(origin_hex, center_hex)
-		var nudge := Vector2(1e-6, 1e-6)
-		var float_origin: Vector2 = Vector2(origin_hex) + nudge
-		var float_end: Vector2 = Vector2(center_hex) + nudge
-		var step: float = 1.0 / axial_dist
-		for i in range(target_state.get_radius()):
-			var t = i * step
-			var pos = float_origin.lerp(float_end, t)
-			affected_hexes.append(HexUtils.cube_round(pos.x, pos.y))
-	elif target_state.get_target_mode() == WeaponType.TargetMode.Cone:
-		var origin_hex: Vector2i = HexUtils.world_to_axial(target_state.get_origin_pos())
-		affected_hexes = HexUtils.get_hexes_in_custom_cone(origin_hex, center_hex, target_state.get_radius(), 60) 
-	return affected_hexes
+	if effect.target_mode_ == Effect.TargetMode.Single:
+		affected_hexes = [center_hex]
+	elif effect.target_mode_ == Effect.TargetMode.Blast:
+		affected_hexes = HexUtils.get_blast_hexes(center_hex, effect.target_mode_radius_)
+	elif effect.target_mode_ == Effect.TargetMode.Line:
+		affected_hexes = HexUtils.stride_lerp(origin_hex, center_hex, effect.target_mode_radius_)
+	elif effect.target_mode_ == Effect.TargetMode.Cone:
+		affected_hexes = HexUtils.get_hexes_in_custom_cone(origin_hex, center_hex, effect.target_mode_radius_, 60) 
+	return affected_hexes.filter(func(x): return grid_.check_hex_in_grid(x))
 
 func initalize(grid: GridData):
 	grid_ = grid
 	grid_width = grid.width_
 	grid_height = grid.height_
-	#var ass_rifle = load("res://assualt_rifle.tres")
-	#a.add_weapon(ass_rifle, MechChassis.MountType.HEAVY)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.end_turn.connect(_on_end_turn)
 	
-	
-func move_unit(unit: UnitData, target_hex: Vector2i):
+func move_unit(unit: UnitData, target_hex: Vector2i) -> int:
 	var move_path = get_move_path(unit.get_pos_qr(), target_hex)
+	var hexes_moved: int = 0
 	for hex_qr in move_path:
 		if hex_qr == unit.get_pos_qr():
 			continue
@@ -79,33 +89,9 @@ func move_unit(unit: UnitData, target_hex: Vector2i):
 			units.erase(unit.get_pos_qr())
 			unit.move(Vector3(hex_qr.x, hex_qr.y, grid_.get_height_from_qr(hex_qr)), 1)
 			units[hex_qr] = unit
+			hexes_moved += 1
+	return hexes_moved
 
-"""
-func _on_hex_hovered(hovered_hex: Vector2i) -> void:
-	# If off-map or not targeting, clear all highlights
-	if hovered_hex == Vector2i(-9999, -9999):
-		SignalBus.ui_draw_highlights.emit([])
-		return
-		
-	var affected_hexes: Array[Vector2i] = [hovered_hex]
-	
-	if current_state == State.PLAYER_TARGETING:
-		if current_target_mode_.targeting_:
-			affected_hexes = get_affected_hexes(hovered_hex, current_target_mode_)
-	
-	var draw_hexes: Array[Vector3] = []
-
-	for x in affected_hexes:
-		var local_pos: Vector3 = convert_hex_to_terrain_coords(x)
-		draw_hexes.append(local_pos)
-	
-	SignalBus.ui_draw_highlights.emit(draw_hexes)	
-
-func convert_hex_to_terrain_coords(hex: Vector2i) -> Vector3:
-	var global_pos: Vector3 = HexUtils.axial_to_world(hex)
-	global_pos.y = terrain.get_y_height(Vector2i(hex)) + 0.05
-	return terrain.to_local(global_pos)
-"""
 func get_move_path(start_world_pos: Vector2i, end_world_pos: Vector2i) -> Array[Vector2i]:
 	var dist: int = HexUtils.get_axial_distance(start_world_pos, end_world_pos)
 	var path: Array[Vector2i] = []
@@ -130,13 +116,6 @@ func get_move_path(start_world_pos: Vector2i, end_world_pos: Vector2i) -> Array[
 		if len(path) <= unit.get_movement():
 			return path
 	return []
-"""
-"""
-func _on_unit_weapon_selected(unit: Unit, weapon: WeaponType) -> void:
-	current_target_mode_.weapon_ = weapon
-	current_target_mode_.origin_pos_ = unit.get_position_in_world()
-	current_target_mode_.targeting_ = true
-	current_state = State.PLAYER_TARGETING
 """
 
 func _on_end_turn() -> void:
@@ -170,6 +149,26 @@ func get_movement_range(source_hex: Vector2i, range: int) -> Array[Vector2i]:
 	ret.resize(len(reachable.keys()))
 	for i in range(len(reachable.keys())):
 		ret[i] = grid_.get_position(reachable.keys()[i])
+	return ret
+
+# this function can be optimized thus a bunch of redundent math
+func get_hexes_qr_in_range(source_hex_qr: Vector2i, range: int) -> Array[Vector2i]:
+	var hexes_in_range = HexUtils.get_hexes_in_range(source_hex_qr, range)
+	var ret: Array[Vector2i] = []
+	for hex in hexes_in_range:
+		if grid_.check_hex_in_grid(hex):
+			ret.append(hex)
+		#var path = HexUtils.stride_lerp(source_hex_qr, hex)
+		# check los here
+	return ret
+	
+func get_units_in_range(source_hex_qr: Vector2i, range: int) -> Array[Vector2i]:
+	var ret : Array[Vector2i] = []
+	for unit_pos_qr in units.keys():
+		var dist: int = HexUtils.get_axial_distance(source_hex_qr, unit_pos_qr)
+		if dist < range and dist > 0:
+			ret.append(unit_pos_qr)
+			#also check los
 	return ret
 	
 	

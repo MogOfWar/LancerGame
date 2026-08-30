@@ -2,23 +2,25 @@
 extends CanvasLayer
 
 # A dictionary to link 3D units to their 2D UI widgets
-var active_widgets: Dictionary = {}
+var active_widgets: Dictionary[Unit, FloatingHealthBar] = {}
 @export var widget_health_scene_: PackedScene
 @export var ui_scale_factor: float = 15.0
 
 func _ready():
-	SignalBus.unit_spawned.connect(_on_unit_spawned)
+	SignalBus.ui_update_health_width.connect(_on_ui_update_health_width)
+	SignalBus.vis_unit_spawned.connect(_on_vis_unit_spawned)
 	SignalBus.unit_died.connect(_on_unit_died)
-	
-func _on_unit_spawned(unit: Unit):
-	var health_widget = widget_health_scene_.instantiate()
+
+func _on_vis_unit_spawned(unit: Unit):
+	var health_widget: FloatingHealthBar = widget_health_scene_.instantiate()
 	add_child(health_widget)
 	
 	# 2. Store the pair in our dictionary
 	active_widgets[unit] = health_widget
 	health_widget.setup(unit.unit_data_.hp_)
-	unit.register_health_bar(health_widget)
 
+func _on_ui_update_health_width(unit: Unit) -> void:
+	active_widgets[unit].update_health(unit.unit_data_.hp_)
 
 func _on_unit_died(unit: Unit):
 	# Clean up the UI when the unit dies or is removed

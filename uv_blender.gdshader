@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode blend_mix, cull_disabled;
+render_mode blend_add, cull_disabled;
 
 instance uniform vec3 albedo : source_color = vec3(1.0, 1.0, 1.0);
 uniform float center_transparency : hint_range(0.0, 1.0) = 0.1;

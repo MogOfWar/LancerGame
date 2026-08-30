@@ -45,20 +45,20 @@ metadata/_edit_group_ = true
 layout_mode = 2
 text = "End Turn"
 
-[node name="WeaponsMenu" type="PanelContainer" parent="." unique_id=1582566547]
+[node name="SubAbilityMenu" type="PanelContainer" parent="." unique_id=1582566547]
 offset_left = 406.0
 offset_top = 555.0
 offset_right = 592.0
 offset_bottom = 595.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="WeaponsMenu" unique_id=1673005578]
+[node name="HBoxContainer" type="HBoxContainer" parent="SubAbilityMenu" unique_id=1673005578]
 layout_mode = 2
 
-[node name="BackButton" type="Button" parent="WeaponsMenu/HBoxContainer" unique_id=661482771]
+[node name="BackButton" type="Button" parent="SubAbilityMenu/HBoxContainer" unique_id=661482771]
 layout_mode = 2
 text = "Back"
 
-[node name="WeaponsList" type="HBoxContainer" parent="WeaponsMenu/HBoxContainer" unique_id=1333972200]
+[node name="SubAbilityList" type="HBoxContainer" parent="SubAbilityMenu/HBoxContainer" unique_id=1333972200]
 layout_mode = 2
 
 [node name="Stats" type="PanelContainer" parent="." unique_id=1198948258]

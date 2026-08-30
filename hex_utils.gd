@@ -22,6 +22,14 @@ static func get_blast_hexes(center: Vector2i, radius: int) -> Array[Vector2i]:
 			
 	return results
 
+static func axial_to_cube(hex_qr: Vector2i) -> Vector3:
+	var qrs: Vector3 = Vector3(hex_qr.x, hex_qr.y, -hex_qr.x - hex_qr.y)
+	return qrs
+	
+static func cube_to_axial(hex_qrs: Vector3) -> Vector2:
+	var qr: Vector2 = Vector2(hex_qrs.x, hex_qrs.y)
+	return qr
+
 static func axial_to_world(hex: Vector2) -> Vector3:
 	var q = hex.x
 	var r = hex.y
@@ -48,6 +56,14 @@ static func get_axial_distance(hex_a: Vector2i, hex_b: Vector2i) -> int:
 	
 	# Distance is the maximum of the absolute differences
 	return max(abs(dq), abs(dr), abs(dq + dr))
+	
+static func get_hexes_in_range(center_hex_qr: Vector2i, d: int) -> Array[Vector2i]:
+	var results: Array[Vector2i] = []
+	for q in range(-d, d + 1):
+		for r in range(max(-d, -q - d), min(d, -q + d) + 1):
+			var offset = Vector2i(q, r)
+			results.append(center_hex_qr + offset)
+	return results
 
 # returns a hex that is on the line BA exactly dist hexes from a
 static func clamp_to_dist(a: Vector2i, b: Vector2i, dist: int) -> Vector2i:
@@ -58,6 +74,19 @@ static func clamp_to_dist(a: Vector2i, b: Vector2i, dist: int) -> Vector2i:
 	var step: float = 1.0 / axial_dist
 	var target: Vector2 = float_origin.lerp(float_end, dist * step)
 	return cube_round(target.x, target.y)
+	
+# generate all hexes on the line between start and end hexes
+static func stride_lerp(start_qr: Vector2i, end_qr: Vector2i, max_range: int) -> Array[Vector2i]:
+	var ret: Array[Vector2i] = []
+	var axial_dist = get_axial_distance(start_qr, end_qr)
+	var nudge := Vector2(1e-6, 1e-6)
+	var float_origin: Vector2 = Vector2(start_qr) + nudge
+	var float_end: Vector2 = Vector2(end_qr) + nudge
+	var step: float = 1.0 / axial_dist
+	for i in range(min(axial_dist+1, max_range)):
+		var lerped: Vector2 = float_origin.lerp(float_end, i * step)
+		ret.append(cube_round(lerped.x, lerped.y))
+	return ret
 	
 static func get_hexes_in_custom_cone(origin_hex: Vector2i, target_hex: Vector2i, radius: int, cone_angle_degrees: float) -> Array[Vector2i]:
 	var hexes_in_cone: Array[Vector2i] = []

@@ -61,3 +61,7 @@ func get_height_from_cr(col: int, row: int) -> float:
 func get_height_from_qr(hex_qr: Vector2i) -> float:
 	var grid_index: int = get_grid_index(hex_qr)
 	return get_height_from_index(grid_index)
+	
+func check_hex_in_grid(hex_qr: Vector2i) -> bool:
+	var cr_coords: Vector2i = HexUtils.axial_to_arr_idx(hex_qr)
+	return ((cr_coords.x >= 0) and (cr_coords.x < width_)) and ((cr_coords.y >= 0) and (cr_coords.y < height_))
