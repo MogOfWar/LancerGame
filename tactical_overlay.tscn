@@ -1,17 +1,18 @@
 [gd_scene format=3 uid="uid://b44q2so32ho0m"]
 
 [ext_resource type="Script" uid="uid://lcxgvh5b7v4r" path="res://tactical_overlay.gd" id="1_osp3w"]
-[ext_resource type="PackedScene" uid="uid://r08pl0x7hfc0" path="res://hex_cursor.tscn" id="2_hcyrj"]
-[ext_resource type="PackedScene" uid="uid://c3u58stqeqdmt" path="res://path_overlay.tscn" id="3_k200f"]
+[ext_resource type="PackedScene" uid="uid://r08pl0x7hfc0" path="res://vfx/hex_cursor.tscn" id="2_ur5d1"]
+[ext_resource type="PackedScene" uid="uid://c3u58stqeqdmt" path="res://vfx/path_overlay.tscn" id="3_o14le"]
 
 [node name="TacticalOverlay" type="Node3D" unique_id=2134454702]
 script = ExtResource("1_osp3w")
-hex_cursor_scene_ = ExtResource("2_hcyrj")
-path_overlay_scene_ = ExtResource("3_k200f")
+hex_cursor_scene_ = ExtResource("2_ur5d1")
+path_overlay_scene_ = ExtResource("3_o14le")
+
+[node name="HexCursor" parent="." unique_id=1499558277 instance=ExtResource("2_ur5d1")]
+visible = false
 
 [node name="ActiveCursorsContainer" type="Node3D" parent="." unique_id=629660653]
-
-[node name="HexCursor" parent="." unique_id=1499558277 instance=ExtResource("2_hcyrj")]
 
 [node name="BreadcrumbContainer" type="Node3D" parent="." unique_id=833405664]
 
