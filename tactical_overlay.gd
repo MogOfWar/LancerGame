@@ -31,9 +31,6 @@ var containers_: Array[Node]
 var path_overlay_: PathOverlay
 
 func _ready() -> void:
-	#SignalBus.ui_draw_highlights.connect(_on_draw_highlights)
-	SignalBus.tol_path_calculated.connect(draw_breadcrumbs)
-	SignalBus.tol_path_cleared.connect(clear_breadcrumbs)
 	containers_.resize(CursorGroup.NUM_CONTAINERS)
 	containers_[CursorGroup.ACTIVE] = active_container
 	containers_[CursorGroup.PREVIEW] = preview_container
