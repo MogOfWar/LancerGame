@@ -1,10 +1,13 @@
 extends PlayerController
 class_name HumanPlayerController
 
-enum State { IDLE, TARGETING_1, TARGETING_2 }
+enum State { IDLE, 
+			TARGETING_0, # no click on targeting
+			TARGETING_1, # one click on targeting still previewing
+			TARGETING_2  # second click on targeting
+		}
 
-signal picked_hex(hex_qr: Vector2i)
-signal preview_hex(hex_qr: Vector2i)
+signal clicked_hex(hex_qr: Vector2i)
 
 var input_manager_: InputManager
 var tactical_overlay_: TacticalOverlay
@@ -61,26 +64,41 @@ func draw_preview(context: ActionContext, target_qr: Vector2i, effect: Effect):
 		var move_path = context.game_board_.get_move_path(context.source_unit_, context.source_unit_.get_pos_qr(), target_qr)
 		tactical_overlay_.draw_breadcrumbs(move_path)
 
+func clear_preview(context: ActionContext, effect: Effect):
+	if not current_playing_:
+		return
+	if context.ability_.action_type_ == Ability.ActionType.MOVEMENT:
+		tactical_overlay_.clear_breadcrumbs()
+
 # --- THE EXECUTION COROUTINE ---
 func get_picked_hexes(context: ActionContext, viable_hexes: Array[Vector2i], effect: Effect) -> Vector2i:
 	if not current_playing_:
 		return Vector2i(-1, -1)
 	current_viable_hexes_ = viable_hexes
 	current_context = context
-	current_state_ = State.TARGETING_1
+	current_state_ = State.TARGETING_0
 	current_effect_ = effect
 	tactical_overlay_.draw_highlights(viable_hexes, Color.FIREBRICK, TacticalOverlay.CursorGroup.PREVIEW)
 	
 	# 2. Yield until the state machine emits this signal
-	var target = await self.preview_hex
-	draw_preview(context, target, effect)
-	
-	var confiremed_hex = await self.picked_hex
-	# 3. Cleanup and return
-	tactical_overlay_.clear_preview()
-	current_viable_hexes_ = []
-	current_context = null
-	return target
+	while true:
+		var target = await self.clicked_hex
+		match current_state_:
+			State.TARGETING_0:
+				clear_preview(context, effect)
+			State.TARGETING_1:
+				draw_preview(context, target, effect)
+			State.TARGETING_2:
+				# 3. Cleanup and return
+				tactical_overlay_.clear_preview()
+				current_viable_hexes_ = []
+				current_context = null
+				current_state_ = State.IDLE
+				return target
+			State.IDLE:
+				Utils.log_error("player controller state machine reached IDLE state during pick phase")
+				break
+	return Vector2i(-1,-1)
 
 func handle_hover(hovered_hex_qr) -> void:
 	if not current_playing_:
@@ -108,7 +126,7 @@ func _on_tactical_input(action: InputManager.Action, hex: Vector2i) -> void:
 		InputManager.Action.CANCEL:
 			if current_state_ != State.IDLE:
 				current_state_ = State.IDLE
-				picked_hex.emit(null) # Emitting null cleanly aborts the ability
+				clicked_hex.emit(null) # Emitting null cleanly aborts the ability
 
 func handle_click(hex: Vector2i) -> void:
 	if not current_playing_:
@@ -120,26 +138,26 @@ func handle_click(hex: Vector2i) -> void:
 			if hex_data.unit != null:
 				handle_select_unit(hex_data.unit)
 				
-		State.TARGETING_1:
+		State.TARGETING_0:
 			# First click: Lock in the target for preview
 			if hex in current_viable_hexes_:
 				current_selected_hex_ = hex
-				current_state_ = State.TARGETING_2
-				preview_hex.emit(hex)
+				current_state_ = State.TARGETING_1
+				clicked_hex.emit(hex)
 				
-		State.TARGETING_2:
+		State.TARGETING_1:
 			# Second click: Confirm or cancel
 			if hex == current_selected_hex_:
 				# Confirmed! Fire the signal to resume `get_picked_hexes`
-				current_state_ = State.IDLE
-				picked_hex.emit(hex) 
+				current_state_ = State.TARGETING_2
+				clicked_hex.emit(hex) 
 			elif hex in current_viable_hexes_:
 				# They clicked a different viable hex. Switch the locked preview.
 				current_selected_hex_ = hex
-				#tactical_overlay.draw_locked_preview(_active_context.effect.get_preview(hex))
+				clicked_hex.emit(hex)
 			else:
-				# They clicked an invalid hex. Downgrade back to TARGETING_1.
+				# They clicked an invalid hex. Downgrade back to TARGETING_0.
 				current_selected_hex_ = null
-				current_state_ = State.TARGETING_1
-				#tactical_overlay.clear_preview()
-				#tactical_overlay.draw_viable(_active_viable_hexes)
+				current_state_ = State.TARGETING_0
+				clicked_hex.emit(null)
+				
