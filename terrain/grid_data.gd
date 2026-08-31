@@ -26,8 +26,8 @@ func init_from_cells(cells: Array[CellData]) -> void:
 			var cell: CellData = cells_[i]
 			var axial_coord: Vector2i = HexUtils.arr_idx_to_axial(cell.x, cell.y)
 			for dir in HexUtils.AXIAL_DIRECTIONS:
-				var j = _convert_axial_to_index(axial_coord + dir)
-				if j < len(cells_) and j > 0:
+				if check_hex_in_grid(axial_coord + dir):
+					var j = _convert_axial_to_index(axial_coord + dir)
 					astar_.connect_points(i, j)
 
 func _convert_axial_to_index(hex_axial: Vector2i) -> int:

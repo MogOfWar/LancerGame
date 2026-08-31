@@ -92,21 +92,6 @@ func move_unit(unit: UnitData, target_hex: Vector2i) -> int:
 			hexes_moved += 1
 	return hexes_moved
 
-#function that return an array of the hexes in the move path
-func get_move_path2(start_world_pos: Vector2i, end_world_pos: Vector2i) -> Array[Vector2i]:
-	var dist: int = HexUtils.get_axial_distance(start_world_pos, end_world_pos)
-	var path: Array[Vector2i] = []
-	var nudge := Vector2(1e-6, 1e-6)
-	var float_origin: Vector2 = Vector2(start_world_pos) + nudge
-	var float_end: Vector2 = Vector2(end_world_pos) + nudge
-	var t: float = 1.0/dist
-	for i in range(0,dist+1): #add +1 so we get full lerped
-		var float_pos: Vector2 = float_origin.lerp(float_end, i * t)
-		var lerped_hex: Vector2i = HexUtils.cube_round(float_pos.x, float_pos.y)
-	
-		path.append(lerped_hex)
-	return path
-
 func get_move_path(moving_unit: UnitData, start_pos_qr: Vector2i, end_pos_qr: Vector2i) -> Array[Vector2i]:
 	var temporarily_solid_hexes: Array[int] = []
 	for other_unit: UnitData in units.values():
