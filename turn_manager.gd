@@ -32,7 +32,7 @@ func start_battle():
 
 func start_round():
 	current_player_turn_ = 0
-	SignalBus.start_round.emit(round_number_)
+	SignalBus.start_round.emit.call_deferred(round_number_)
 
 func end_round():
 	round_number_ += 1
@@ -40,7 +40,7 @@ func end_round():
 	start_round()
 
 func start_turn():
-	SignalBus.start_turn.emit(current_player_turn_)
+	SignalBus.start_turn.emit.call_deferred(current_player_turn_)
 
 func _on_end_turn() -> void:
 	current_player_turn_ = current_player_turn_ + 1 

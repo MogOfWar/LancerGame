@@ -20,10 +20,16 @@ var current_effect_: Effect = null
 var current_playing_: bool = false
 
 func _ready() -> void:
+	SignalBus.end_turn.connect(_on_end_turn)
 	SignalBus.unit_action_selected.connect(_on_unit_action_selected)
 	SignalBus.start_turn.connect(_on_start_turn)
 	input_manager_.tactical_input.connect(_on_tactical_input)
 	pass # Replace with function body.
+
+func _on_end_turn() -> void:
+	if current_selected_unit_ and current_playing_:
+		current_selected_unit_.deselect()
+		current_selected_unit_ = null
 
 func _on_start_turn(player_number: int) -> void:
 	if player_number != player_id_:
@@ -105,7 +111,7 @@ func handle_hover(hovered_hex_qr) -> void:
 		return
 	var active_draw : Array[Vector2i] = []
 	if hovered_hex_qr != Vector2i(-9999, -9999):
-		if current_state_ == State.TARGETING_1 or current_state_ == State.TARGETING_2:
+		if current_state_ == State.TARGETING_1 or current_state_ == State.TARGETING_2 or current_state_ == State.TARGETING_0:
 			active_draw.append_array(game_board_.get_affected_hexes(hovered_hex_qr, current_effect_, current_context.source_unit_.get_pos_qr()))
 		else:
 			active_draw.append(hovered_hex_qr)
