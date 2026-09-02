@@ -6,7 +6,6 @@ var unit_data_: UnitData
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	print("building Unit")
 	SignalBus.vis_unit_spawned.emit(self)
 	unit_data_.unit_selected.connect(select)
 	unit_data_.unit_deselected.connect(deselect)

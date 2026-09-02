@@ -9,10 +9,12 @@ signal unit_attacking(unit: UnitData, hit: bool)
 signal unit_damaged(unit: UnitData, damage_val: int)
 signal unit_died(unit: UnitData)
 signal unit_action_selected(unit: UnitData, ability: Ability, sub_name: String)
+signal unit_gained_ability(unit: UnitData, ability: Ability)
 
 signal end_turn()
 signal start_round(round_number: int)
 signal start_turn(player_number: int)
+signal debug_player_reaction(player_id: int) # switch player
 
 # visual signals
 signal vis_unit_spawned(unit: Unit)

@@ -1,5 +1,5 @@
 @abstract
-extends RefCounted
+extends Resource
 class_name Ability
 
 enum ActionType {
@@ -13,7 +13,8 @@ enum ActionType {
 }
 
 enum RefreshPolicy {
-	ON_TURN_START
+	ON_TURN_START,
+	ON_ROUND_START
 }
 
 var ability_name_: String = ""

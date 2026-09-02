@@ -1,5 +1,6 @@
 # battle_hud.gd
 extends CanvasLayer
+class_name HUD
 
 @onready var action_menu = $ActionMenu
 @onready var action_menu_container_ = $ActionMenu/HBoxContainer
@@ -8,8 +9,12 @@ extends CanvasLayer
 @onready var stats_menu_ = $Stats
 @onready var actions_display_ = $Stats/HBoxContainer/Actions
 @onready var movement_display_ = $Stats/HBoxContainer/Movement
+@onready var popup_menu_ = $PopupMenu
+@onready var popup_menu_list_ = $PopupMenu/VBoxContainer/List
 var current_selected_unit: UnitData
 var current_player_turn_: int = -1
+
+signal reaction_selected(chosen_reaction: ReactionManager.Reaction)
 
 func _ready():
 	# Connect to the global signals
@@ -23,6 +28,7 @@ func _ready():
 	action_menu.hide()
 	sub_ability_menu_.hide()
 	stats_menu_.hide()
+	popup_menu_.hide()
 
 func clear_menu(menu: Container):
 	for child in menu.get_children():
@@ -50,7 +56,21 @@ func update_stats_menu(unit: UnitData) -> void:
 	actions_display_.text = ("Actions: None")
 	movement_display_.text = ("Movement: %s" % unit.get_movement_points())
 
+func show_reaction_menu(unit: UnitData, reactions: Array[ReactionManager.Reaction]) -> ReactionManager.Reaction:
+	for child in popup_menu_list_.get_children():
+			child.queue_free()
+	for reaction in reactions:
+		var btn = Button.new()
+		btn.text = reaction.ability.get_ui_name()
+		btn.pressed.connect(_on_reaction_button_pressed.bind(reaction))
+		popup_menu_list_.add_child(btn)
+	popup_menu_.show()
+	return await reaction_selected
 
+func _on_reaction_button_pressed(reaction: ReactionManager.Reaction):
+	popup_menu_.hide()
+	reaction_selected.emit(reaction)
+	
 func _on_start_round(round_number: int) -> void:
 	$HBoxContainer/RoundInfo.text = "round: %s" % round_number
 
@@ -99,6 +119,10 @@ func _on_action_button_pressed(ability: Ability, unit: UnitData) -> void:
 func _on_sub_action_button_pressed(ability: Ability, unit: UnitData, sub_key: String) -> void:
 	SignalBus.unit_action_selected.emit(unit, ability, sub_key)
 
-
 func _on_info_banner_timer_timeout() -> void:
 	$InfoBanner.hide()
+
+
+func _on_pass_button_pressed() -> void:
+	popup_menu_.hide()
+	reaction_selected.emit(null)

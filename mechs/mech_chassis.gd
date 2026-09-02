@@ -19,7 +19,7 @@ class MountData:
 
 static func get_mount_type_name(m: MountType) -> String:
 	if m == MountType.UNDEFINED:
-		print("Error")
+		Utils.log_error("Undefind Mount")
 		return ""
 	else:
 		return MOUNT_TYPE_NAMES[m]

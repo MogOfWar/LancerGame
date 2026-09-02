@@ -4,7 +4,7 @@ class_name TurnManager
 var num_players_: int = 0
 var current_player_turn_: int = 0
 var current_state_ = 0
-var players_: Array[PlayerController] = []
+var players_: Dictionary[int, PlayerController] = {}
 var players_faction_map_ = {}
 var round_number_ = 0
 
@@ -16,14 +16,17 @@ func initalize() -> void:
 	pass
 
 func add_player(player: PlayerController, faction: int) -> void:
-	players_.append(player)
 	player.player_id_ = num_players_
+	players_[player.player_id_] = player
 	num_players_ += 1
 	add_child(player)
 	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func get_player_by_id(id: int) -> PlayerController:
+	if players_.has(id):
+		return players_[id]
+	else:
+		Utils.log_error("Invalid player id")
+		return null
 	
 # should be called after players were added
 func start_battle():

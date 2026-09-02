@@ -20,15 +20,13 @@ func get_hex_data(hex: Vector2i) -> HexData:
 func add_unit(unit_data: UnitData) -> void:
 	units[unit_data.get_pos_qr()] = unit_data
 
-func roll_attack(attacking_unit: UnitData, defending_unit: UnitData, accuracy: int) -> bool:
+func roll_attack(attacking_unit: UnitData, defending_unit: UnitData, accuracy: int) -> int:
 	var attack_roll: int = randi_range(1, 20) 
 	var acc_val: int = 0
 	for i in range(abs(accuracy)):
 		acc_val = max(acc_val, randi_range(1,6))
 	attack_roll += sign(accuracy) * acc_val
-	var hit: bool = attack_roll > 10 or true
-	SignalBus.unit_attacking.emit(attacking_unit, hit)
-	return hit
+	return attack_roll
 
 func is_ability_executable(unit: UnitData, ability: Ability) -> bool:
 	var action_point = unit.get_action_points(ability.action_type_) 
@@ -39,10 +37,14 @@ func is_ability_executable(unit: UnitData, ability: Ability) -> bool:
 	return true
 		
 
-func damage_unit(unit: UnitData, damage_val: int) -> void:
-	unit.hp_ -= damage_val
+func damage_unit(unit: UnitData, damage_val: int, is_crit: bool) -> void:
+	var modified_damage: int = damage_val
+	for cond in unit.conditions_:
+		if cond.type_ == StatusCondition.StatusConditionType.DAMAGE_RESISTANCE:
+			modified_damage *= 0.5		
+	unit.hp_ -= modified_damage
 	if unit.hp_ > 0:
-		SignalBus.unit_damaged.emit(unit, damage_val)
+		SignalBus.unit_damaged.emit(unit, modified_damage)
 	if unit.hp_ <= 0:
 		SignalBus.unit_died.emit(unit)
 
@@ -71,7 +73,7 @@ func initalize(grid: GridData):
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	SignalBus.end_turn.connect(_on_end_turn)
+	pass
 	
 func move_unit(unit: UnitData, target_hex: Vector2i) -> int:
 	var move_path = get_move_path(unit, unit.get_pos_qr(), target_hex)
@@ -105,22 +107,13 @@ func get_move_path(moving_unit: UnitData, start_pos_qr: Vector2i, end_pos_qr: Ve
 	for p in path:
 		ret.append(grid_.get_position(p))
 	return ret
-
-func _on_end_turn() -> void:
-	pass
-	#current_selected_unit = null
-	#current_player += 1
-	#if (current_player) == num_players:
-	#	end_round()
 	
-func end_round() -> void:
-	current_player = 0
 
 # function that returns all hex in axial coordinates that can be reached from source_hex in < range movement points
-func get_movement_range(source_hex: Vector2i, range: int) -> Array[Vector2i]:
+func get_movement_range(source_hex: Vector2i, mv_range: int) -> Array[Vector2i]:
 	var source_index: int = grid_.get_grid_index(source_hex)
 	var frontier: Array[int] = [source_index]
-	var reachable: Dictionary[int, int] = {source_index : range}
+	var reachable: Dictionary[int, int] = {source_index : mv_range}
 	while not frontier.is_empty():
 		var current_hex_index = frontier.pop_front()
 		var current_mp = reachable[current_hex_index]
@@ -143,8 +136,8 @@ func get_movement_range(source_hex: Vector2i, range: int) -> Array[Vector2i]:
 	return ret
 
 # this function can be optimized thus a bunch of redundent math
-func get_hexes_qr_in_range(source_hex_qr: Vector2i, range: int) -> Array[Vector2i]:
-	var hexes_in_range = HexUtils.get_hexes_in_range(source_hex_qr, range)
+func get_hexes_qr_in_range(source_hex_qr: Vector2i, ab_range: int) -> Array[Vector2i]:
+	var hexes_in_range = HexUtils.get_hexes_in_range(source_hex_qr, ab_range)
 	var ret: Array[Vector2i] = []
 	for hex in hexes_in_range:
 		if grid_.check_hex_in_grid(hex):
@@ -153,14 +146,16 @@ func get_hexes_qr_in_range(source_hex_qr: Vector2i, range: int) -> Array[Vector2
 		# check los here
 	return ret
 	
-func get_units_in_range(source_hex_qr: Vector2i, range: int) -> Array[Vector2i]:
+func get_units_in_range(source_hex_qr: Vector2i, ab_range: int) -> Array[Vector2i]:
 	var ret : Array[Vector2i] = []
 	for unit_pos_qr in units.keys():
 		var dist: int = HexUtils.get_axial_distance(source_hex_qr, unit_pos_qr)
-		if dist < range and dist > 0:
+		if dist < ab_range and dist > 0:
 			ret.append(unit_pos_qr)
 			#also check los
 	return ret
-	
+
+func state_apply_status_condition(condition: StatusCondition, unit: UnitData):
+	unit.apply_condition(condition)
 	
 	

@@ -23,7 +23,6 @@ func _process(_delta: float) -> void:
 	if hovered_hex != current_hovered_hex:
 		current_hovered_hex = hovered_hex
 		tactical_input.emit(Action.HOVER, current_hovered_hex)
-		print("hovering hex %s" % hovered_hex)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:

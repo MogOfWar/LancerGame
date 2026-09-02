@@ -45,6 +45,7 @@ var curr_select_weapon_: WeaponInstance = null
 var pos_qr_: Vector2i
 var height_: float
 var own_player_id_: int = -1
+var conditions_: Array[StatusCondition] = []
 
 
 @export var chassis: MechChassis
@@ -69,17 +70,27 @@ func refresh_action_points() -> void:
 	action_points_[Ability.ActionType.FULL_ACTION] = 1
 	action_points_[Ability.ActionType.MOVEMENT] = mech_type_.speed_
 
-func _init(mech_type: MechChassis, pos_qr: Vector2i, height: float) -> void:
+func add_ability(ability: Ability) -> void:
+	abilities_.append(ability)
+	SignalBus.unit_gained_ability.emit(self, ability)
+
+func _init(mech_type: MechChassis, pos_qr: Vector2i, height: float, player: PlayerController) -> void:
+	#first connect signals
+	SignalBus.start_round.connect(_on_start_round)
+	
+	#setup data mebers
 	unit_id_ = IdGenerator.get_next_id()
-	abilities_.append(MoveAbility.new())
-	abilities_.append(SkirimishAbility.new(self))
+	own_player_id_ = player.player_id_
 	pos_qr_ = pos_qr
 	height_ = height
 	load_mech_type(mech_type)
 	action_points_.resize(Ability.ActionType.NUM_ACTION_TYPES)
 	refresh_action_points()
 	
-	SignalBus.start_round.connect(_on_start_round)
+	#add abilties
+	add_ability(MoveAbility.new())
+	add_ability(SkirimishAbility.new(self))
+	add_ability(BraceAbility.new())
 
 func _on_start_round(round_number: int) -> void:
 	refresh_action_points()
@@ -96,15 +107,42 @@ func get_pos_qr() -> Vector2i:
 func get_ability_list() -> Array[Ability]:
 	return abilities_
 	
+func get_evasion() -> int:
+	return evasion_
+	
 func get_movement_points() -> int:
 	return get_action_points(Ability.ActionType.MOVEMENT)
 
+func get_defense_accuracy() -> int:
+	var ret: int = 0
+	for cond : StatusCondition in conditions_:
+		if cond.is_triggered_for_defense():
+			ret += cond.acc_modifer_
+	return ret
+	
+func get_attack_accuracy() -> int:
+	var ret: int = 0
+	for cond : StatusCondition in conditions_:
+		if cond.is_triggered_for_attack():
+			ret += cond.acc_modifer_
+	return ret
+
+func get_attack_override() -> bool:
+	return false
+
+func get_defense_override() -> bool:
+	return false
+	
 func select():
 	unit_selected.emit()
 
 func deselect():
 	unit_deselected.emit()
-
+	
+func apply_condition(condition):
+	conditions_.append(condition)
+	
+	
 func finished_ability(ability: Ability):
 	if ability.action_type_ == Ability.ActionType.QUICK_ACTION:
 		action_points_[Ability.ActionType.QUICK_ACTION] -= 1
@@ -134,10 +172,10 @@ func add_weapon(gun: WeaponType, mount: MechChassis.MountType ):
 		return
 	var valid_mounts = mech_type_.mounts_.filter(func(x): return x.mount_type == mount and x.count > 0 )
 	if len(valid_mounts) == 0:
-		print("Cant add gun no valid mount")
+		Utils.log_error("Cant add gun no valid mount")
 		return
 	if len(valid_mounts) > 1:
-		print("invalid mech config")
+		Utils.log_error("invalid mech config")
 		return
 	var mount_data = valid_mounts[0]
 	if mount not in mounts_.keys():

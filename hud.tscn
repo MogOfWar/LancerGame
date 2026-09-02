@@ -86,7 +86,6 @@ size_flags_vertical = 0
 text = "Movement"
 
 [node name="InfoBanner" type="PanelContainer" parent="." unique_id=781237982]
-visible = false
 offset_left = 215.0
 offset_top = 76.0
 offset_right = 789.0
@@ -98,7 +97,24 @@ layout_mode = 2
 [node name="InfoBannerTimer" type="Timer" parent="InfoBanner" unique_id=1437105728]
 wait_time = 2.0
 
+[node name="PopupMenu" type="PanelContainer" parent="." unique_id=1375206341]
+offset_left = 390.0
+offset_top = 445.0
+offset_right = 590.0
+offset_bottom = 584.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PopupMenu" unique_id=2143952675]
+layout_mode = 2
+
+[node name="List" type="VBoxContainer" parent="PopupMenu/VBoxContainer" unique_id=558909537]
+layout_mode = 2
+
+[node name="PassButton" type="MenuButton" parent="PopupMenu/VBoxContainer" unique_id=1443288161]
+layout_mode = 2
+text = "Close"
+
 [connection signal="pressed" from="ActionMenu/HBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]
 [connection signal="pressed" from="ActionMenu/HBoxContainer/MoveButton" to="." method="_on_move_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/EndTurnButton" to="." method="_on_end_turn_button_pressed"]
 [connection signal="timeout" from="InfoBanner/InfoBannerTimer" to="." method="_on_info_banner_timer_timeout"]
+[connection signal="pressed" from="PopupMenu/VBoxContainer/PassButton" to="." method="_on_pass_button_pressed"]

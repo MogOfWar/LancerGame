@@ -11,6 +11,7 @@ signal clicked_hex(hex_qr: Vector2i)
 
 var input_manager_: InputManager
 var tactical_overlay_: TacticalOverlay
+var hud_: HUD
 var current_state_: State = State.IDLE
 var current_viable_hexes_: Array[Vector2i]
 var current_context: ActionContext = null
@@ -23,6 +24,7 @@ func _ready() -> void:
 	SignalBus.end_turn.connect(_on_end_turn)
 	SignalBus.unit_action_selected.connect(_on_unit_action_selected)
 	SignalBus.start_turn.connect(_on_start_turn)
+	SignalBus.debug_player_reaction.connect(_on_start_turn)
 	input_manager_.tactical_input.connect(_on_tactical_input)
 	pass # Replace with function body.
 
@@ -37,10 +39,11 @@ func _on_start_turn(player_number: int) -> void:
 	else:
 		current_playing_ = true
 
-func _init(logic_node : Node, input_manager: InputManager, tac_overlay: TacticalOverlay) -> void:
+func _init(logic_node : Node, input_manager: InputManager, tac_overlay: TacticalOverlay, hud: HUD) -> void:
 	super._init(logic_node)
 	input_manager_ = input_manager
 	tactical_overlay_ = tac_overlay
+	hud_ = hud
 	
 
 func _on_unit_action_selected(unit: UnitData, ability: Ability, sub_name: String) -> void:
@@ -166,4 +169,8 @@ func handle_click(hex: Vector2i) -> void:
 				current_selected_hex_ = null
 				current_state_ = State.TARGETING_0
 				clicked_hex.emit(null)
+				
+func choose_reaction(context: ActionContext, src_ability: Ability, src_effect: Effect, reaction_params: Dictionary, reacting_unit: UnitData, valid_reactions: Array[ReactionManager.Reaction]):
+	var reaction = await hud_.show_reaction_menu(reacting_unit, valid_reactions)
+	return reaction
 				
