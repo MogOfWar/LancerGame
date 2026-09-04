@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cw64ob70l3wxu"]
+
+[ext_resource type="Script" uid="uid://h0mmlkklu4l8" path="res://tools/animation_tool.gd" id="1_vi16r"]
+
+[node name="AnimationTool" type="Node" unique_id=678283676]
+script = ExtResource("1_vi16r")
+texture_path = "uid://c1ysgherrk01s"
+json_path = "res://art/bipedal_mech_with_an_wea-Idle.json"
+hframs = 17
+vframs = 26
+generate = true

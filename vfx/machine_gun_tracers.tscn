@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://degp2e6gvacbm"]
+
+[ext_resource type="Script" uid="uid://cxq844b8cmhqq" path="res://vfx/machine_gun_tracers.gd" id="1_g3m87"]
+[ext_resource type="Texture2D" uid="uid://crbdy13ltbm1x" path="res://art/muzzle_05.png" id="2_qtihc"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e73d3"]
+direction = Vector3(0, 0, -1)
+spread = 2.0
+initial_velocity_min = 15.0
+initial_velocity_max = 15.0
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qtihc"]
+albedo_color = Color(1, 0.20392157, 0.09411765, 1)
+emission_enabled = true
+emission = Color(1, 0.20392157, 0.09411765, 1)
+emission_energy_multiplier = 9.18
+
+[sub_resource type="BoxMesh" id="BoxMesh_g3m87"]
+material = SubResource("StandardMaterial3D_qtihc")
+size = Vector3(0.05, 0.05, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_g4v7s"]
+
+[sub_resource type="Curve" id="Curve_ge0fi"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.3063063, 0.006849408), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qtihc"]
+curve = SubResource("Curve_ge0fi")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g4v7s"]
+angle_min = 1.0728835e-05
+angle_max = 1.0728835e-05
+direction = Vector3(0, 0, 0)
+gravity = Vector3(0, 0, 0)
+scale_min = 5.0
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_qtihc")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ge0fi"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+depth_draw_mode = 2
+shading_mode = 0
+albedo_color = Color(1, 0.9647059, 0.09411765, 1)
+albedo_texture = ExtResource("2_qtihc")
+
+[sub_resource type="QuadMesh" id="QuadMesh_qtihc"]
+material = SubResource("StandardMaterial3D_ge0fi")
+center_offset = Vector3(0, 0, -0.2)
+orientation = 1
+
+[node name="MachineGunTracers" type="GPUParticles3D" unique_id=1176329447]
+transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, -0.19884706, 0.13286662, 0)
+emitting = false
+amount = 15
+one_shot = true
+explosiveness = 0.1
+process_material = SubResource("ParticleProcessMaterial_e73d3")
+draw_pass_1 = SubResource("BoxMesh_g3m87")
+script = ExtResource("1_g3m87")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=826141613]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.9510324, 0, 0)
+visible = false
+mesh = SubResource("BoxMesh_g4v7s")
+
+[node name="MuzzleFlash" type="GPUParticles3D" parent="." unique_id=458792240]
+emitting = false
+amount = 1
+lifetime = 0.19
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_g4v7s")
+draw_pass_1 = SubResource("QuadMesh_qtihc")
+
+[node name="MuzzleFlash2" type="GPUParticles3D" parent="." unique_id=1829754301]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
+emitting = false
+amount = 1
+lifetime = 0.19
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_g4v7s")
+draw_pass_1 = SubResource("QuadMesh_qtihc")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

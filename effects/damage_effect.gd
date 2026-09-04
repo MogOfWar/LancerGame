@@ -24,6 +24,7 @@ func apply(action_context: ActionContext, target_hex: Vector2i):
 	for hex in affected_hexes:
 		var data: GameBoard.HexData = gb.get_hex_data(hex)
 		if data.unit != null:
+			SignalBus.unit_weapon_fire.emit(src_unit, data.unit)
 			var is_hit: bool = true
 			var is_crit: bool = false
 			if src_unit.get_attack_override(): 

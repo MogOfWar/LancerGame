@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://ckwlvo1i684pq"]
+
+[ext_resource type="Script" uid="uid://dptuqav0fu53v" path="res://tools/ani_lib_from_files.gd" id="1_01cf0"]
+
+[node name="AniLibFromFiles" type="Node" unique_id=1923445419]
+script = ExtResource("1_01cf0")
+sprite_sheet_to_load = Array[String](["res://art/momo-iso_walk_up-v2.png", "res://art/momo-iso_walk_southeast-v2.png", "res://art/momo-walk_r.png", "res://art/momo-iso_walk_northeast-v2.png", "res://art/momo-iso_walk_down-v2.png"])
+cell_size = Array[int]([256, 256, 256, 256, 256])
+hframes = Array[int]([5, 5, 5, 5, 5])
+names = Array[String](["walk_n", "walk_se", "walk_e", "walk_ne", "walk_s"])
+num_frames = Array[int]([25, 25, 24, 25, 25])

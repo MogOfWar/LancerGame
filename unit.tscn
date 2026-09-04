@@ -2,32 +2,147 @@
 
 [ext_resource type="Script" uid="uid://dpvb1pl8dpc5f" path="res://unit.gd" id="1_btf8p"]
 [ext_resource type="Texture2D" uid="uid://dst43rj35jh6" path="res://art/selection_ring.png" id="2_ctwoc"]
+[ext_resource type="Texture2D" uid="uid://c1ysgherrk01s" path="res://art/bipedal_mech_with_an_wea-Idle.png" id="2_davkp"]
+[ext_resource type="AnimationLibrary" uid="uid://cy3jvfyano8sl" path="res://art/mech_library.res" id="3_5wnup"]
+[ext_resource type="AnimationLibrary" uid="uid://dnkhmmeo8nrh7" path="res://art/mech_ani_library_2.res" id="4_of1k5"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_k4y1u"]
 height = 0.2
 radial_segments = 6
 
-[sub_resource type="Gradient" id="Gradient_davkp"]
-interpolation_mode = 1
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0jo5"]
+atlas = ExtResource("2_davkp")
+region = Rect2(476, 816, 68, 68)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_5wnup"]
-gradient = SubResource("Gradient_davkp")
-width = 128
-height = 60
+[sub_resource type="AtlasTexture" id="AtlasTexture_davkp"]
+atlas = ExtResource("2_davkp")
+region = Rect2(0, 680, 68, 68)
 
-[sub_resource type="Gradient" id="Gradient_5wnup"]
-interpolation_mode = 1
-offsets = PackedFloat32Array(0.03448276, 1)
-colors = PackedColorArray(0.81960785, 0, 0, 1, 0.9427091, 4.47616e-06, 1.732707e-06, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_5wnup"]
+atlas = ExtResource("2_davkp")
+region = Rect2(68, 680, 68, 68)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_davkp"]
-gradient = SubResource("Gradient_5wnup")
-width = 128
-height = 60
-fill_from = Vector2(1, 0)
+[sub_resource type="AtlasTexture" id="AtlasTexture_1sk4h"]
+atlas = ExtResource("2_davkp")
+region = Rect2(136, 680, 68, 68)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_g4v7s"]
-viewport_path = NodePath("UI_Anchor/SubViewport")
+[sub_resource type="AtlasTexture" id="AtlasTexture_baxm0"]
+atlas = ExtResource("2_davkp")
+region = Rect2(204, 680, 68, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_of1k5"]
+atlas = ExtResource("2_davkp")
+region = Rect2(272, 680, 68, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_74e6i"]
+atlas = ExtResource("2_davkp")
+region = Rect2(340, 680, 68, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yjdlg"]
+atlas = ExtResource("2_davkp")
+region = Rect2(408, 680, 68, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ltb4x"]
+atlas = ExtResource("2_davkp")
+region = Rect2(476, 680, 68, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f764t"]
+atlas = ExtResource("2_davkp")
+region = Rect2(0, 612, 68, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3040u"]
+atlas = ExtResource("2_davkp")
+region = Rect2(68, 612, 68, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p81dm"]
+atlas = ExtResource("2_davkp")
+region = Rect2(136, 612, 68, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y43xi"]
+atlas = ExtResource("2_davkp")
+region = Rect2(204, 612, 68, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ksgb"]
+atlas = ExtResource("2_davkp")
+region = Rect2(272, 612, 68, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wsgbi"]
+atlas = ExtResource("2_davkp")
+region = Rect2(340, 612, 68, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2k6xw"]
+atlas = ExtResource("2_davkp")
+region = Rect2(408, 612, 68, 68)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3dcl6"]
+atlas = ExtResource("2_davkp")
+region = Rect2(476, 612, 68, 68)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g4v7s"]
+animations = [{
+"frames": [],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_davkp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5wnup")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1sk4h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_baxm0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_of1k5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_74e6i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yjdlg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ltb4x")
+}],
+"loop": 1,
+"name": &"walk_se",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f764t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3040u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p81dm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y43xi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ksgb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wsgbi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2k6xw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3dcl6")
+}],
+"loop": 1,
+"name": &"walk_south",
+"speed": 5.0
+}]
 
 [node name="Unit" type="Node3D" unique_id=722785469]
 script = ExtResource("1_btf8p")
@@ -36,7 +151,24 @@ script = ExtResource("1_btf8p")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Visuals" unique_id=15529931]
+visible = false
 mesh = SubResource("CylinderMesh_k4y1u")
+
+[node name="MechSprite" type="Sprite3D" parent="Visuals" unique_id=2096553126]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7113326, 0)
+pixel_size = 0.03
+billboard = 2
+no_depth_test = true
+texture = SubResource("AtlasTexture_n0jo5")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="Visuals" unique_id=942232610]
+visible = false
+sprite_frames = SubResource("SpriteFrames_g4v7s")
+animation = &"walk_se"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Visuals" unique_id=67885212]
+libraries/mech_ani_library_2 = ExtResource("4_of1k5")
+libraries/mech_library = ExtResource("3_5wnup")
 
 [node name="SelectionRing" type="Sprite3D" parent="." unique_id=2072324230]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
@@ -46,31 +178,3 @@ modulate = Color(1, 1, 0.43529412, 1)
 pixel_size = 0.006
 axis = 1
 texture = ExtResource("2_ctwoc")
-
-[node name="UI_Anchor" type="Marker3D" parent="." unique_id=1936155746]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4726407, 0)
-metadata/_edit_group_ = true
-
-[node name="SubViewport" type="SubViewport" parent="UI_Anchor" unique_id=1060701361]
-transparent_bg = true
-size = Vector2i(128, 4)
-
-[node name="UI_Root" type="VBoxContainer" parent="UI_Anchor/SubViewport" unique_id=1709606995]
-custom_minimum_size = Vector2(128, 16)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HPBar" type="TextureProgressBar" parent="UI_Anchor/SubViewport/UI_Root" unique_id=691451828]
-layout_mode = 2
-value = 100.0
-texture_under = SubResource("GradientTexture2D_5wnup")
-texture_progress = SubResource("GradientTexture2D_davkp")
-
-[node name="Sprite3D" type="Sprite3D" parent="UI_Anchor" unique_id=1637138766]
-visible = false
-billboard = 2
-no_depth_test = true
-texture = SubResource("ViewportTexture_g4v7s")

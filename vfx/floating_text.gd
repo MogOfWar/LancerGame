@@ -25,7 +25,6 @@ func display(text_to_show: String, start_position: Vector3, make_large: bool = f
 	tween.tween_property(label, "transparency", 1.0, 1.0).set_ease(Tween.EASE_IN)
 	
 	#dangerous if we ever pool
-	# 2. Use a lambda to ensure strict order of operations
 	tween.finished.connect(queue_free)
 	
 	# RETURN the signal so other scripts can listen to it

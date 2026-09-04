@@ -31,9 +31,16 @@ static var visual_registry: VisualRegistry = VisualRegistry.new()
 func _ready() -> void:
 	SignalBus.unit_damaged.connect(_on_unit_damaged)
 	SignalBus.vis_unit_spawned.connect(_on_vis_unit_spawned)
+	SignalBus.unit_moved.connect(_on_unit_moved)
+	SignalBus.unit_weapon_fire.connect(_on_unit_weapon_fire)
 	pass # Replace with function body.
 
 
+func _on_unit_weapon_fire(attacking_unit: UnitData, target_unit: UnitData) -> void:
+	var visual_unit: Unit = visual_registry.get_mapping(attacking_unit)
+	var target_vis_unit: Unit = visual_registry.get_mapping(target_unit)
+	queue_.add_event(WeaponFireVisualEvent.new(visual_unit, target_vis_unit.global_position))
+	
 func _on_vis_unit_spawned(unit: Unit) -> void:
 	visual_registry.register(unit.unit_data_, unit)
 	
@@ -55,3 +62,12 @@ func _on_unit_damaged(unit: UnitData, damage_val: int) -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+	
+func _on_unit_moved(unit: UnitData, src_hex_qry: Vector3, dst_hex_qry: Vector3):
+	var vis_unit: Unit = visual_registry.get_mapping(unit)
+	var move_params = {
+		"unit": vis_unit,
+		"src": src_hex_qry,
+		"dst": dst_hex_qry
+	}
+	queue_.add_event(MoveVisualEvent.new(move_params))

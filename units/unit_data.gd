@@ -52,7 +52,7 @@ var conditions_: Array[StatusCondition] = []
 
 signal unit_selected()
 signal unit_deselected()
-signal unit_moved(target_qry: Vector3)
+signal unit_moved(source_qry: Vector3, target_qry: Vector3)
 
 class IdGenerator:
 	static var _counter: int = 0
@@ -68,7 +68,7 @@ class IdGenerator:
 func refresh_action_points() -> void:
 	action_points_[Ability.ActionType.QUICK_ACTION] = 2
 	action_points_[Ability.ActionType.FULL_ACTION] = 1
-	action_points_[Ability.ActionType.MOVEMENT] = mech_type_.speed_
+	action_points_[Ability.ActionType.MOVEMENT] = 1000
 
 func add_ability(ability: Ability) -> void:
 	abilities_.append(ability)
@@ -157,9 +157,10 @@ func move(dest_hex_qry: Vector3, dist: int):
 	if action_points_[Ability.ActionType.MOVEMENT] - dist < 0:
 		Utils.log_error("Moved more units than allowed %s %s %s" % [self.unit_id_, pos_qr_, dist])
 	action_points_[Ability.ActionType.MOVEMENT] -= dist
+	var source_qry: Vector3 = Vector3(pos_qr_.x, pos_qr_.y, height_)
 	pos_qr_ = Vector2i(dest_hex_qry.x, dest_hex_qry.y)
 	height_ = dest_hex_qry.z
-	unit_moved.emit(dest_hex_qry)
+	SignalBus.unit_moved.emit(self, source_qry, dest_hex_qry)
 
 func load_mech_type(mech_type: MechChassis) -> void:
 	mech_type_ = mech_type
