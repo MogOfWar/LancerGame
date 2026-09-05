@@ -8,4 +8,3 @@ texture_path = "uid://c1ysgherrk01s"
 json_path = "res://art/bipedal_mech_with_an_wea-Idle.json"
 hframs = 17
 vframs = 26
-generate = true

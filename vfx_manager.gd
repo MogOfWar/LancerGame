@@ -16,8 +16,9 @@ func spawn_text(params: Dictionary) -> Signal:
 	return float_text.display(params["text_to_show"], params["global_position"], true)
 
 func spawn_projectile(unit: Unit, target: Vector3):
-	weapon_porjectile_.global_position = unit.global_position
-	weapon_porjectile_.shoot(target)
+	weapon_porjectile_.global_position = unit.get_weapon_global_pos()
+	await weapon_porjectile_.shoot(target)
+	
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

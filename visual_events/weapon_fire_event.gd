@@ -9,5 +9,7 @@ func _init(src_unit: Unit, target_global_pos: Vector3):
 	target_global_pos_ = target_global_pos
 
 func execute() -> void:
-	VFXManager.spawn_projectile(src_unit_, target_global_pos_)
+	src_unit_.play_attack_animation(target_global_pos_)
+	await VFXManager.spawn_projectile(src_unit_, target_global_pos_)
+	src_unit_.play_idle_animation()
 	super.execute()

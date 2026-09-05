@@ -41,7 +41,7 @@ func _ready() -> void:
 	var grid = NoiseGrid.new(10,10, null)
 	turn_manager_.initalize()
 	game_board_.initalize(grid)
-	reaction_manager_.initalize()
+	reaction_manager_.initalize(false)
 	
 	var player_1 : HumanPlayerController = HumanPlayerController.new($Logic, $Input/InputManager, $Visuals/TacticalOverlay, $UI/HUD)
 	var player_2 : HumanPlayerController = HumanPlayerController.new($Logic, $Input/InputManager, $Visuals/TacticalOverlay, $UI/HUD)
@@ -51,7 +51,7 @@ func _ready() -> void:
 	load_unit_types()
 	# DEBUG just debug stuff for start
 	var unit_a: UnitData = add_unit(mech_types_["Everest"], Vector2i(0,0), 0, player_1)
-	var unit_b: UnitData = add_unit(mech_types_["Everest"], Vector2i(2,3), 0, player_2)
+	var unit_b: UnitData = add_unit(mech_types_["Everest"], Vector2i(-2,5), 0, player_2)
 	unit_a.add_weapon(load("res://weapons/assualt_rifle.tres"), MechChassis.MountType.HEAVY)
 	
 	game_board_.add_unit(unit_a)

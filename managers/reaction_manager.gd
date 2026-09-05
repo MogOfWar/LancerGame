@@ -34,8 +34,11 @@ class UnitReactionCollection:
 
 var reaction_registry: Dictionary[ReactionType, UnitReactionCollection] = {}
 var current_player_: Array[int] = []
+var _reaction_enabled: bool = true #for debugging can turn off reaction
 
 func register_reaction(type: ReactionType, unit: UnitData, player: PlayerController, reaction: Reaction):
+	if not _reaction_enabled:
+		return
 	var collection: UnitReactionCollection = reaction_registry.get_or_add(type, UnitReactionCollection.new())
 	var reacting_unit: UnitReaction = collection.collection_.get_or_add(unit, UnitReaction.new(unit, player))
 	reacting_unit.add_reaction(reaction)
@@ -43,8 +46,8 @@ func register_reaction(type: ReactionType, unit: UnitData, player: PlayerControl
 func _init():
 	SignalBus.start_turn.connect(_on_start_turn)
 	
-func initalize():
-	pass
+func initalize(enabled = true):
+	_reaction_enabled = enabled
 
 func push_new_player(player_id: int) -> void:
 	current_player_.push_back(player_id)

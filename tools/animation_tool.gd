@@ -90,6 +90,7 @@ func _run_generation():
 			
 	# Save the entire library into one file
 	ResourceSaver.save(anim_library, save_path + "//mech_library.res")
+	print("done generating animation")
 	
 func _ready():
 	_run_generation()

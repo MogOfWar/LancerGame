@@ -18,7 +18,7 @@ emission_energy_multiplier = 9.18
 
 [sub_resource type="BoxMesh" id="BoxMesh_g3m87"]
 material = SubResource("StandardMaterial3D_qtihc")
-size = Vector3(0.05, 0.05, 1.5)
+size = Vector3(0.05, 0.05, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_g4v7s"]
 
@@ -49,7 +49,7 @@ albedo_texture = ExtResource("2_qtihc")
 
 [sub_resource type="QuadMesh" id="QuadMesh_qtihc"]
 material = SubResource("StandardMaterial3D_ge0fi")
-center_offset = Vector3(0, 0, -0.2)
+center_offset = Vector3(0, 0, -0.5)
 orientation = 1
 
 [node name="MachineGunTracers" type="GPUParticles3D" unique_id=1176329447]

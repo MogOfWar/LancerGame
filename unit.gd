@@ -6,12 +6,18 @@ var unit_data_: UnitData
 
 @onready var animation_player_ = $Visuals/AnimationPlayer
 
+func _set_up_animations() -> void:
+	var a: Animation = animation_player_.get_animation("mech_library/Idle_south")
+	a.loop_mode = Animation.LOOP_LINEAR
+	
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.vis_unit_spawned.emit(self)
 	unit_data_.unit_selected.connect(select)
 	unit_data_.unit_deselected.connect(deselect)
-
+	_set_up_animations()
+	play_idle_animation()
+	
 func initalize(unit_data: UnitData) -> void:
 	unit_data_ = unit_data
 	set_location(unit_data_.get_pos_qry())
@@ -107,17 +113,17 @@ func get_animation(direction: Vector3) -> String:
 	# 3. Play the animation
 	return anim_name
 
-func get_animation2(direction: Vector3):
+func get_animation2(direction: Vector3, base_anim_name: String):
 	const facing_map = ["south", "south-east", "east", "north-east", "north", "north-west", "west", "south-west"]
-	var angle = atan2(direction.x, direction.y)
+	var angle = atan2(direction.x, direction.z)
 	var facing_dir: int = roundi((angle) * (4 / PI))
-	var anim_name: String = "mech_library/Walking_%s" % facing_map[(facing_dir + 8) % 8]
+	var anim_name: String = "mech_library/%s_%s" % [base_anim_name, facing_map[(facing_dir + 8) % 8]]
 	return anim_name
 	
 func move(src_qry: Vector3, hex_qry: Vector3):
 	# 1. Update facing direction based on movement vector	
 	var direction = (hex_qry - src_qry)
-	var anim_name: String = get_animation2(direction)
+	var anim_name: String = get_animation2(Vector3(direction.x, direction.z, direction.y), "Walking")
 	var anim = animation_player_.get_animation(anim_name)	
 	if anim:
 		# Set the loop mode to wrap/loop
@@ -134,6 +140,17 @@ func move(src_qry: Vector3, hex_qry: Vector3):
 	tween.tween_property(self, "global_position", target_pos, duration)
 	await tween.finished
 	animation_player_.stop()
+
+func play_attack_animation(tar_global_pos: Vector3) -> void:
+	var direction: Vector3 = (tar_global_pos - global_position)
+	animation_player_.play(get_animation2(direction, "attacking"))
+	
+func play_idle_animation() -> void:
+	
+	animation_player_.play("mech_library/Idle_south")
+
+func get_weapon_global_pos() -> Vector3:
+	return $Visuals/MechSprite/MuzzleFire.global_position
 	
 
 func _exit_tree():

@@ -3,16 +3,16 @@
 [ext_resource type="Script" uid="uid://dpvb1pl8dpc5f" path="res://unit.gd" id="1_btf8p"]
 [ext_resource type="Texture2D" uid="uid://dst43rj35jh6" path="res://art/selection_ring.png" id="2_ctwoc"]
 [ext_resource type="Texture2D" uid="uid://c1ysgherrk01s" path="res://art/bipedal_mech_with_an_wea-Idle.png" id="2_davkp"]
-[ext_resource type="AnimationLibrary" uid="uid://cy3jvfyano8sl" path="res://art/mech_library.res" id="3_5wnup"]
+[ext_resource type="AnimationLibrary" uid="uid://6trnb7tlswg3" path="res://art/mech_library.res" id="3_5wnup"]
 [ext_resource type="AnimationLibrary" uid="uid://dnkhmmeo8nrh7" path="res://art/mech_ani_library_2.res" id="4_of1k5"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_k4y1u"]
 height = 0.2
 radial_segments = 6
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_n0jo5"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_b8r7s"]
 atlas = ExtResource("2_davkp")
-region = Rect2(476, 816, 68, 68)
+region = Rect2(0, 68, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_davkp"]
 atlas = ExtResource("2_davkp")
@@ -156,10 +156,13 @@ mesh = SubResource("CylinderMesh_k4y1u")
 
 [node name="MechSprite" type="Sprite3D" parent="Visuals" unique_id=2096553126]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7113326, 0)
+cast_shadow = 2
 pixel_size = 0.03
-billboard = 2
-no_depth_test = true
-texture = SubResource("AtlasTexture_n0jo5")
+alpha_cut = 1
+texture = SubResource("AtlasTexture_b8r7s")
+
+[node name="MuzzleFire" type="Node3D" parent="Visuals/MechSprite" unique_id=1869851293]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23573805, 0.51911515, 0.018868446)
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="Visuals" unique_id=942232610]
 visible = false
