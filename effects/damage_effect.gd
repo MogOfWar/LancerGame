@@ -21,6 +21,8 @@ func apply(action_context: ActionContext, target_hex: Vector2i):
 	var gb: GameBoard = action_context.game_board_
 	var src_unit = action_context.source_unit_
 	var affected_hexes: Array[Vector2i] = gb.get_affected_hexes(target_hex, self, src_unit.get_pos_qr())
+	var level: Level = Level.get_current_level()
+	level.event_manager_.handle_event(WeaponFireEvent.new([src_unit.unit_id_, target_hex.x, target_hex.y, 1, target_mode_]))
 	for hex in affected_hexes:
 		var data: GameBoard.HexData = gb.get_hex_data(hex)
 		if data.unit != null:
@@ -34,8 +36,11 @@ func apply(action_context: ActionContext, target_hex: Vector2i):
 			else:
 				var accuracy: int = src_unit.get_attack_accuracy()
 				accuracy += data.unit.get_defense_accuracy()
-				var attack_roll: int = gb.roll_attack(src_unit, data.unit, accuracy)
-				if attack_roll > data.unit.get_evasion():
+				var attack_res: Vector2i = gb.roll_attack(src_unit, data.unit, accuracy)
+				var attack_roll: int = attack_res.x + attack_res.y
+				var target_evasion: int = data.unit.get_evasion()
+				level.event_manager_.handle_event(RollEvent.new([attack_res.x, attack_res.y, target_evasion, RollEvent.RollType.ATTACK]))
+				if attack_roll > target_evasion:
 					is_hit = true
 				if attack_roll > 20:
 					is_crit = true
@@ -52,5 +57,4 @@ func apply(action_context: ActionContext, target_hex: Vector2i):
 						}
 						
 					)
-					print("applying damage")
-					gb.damage_unit(data.unit, damage_val, is_crit)
+					level.event_manager_.handle_event(DamageEvent.new([data.unit.unit_id_, damage_val, damage_type_, is_crit]))

@@ -20,13 +20,13 @@ func get_hex_data(hex: Vector2i) -> HexData:
 func add_unit(unit_data: UnitData) -> void:
 	units[unit_data.get_pos_qr()] = unit_data
 
-func roll_attack(attacking_unit: UnitData, defending_unit: UnitData, accuracy: int) -> int:
+func roll_attack(attacking_unit: UnitData, defending_unit: UnitData, accuracy: int) -> Vector2i:
 	var attack_roll: int = randi_range(1, 20) 
 	var acc_val: int = 0
 	for i in range(abs(accuracy)):
 		acc_val = max(acc_val, randi_range(1,6))
-	attack_roll += sign(accuracy) * acc_val
-	return attack_roll
+	acc_val = sign(accuracy) * acc_val
+	return Vector2i(attack_roll, acc_val)
 
 func is_ability_executable(unit: UnitData, ability: Ability) -> bool:
 	var action_point = unit.get_action_points(ability.action_type_) 

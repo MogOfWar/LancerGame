@@ -132,8 +132,16 @@ func sync_events(event_data: Array):
 	for packet in event_data:
 		var new_event: Event
 		var type: Event.EventType = packet[0]
-		if type == Event.EventType.Move:
+		if type == Event.EventType.MOVE:
 			new_event = MoveEvent.new(packet.slice(1, len(packet)))
+		elif type == Event.EventType.WEAPON_FIRE:
+			new_event = WeaponFireEvent.new(packet.slice(1, len(packet)))
+		elif type == Event.EventType.ROLL:
+			new_event = RollEvent.new(packet.slice(1, len(packet)))
+		elif type == Event.EventType.DAMAGE:
+			new_event = DamageEvent.new(packet.slice(1, len(packet)))
+		else:
+			Utils.log_error("Unhandled sync event")
 		event_manager_.handle_event(new_event)
 	
 func _process(delta: float) -> void:

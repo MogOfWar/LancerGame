@@ -5,7 +5,7 @@ var unit_id_: int
 var target_hex_qry_: Vector3
 
 func _init(params: Array):
-	super._init(EventType.Move)
+	super._init(EventType.MOVE)
 	unit_id_ = params[0]
 	target_hex_qry_ = Vector3(params[1], params[2], params[3])
 	
@@ -17,7 +17,7 @@ func apply():
 	level.game_board_.units[Vector2i(target_hex_qry_.x, target_hex_qry_.y)] = unit
 
 func to_log():
-	pass
+	return ""
 
 func get_sent_packet() -> Array:
 	return [type_, unit_id_, target_hex_qry_.x, target_hex_qry_.y, target_hex_qry_.z]
