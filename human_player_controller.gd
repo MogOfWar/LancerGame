@@ -33,14 +33,14 @@ func _on_end_turn() -> void:
 		current_selected_unit_.deselect()
 		current_selected_unit_ = null
 
-func _on_start_turn(player_number: int) -> void:
+func _on_start_turn(player_number: int, peer_id: int) -> void:
 	if player_number != player_id_:
 		current_playing_ = false
 	else:
 		current_playing_ = true
 
-func _init(logic_node : Node, input_manager: InputManager, tac_overlay: TacticalOverlay, hud: HUD) -> void:
-	super._init(logic_node)
+func _init(level : Node, peer_id: int, input_manager: InputManager, tac_overlay: TacticalOverlay, hud: HUD) -> void:
+	super._init(level, peer_id)
 	input_manager_ = input_manager
 	tactical_overlay_ = tac_overlay
 	hud_ = hud

@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://53ssjnkb8m8o" path="res://turn_manager.gd" id="3_ij4ns"]
 [ext_resource type="Script" uid="uid://d1qk2hm7s1eoi" path="res://managers/reaction_manager.gd" id="4_yg2mh"]
 [ext_resource type="PackedScene" uid="uid://due6g0ko08p51" path="res://hud.tscn" id="5_fa1qs"]
+[ext_resource type="Script" uid="uid://bgie15366w13r" path="res://managers/event_manager.gd" id="5_uivss"]
 [ext_resource type="PackedScene" uid="uid://bfrl0khn7468q" path="res://ui_manager.tscn" id="6_4drit"]
 [ext_resource type="PackedScene" uid="uid://bpmkawp4exddv" path="res://input_manager.tscn" id="7_fa1qs"]
 [ext_resource type="PackedScene" uid="uid://cbs75d632et1c" path="res://visual_manager.tscn" id="7_ij4ns"]
@@ -28,6 +29,11 @@ script = ExtResource("3_ij4ns")
 unique_name_in_owner = true
 script = ExtResource("4_yg2mh")
 metadata/_custom_type_script = "uid://d1qk2hm7s1eoi"
+
+[node name="EventManager" type="Node" parent="Logic" unique_id=1069951520]
+unique_name_in_owner = true
+script = ExtResource("5_uivss")
+metadata/_custom_type_script = "uid://bgie15366w13r"
 
 [node name="Visuals" type="Node3D" parent="." unique_id=1671634100]
 

@@ -4,8 +4,8 @@ class_name  SkirimishAbility
 const NAME: String = "Skrimish"
 var unit_data_: UnitData
 
-func _init(unit_data: UnitData):
-	super._init(NAME, Ability.ActionType.QUICK_ACTION, 1)
+func _init(id: int, unit_data: UnitData):
+	super._init(id, NAME, Ability.ActionType.QUICK_ACTION, 1)
 	unit_data_ = unit_data
 	
 func get_effect_groups_names() -> Array[String]:

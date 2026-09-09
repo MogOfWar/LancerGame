@@ -15,7 +15,7 @@ signal unit_weapon_fire(unit: UnitData, target_unit: UnitData)
 
 signal end_turn()
 signal start_round(round_number: int)
-signal start_turn(player_number: int)
+signal start_turn(player_number: int, peer_id: int)
 signal debug_player_reaction(player_id: int) # switch player
 
 # visual signals

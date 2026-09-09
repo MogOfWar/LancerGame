@@ -1,9 +1,9 @@
 extends Ability
 class_name BraceAbility
 
-func _init():
+func _init(id: int):
 	refresh_policy_ = RefreshPolicy.ON_ROUND_START
-	super._init("Brace", ActionType.REACTION, 1)
+	super._init(id, "Brace", ActionType.REACTION, 1)
 	var conditions: Array[StatusCondition] = []
 	conditions.append(StatusCondition.create_basic_defense_accuracy())
 	conditions.append(StatusCondition.create_basic_damage_resistance())

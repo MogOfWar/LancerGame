@@ -34,18 +34,18 @@ size_flags_horizontal = 4
 text = "Move
 "
 
-[node name="HBoxContainer" type="VBoxContainer" parent="." unique_id=424140670]
+[node name="GeneralButtons" type="VBoxContainer" parent="." unique_id=424140670]
 offset_left = 988.0
 offset_top = 7.0
 offset_right = 1145.0
 offset_bottom = 435.0
 metadata/_edit_group_ = true
 
-[node name="EndTurnButton" type="Button" parent="HBoxContainer" unique_id=369340358]
+[node name="EndTurnButton" type="Button" parent="GeneralButtons" unique_id=369340358]
 layout_mode = 2
 text = "End Turn"
 
-[node name="RoundInfo" type="Label" parent="HBoxContainer" unique_id=1980380079]
+[node name="RoundInfo" type="Label" parent="GeneralButtons" unique_id=1980380079]
 layout_mode = 2
 
 [node name="SubAbilityMenu" type="PanelContainer" parent="." unique_id=1582566547]
@@ -115,6 +115,6 @@ text = "Close"
 
 [connection signal="pressed" from="ActionMenu/HBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]
 [connection signal="pressed" from="ActionMenu/HBoxContainer/MoveButton" to="." method="_on_move_button_pressed"]
-[connection signal="pressed" from="HBoxContainer/EndTurnButton" to="." method="_on_end_turn_button_pressed"]
+[connection signal="pressed" from="GeneralButtons/EndTurnButton" to="." method="_on_end_turn_button_pressed"]
 [connection signal="timeout" from="InfoBanner/InfoBannerTimer" to="." method="_on_info_banner_timer_timeout"]
 [connection signal="pressed" from="PopupMenu/VBoxContainer/PassButton" to="." method="_on_pass_button_pressed"]

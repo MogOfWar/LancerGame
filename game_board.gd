@@ -75,19 +75,6 @@ func initalize(grid: GridData):
 func _ready() -> void:
 	pass
 	
-func move_unit(unit: UnitData, target_hex: Vector2i) -> int:
-	var move_path = get_move_path(unit, unit.get_pos_qr(), target_hex)
-	var hexes_moved: int = 0
-	for hex_qr in move_path:
-		if hex_qr == unit.get_pos_qr():
-			continue
-		else:
-			units.erase(unit.get_pos_qr())
-			unit.move(Vector3(hex_qr.x, hex_qr.y, grid_.get_height_from_qr(hex_qr)), 1)
-			units[hex_qr] = unit
-			hexes_moved += 1
-	return hexes_moved
-
 func get_move_path(moving_unit: UnitData, start_pos_qr: Vector2i, end_pos_qr: Vector2i) -> Array[Vector2i]:
 	var temporarily_solid_hexes: Array[int] = []
 	for other_unit: UnitData in units.values():

@@ -24,11 +24,13 @@ var effects_: Dictionary[String,Array] = {}
 var charges_: int = 0
 var max_charges_: int = 0
 var refresh_policy_: RefreshPolicy = RefreshPolicy.ON_TURN_START
+var id_: int = -1
 
 func refresh():
 	charges_ = max_charges_
 
-func _init(name: String, ac_type: ActionType, max_charges: int):
+func _init(id: int, name: String, ac_type: ActionType, max_charges: int):
+	id_ = id
 	ability_name_ = name
 	action_type_ = ac_type
 	ui_name_ = name
@@ -44,9 +46,21 @@ func get_effect_groups_names() -> Array[String]:
 func has_optional_abilities() -> bool:
 	return false
 
-func get_effet_group_by_name(key: String) -> Array[Effect]:
+func get_num_effect_in_group(key: String) -> int:
+	if effects_.has(key):
+		return len(effects_[key])
+	else:
+		Utils.log_error("unkown effect group")
+		return 0
+		
+func _get_effet_group_by_name(key: String) -> Array[Effect]:
 	if effects_.has(key):
 		return effects_[key]
 	else:
 		Utils.log_error("unkown effect group")
 		return []
+
+func get_effect_by_id(group_name: String, id: int) -> Effect:
+	var effects = _get_effet_group_by_name(group_name)
+	return effects[id]
+	

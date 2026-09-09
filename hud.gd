@@ -11,6 +11,7 @@ class_name HUD
 @onready var movement_display_ = $Stats/HBoxContainer/Movement
 @onready var popup_menu_ = $PopupMenu
 @onready var popup_menu_list_ = $PopupMenu/VBoxContainer/List
+@onready var end_turn_button_ = $GeneralButtons/EndTurnButton
 var current_selected_unit: UnitData
 var current_player_turn_: int = -1
 
@@ -29,6 +30,8 @@ func _ready():
 	sub_ability_menu_.hide()
 	stats_menu_.hide()
 	popup_menu_.hide()
+	end_turn_button_.hide()
+	
 
 func clear_menu(menu: Container):
 	for child in menu.get_children():
@@ -72,10 +75,14 @@ func _on_reaction_button_pressed(reaction: ReactionManager.Reaction):
 	reaction_selected.emit(reaction)
 	
 func _on_start_round(round_number: int) -> void:
-	$HBoxContainer/RoundInfo.text = "round: %s" % round_number
+	$GeneralButtons/RoundInfo.text = "round: %s" % round_number
 
-func _on_start_turn(player_number: int) -> void:
+func _on_start_turn(player_number: int, peer_id: int) -> void:
 	current_player_turn_ = player_number
+	if multiplayer.get_unique_id() == peer_id:
+		end_turn_button_.show()
+	else:
+		end_turn_button_.hide()
 	$InfoBanner/InfoBannerTimer.start()
 	$InfoBanner.show()
 	$InfoBanner/RichTextLabel.text = "Player %s turn" % player_number

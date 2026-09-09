@@ -91,7 +91,7 @@ func handle_reaction(context: ActionContext, effect: Effect, reaction_params: Di
 		pop_player()
 		print("player executed reaction")
 
-func _on_start_turn(player_id: int):
+func _on_start_turn(player_id: int, peer_id: int):
 	if len(current_player_) > 1:
 		Utils.log_error("Reaction stack gone wild")
 	current_player_ = [player_id]

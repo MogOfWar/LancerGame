@@ -33,7 +33,11 @@ class WeaponInstance:
 		var text = "mount%s:%s \n weapon: %s" % [MechChassis.get_mount_type_name(mount_), index_, weapon_.weapon_name_]
 		return text
 
-var unit_id_: int = -1
+var unit_id_: int = -1:
+	get:
+		return unit_id_
+		
+		
 var abilities_: Array[Ability] = []
 var hp_: int = 10
 var structure_: int = 4
@@ -71,8 +75,15 @@ func refresh_action_points() -> void:
 	action_points_[Ability.ActionType.MOVEMENT] = 1000
 
 func add_ability(ability: Ability) -> void:
+	ability.id_ = len(abilities_)
 	abilities_.append(ability)
 	SignalBus.unit_gained_ability.emit(self, ability)
+
+func get_ability_by_id(id: int) -> Ability:
+	if id < 0 or id > len(abilities_):
+		Utils.log_error("invalid ability id")
+		return null
+	return abilities_[id]
 
 func _init(mech_type: MechChassis, pos_qr: Vector2i, height: float, player: PlayerController) -> void:
 	#first connect signals
@@ -88,9 +99,9 @@ func _init(mech_type: MechChassis, pos_qr: Vector2i, height: float, player: Play
 	refresh_action_points()
 	
 	#add abilties
-	add_ability(MoveAbility.new())
-	add_ability(SkirimishAbility.new(self))
-	add_ability(BraceAbility.new())
+	add_ability(MoveAbility.new(0))
+	add_ability(SkirimishAbility.new(1, self))
+	add_ability(BraceAbility.new(2))
 
 func _on_start_round(round_number: int) -> void:
 	refresh_action_points()

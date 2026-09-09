@@ -43,11 +43,37 @@ func end_round():
 	start_round()
 
 func start_turn():
-	SignalBus.start_turn.emit.call_deferred(current_player_turn_)
+	var player: PlayerController = get_player_by_id(current_player_turn_)
+	SignalBus.start_turn.emit.call_deferred(current_player_turn_, player.peer_id_)
 
-func _on_end_turn() -> void:
+
+func end_turn():
 	current_player_turn_ = current_player_turn_ + 1 
 	if current_player_turn_ == num_players_:
 		#end round
 		end_round()
+	_advance_turn.rpc(current_player_turn_, round_number_)
+
+# seperate function because clients might not hold right number of players
+@rpc("authority", "call_local", "reliable")
+func _advance_turn(current_player, round_number):
+	current_player_turn_ = current_player
+	round_number_ = round_number
 	start_turn()
+	
+@rpc("any_peer", "call_local", "reliable")
+func try_to_end_turn():
+	if not multiplayer.is_server():
+		return
+		
+	var sender_id = multiplayer.get_remote_sender_id()
+	var active_player = get_player_by_id(current_player_turn_)
+	
+	# Verify sender actually owns the active player controller
+	if active_player and active_player.peer_id_ == sender_id:
+		end_turn()
+	else:
+		Utils.log_error("Unauthorized end turn request from peer: %d" % sender_id)
+
+func _on_end_turn() -> void:
+	try_to_end_turn.rpc_id(1)
