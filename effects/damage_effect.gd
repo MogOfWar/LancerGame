@@ -26,9 +26,9 @@ func apply(action_context: ActionContext, target_hex: Vector2i):
 	for hex in affected_hexes:
 		var data: GameBoard.HexData = gb.get_hex_data(hex)
 		if data.unit != null:
-			SignalBus.unit_weapon_fire.emit(src_unit, data.unit)
 			var is_hit: bool = true
 			var is_crit: bool = false
+			var damage_val: int = 0
 			if src_unit.get_attack_override(): 
 				is_hit = true
 			elif data.unit.get_defense_override():
@@ -45,7 +45,7 @@ func apply(action_context: ActionContext, target_hex: Vector2i):
 				if attack_roll > 20:
 					is_crit = true
 				if is_hit: 
-					var damage_val: int = roll_damage()
+					damage_val = roll_damage()
 					if is_crit:
 						damage_val = max(damage_val, roll_damage())
 					await action_context.reaction_manager_.handle_reaction(
@@ -57,4 +57,4 @@ func apply(action_context: ActionContext, target_hex: Vector2i):
 						}
 						
 					)
-					level.event_manager_.handle_event(DamageEvent.new([data.unit.unit_id_, damage_val, damage_type_, is_crit]))
+				level.event_manager_.handle_event(DamageEvent.new([data.unit.unit_id_, src_unit.unit_id_, damage_val, damage_type_, is_hit, is_crit]))

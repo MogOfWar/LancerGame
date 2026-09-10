@@ -140,9 +140,26 @@ func sync_events(event_data: Array):
 			new_event = RollEvent.new(packet.slice(1, len(packet)))
 		elif type == Event.EventType.DAMAGE:
 			new_event = DamageEvent.new(packet.slice(1, len(packet)))
+		elif type == Event.EventType.STATUS:
+			new_event = StatusEvent.new(packet[1], StatusCondition.from_array(packet[2]))
 		else:
 			Utils.log_error("Unhandled sync event")
 		event_manager_.handle_event(new_event)
+
+@rpc("authority", "call_local", "reliable")
+func request_reaction(req_id:int, message: String, reaction_strings: Array[String]):
+	var player: HumanPlayerController = turn_manager_.get_player_by_peer_id(multiplayer.get_unique_id()) as HumanPlayerController
+	var reaction_id: int = await player.user_choose_reaction(message, reaction_strings)
+	recieve_reaction.rpc_id(1, req_id, reaction_id)
+	
+@rpc("any_peer", "call_local", "reliable")
+func recieve_reaction(req_id: int, reaction_id: int):
+	if not multiplayer.is_server():
+		return
+		
+	var sender_id = multiplayer.get_remote_sender_id()
+	var player: RemotePlayerController = turn_manager_.get_player_by_peer_id(sender_id) as RemotePlayerController
+	player.reaction_received.emit(req_id, reaction_id)
 	
 func _process(delta: float) -> void:
 	if len(event_manager_.events_) > last_sync_point_:

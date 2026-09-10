@@ -27,6 +27,15 @@ func get_player_by_id(id: int) -> PlayerController:
 	else:
 		Utils.log_error("Invalid player id")
 		return null
+		
+func get_player_by_peer_id(peer_id: int) -> PlayerController:
+	for player: PlayerController in players_.values():
+		if player.peer_id_ == peer_id:
+			return player
+		
+	Utils.log_error("player peer id %s unregisterd", peer_id)
+	return null
+	
 	
 # should be called after players were added
 func start_battle():

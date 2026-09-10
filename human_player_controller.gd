@@ -169,8 +169,13 @@ func handle_click(hex: Vector2i) -> void:
 				current_selected_hex_ = null
 				current_state_ = State.TARGETING_0
 				clicked_hex.emit(null)
-				
+
+func user_choose_reaction(reaction_msg: String, valid_reactions_string: Array[String]):
+	return await hud_.show_reaction_menu(reaction_msg, valid_reactions_string)
+
 func choose_reaction(context: ActionContext, src_ability: Ability, src_effect: Effect, reaction_params: Dictionary, reacting_unit: UnitData, valid_reactions: Array[ReactionManager.Reaction]):
-	var reaction = await hud_.show_reaction_menu(reacting_unit, valid_reactions)
-	return reaction
+	var reaction_strings = valid_reactions.map(func(x): x.ability.get_ui_string())
+	var message = "please select a reaction"
+	var reaction_id = await user_choose_reaction(message, reaction_strings)
+	return valid_reactions[reaction_id]
 				

@@ -13,6 +13,11 @@
 [ext_resource type="PackedScene" uid="uid://bpmkawp4exddv" path="res://input_manager.tscn" id="7_fa1qs"]
 [ext_resource type="PackedScene" uid="uid://cbs75d632et1c" path="res://visual_manager.tscn" id="7_ij4ns"]
 
+[sub_resource type="Environment" id="Environment_g4v7s"]
+glow_enabled = true
+glow_intensity = 0.79
+glow_bloom = 0.1
+
 [node name="Level" type="Node" unique_id=420519130]
 script = ExtResource("1_4drit")
 
@@ -52,6 +57,9 @@ shadow_enabled = true
 [node name="Entities" type="Node" parent="Visuals" unique_id=1877057957]
 
 [node name="VisualManager" parent="Visuals" unique_id=425750451 instance=ExtResource("7_ij4ns")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Visuals" unique_id=71478673]
+environment = SubResource("Environment_g4v7s")
 
 [node name="UI" type="Node" parent="." unique_id=1234916430]
 

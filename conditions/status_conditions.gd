@@ -43,3 +43,12 @@ func is_triggered_for_defense() -> bool:
 	
 func is_triggered_for_attack() -> bool:
 	return trigger_ == ConditionTrigger.ATTACK_TRIGGER or trigger_ == ConditionTrigger.ALL_CHECKS
+
+func serialize() -> Array:
+	return [type_, acc_modifer_, damage_type_, trigger_, time_]
+
+static func from_array(params: Array) -> StatusCondition:
+	var ret: StatusCondition = StatusCondition.new(params[0], params[3], params[4])
+	ret.acc_modifer_ = params[1]
+	ret.damage_type_ = params[2]
+	return ret

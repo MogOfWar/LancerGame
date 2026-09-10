@@ -6,7 +6,7 @@ signal unit_finished_ability(unit)
 signal unit_deselected(unit: UnitData)
 
 signal unit_attacking(unit: UnitData, hit: bool)
-signal unit_damaged(unit: UnitData, damage_val: int)
+signal unit_damaged(unit: UnitData, src_unit: UnitData, damage_val: int)
 signal unit_died(unit: UnitData)
 signal unit_action_selected(unit: UnitData, ability: Ability, sub_name: String)
 signal unit_gained_ability(unit: UnitData, ability: Ability)

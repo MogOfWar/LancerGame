@@ -59,20 +59,20 @@ func update_stats_menu(unit: UnitData) -> void:
 	actions_display_.text = ("Actions: None")
 	movement_display_.text = ("Movement: %s" % unit.get_movement_points())
 
-func show_reaction_menu(unit: UnitData, reactions: Array[ReactionManager.Reaction]) -> ReactionManager.Reaction:
+func show_reaction_menu(reaction_string: String, reactions: Array[String]) -> int:
 	for child in popup_menu_list_.get_children():
 			child.queue_free()
-	for reaction in reactions:
+	for i in range(len(reactions)):
 		var btn = Button.new()
-		btn.text = reaction.ability.get_ui_name()
-		btn.pressed.connect(_on_reaction_button_pressed.bind(reaction))
+		btn.text = reactions[i]
+		btn.pressed.connect(_on_reaction_button_pressed.bind(i))
 		popup_menu_list_.add_child(btn)
 	popup_menu_.show()
 	return await reaction_selected
 
-func _on_reaction_button_pressed(reaction: ReactionManager.Reaction):
+func _on_reaction_button_pressed(reaction_id: int):
 	popup_menu_.hide()
-	reaction_selected.emit(reaction)
+	reaction_selected.emit(reaction_id)
 	
 func _on_start_round(round_number: int) -> void:
 	$GeneralButtons/RoundInfo.text = "round: %s" % round_number

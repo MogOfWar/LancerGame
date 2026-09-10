@@ -89,7 +89,6 @@ var _barrier_acks: Dictionary = {}
 ## Call this from any host or client script to halt execution until ALL peers reach it.
 func reach_barrier(barrier_id: String) -> void:
 	var my_id = multiplayer.get_unique_id()
-	print("reached barrier: ", my_id)
 	if multiplayer.is_server():
 		_register_barrier_ack(barrier_id, my_id)
 	else:
@@ -114,7 +113,6 @@ func _register_barrier_ack(barrier_id: String, peer_id: int) -> void:
 		
 	if not _barrier_acks[barrier_id].has(peer_id):
 		_barrier_acks[barrier_id].append(peer_id)
-	print("barrier ack: ", _barrier_acks[barrier_id].size(), " ", connected_players.size(), " ", peer_id)
 	# Check if all connected peers have arrived at this barrier
 	if _barrier_acks[barrier_id].size() >= connected_players.size():
 		_barrier_acks.erase(barrier_id) # Clean up state
@@ -122,6 +120,5 @@ func _register_barrier_ack(barrier_id: String, peer_id: int) -> void:
 
 @rpc("authority", "call_local", "reliable")
 func _broadcast_release_barrier(barrier_id: String) -> void:
-	print("released barrier ", multiplayer.get_unique_id())
 	barrier_released.emit(barrier_id)
 	

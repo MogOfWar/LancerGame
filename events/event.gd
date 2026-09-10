@@ -6,7 +6,8 @@ enum EventType {
 	MOVE,
 	WEAPON_FIRE,
 	ROLL,
-	DAMAGE
+	DAMAGE,
+	STATUS
 }
 
 "const type_to_class_map = {

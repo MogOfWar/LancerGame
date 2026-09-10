@@ -47,8 +47,9 @@ func _on_vis_unit_spawned(unit: Unit) -> void:
 func _on_vis_unit_died(unit: Unit) -> void:
 	visual_registry.unregister(unit)
 
-func _on_unit_damaged(unit: UnitData, damage_val: int) -> void:
+func _on_unit_damaged(unit: UnitData, src_unit: UnitData, damage_val: int) -> void:
 	var visual_unit: Unit = visual_registry.get_mapping(unit)
+	var src_visual_unit: Unit = visual_registry.get_mapping(src_unit)
 	if not visual_unit:
 		Utils.log_error("error")
 		return
@@ -56,6 +57,8 @@ func _on_unit_damaged(unit: UnitData, damage_val: int) -> void:
 		"global_position" : visual_unit.global_position,
 		"text_to_show" : str(damage_val)
 	}
+	var vfx_call: Callable = VFXManager.spawn_hit_spark.bind(visual_unit.global_position + Vector3(0,1,0), visual_unit.global_position - src_visual_unit.global_position)
+	queue_.add_event(VFXVisualEvent.new(vfx_call))
 	queue_.add_event(FloatingTextVisualEvent.new(float_text_params))
 	queue_.add_event(UpdateWidgetVisualEvent.new(visual_unit))
 	
