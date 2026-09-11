@@ -1,7 +1,7 @@
 shader_type spatial;
 
 // Ensure vertex colors (your biomes) are passed to the fragment shader
-render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
+render_mode blend_mix, cull_back, diffuse_burley, specular_schlick_ggx;
 
 uniform float line_thickness : hint_range(0.0, 10.0) = 1.5;
 uniform vec4 line_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
@@ -20,7 +20,8 @@ void fragment() {
     float line_mask = 1.0 - smoothstep(0.0, pixel_size * line_thickness, dist_from_edge);
     
     // Mix the vertex color (COLOR.rgb) with the line color based on the mask
-    ALBEDO = mix(COLOR.rgb, line_color.rgb, line_mask);
+    ALBEDO = line_color.rgb;
+	ALPHA = line_mask * line_color.a;
 }
 
 //void light() {

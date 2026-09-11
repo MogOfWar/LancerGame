@@ -51,8 +51,8 @@ func get_height_from_index(hex_index: int) -> float:
 
 func get_height_from_cr(col: int, row: int) -> float:
 	var hex_index = row * width_ + col
-	return get_height_from_index(hex_index)
-
+	return get_height_from_index(hex_index) 
+	
 func get_height_from_qr(hex_qr: Vector2i) -> float:
 	var grid_index: int = get_grid_index(hex_qr)
 	return get_height_from_index(grid_index)

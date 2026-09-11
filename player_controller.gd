@@ -34,7 +34,7 @@ func execute_ability(ability: Ability, unit: UnitData, sub_name: String) -> void
 			level_.request_apply_effect.rpc_id(1, unit.unit_id_, ability.id_, sub_name, effect_id, picked_hexes)
 
 	game_board_.unit_finished_ability(unit, ability)
-	SignalBus.unit_finished_ability.emit(unit)
+	SignalBus.unit_finished_ability.emit(unit, ability)
 
 func execute_reaction(context: ActionContext, src_ability: Ability, src_effect: Effect, reaction_params: Dictionary, reacting_unit: UnitData, valid_reactions: Array[ReactionManager.Reaction]) -> void:
 	# Await user selection (UI popup or RPC packet)

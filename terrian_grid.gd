@@ -19,7 +19,7 @@ func initalize(grid: GridData) -> void:
 	grid_ = grid
 	render_tactical_grid(grid_)
 	generate_physics_grid(grid_)
-	
+	#generate_rectangle_hex_grid(grid_)
 			
 func finalize_mesh(st: SurfaceTool):
 	var new_mesh = st.commit()
@@ -50,8 +50,11 @@ func generate_rectangle_hex_grid(grid: GridData) -> void:
 			# This pushes the hex leftward on every other row.
 			var q = col - (row / 2) 
 			var r = row
-
-			draw_hex(st, q, r, current_vertex_index, grid.get_height_from_cr(col, row))
+			var offset = 0.1
+			if grid_.cells_[grid_._convert_axial_to_index(Vector2(q,r))].type == "Water":
+				offset = -0.1
+			
+			draw_hex(st, q, r, current_vertex_index, grid.get_height_from_cr(col, row) + offset)
 			current_vertex_index += 7
 			
 	# 3. Finalize the mesh
@@ -138,8 +141,8 @@ func render_tactical_grid(grid: GridData) -> void:
 		
 		var center_2d = HexUtils.axial_to_world(qr)
 		var pos := Vector3(center_2d.x, cell.height, center_2d.z) #[cite: 1, 2]
-		var hex_transform := Transform3D().scaled(Vector3(0.8, 0.8, 0.8)).translated(pos)
-		
+		var hex_transform := Transform3D().scaled(Vector3(0.85, 1, 0.85)).translated(pos)
+		#var hex_transform := Transform3D().translated(pos)
 		# --- TERRAIN MESH BUCKETING ---
 		if cell.type == "Forest":
 			transform_buckets["Grass"].append(hex_transform)
@@ -214,7 +217,7 @@ func generate_physics_grid(grid: GridData) -> void:
 		# Create the collision node
 		var collision_node = CollisionShape3D.new()
 		collision_node.shape = generate_hex_collision_shape()
-		
+		collision_node.visible = false
 		# Position it exactly where the MultiMesh instance is
 		var qr = HexUtils.arr_idx_to_axial(cell.x, cell.y)
 		var center_2d = HexUtils.axial_to_world(qr)

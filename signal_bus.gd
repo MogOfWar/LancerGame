@@ -2,7 +2,7 @@ extends Node
 
 # logic signals
 signal unit_selected(unit: UnitData)
-signal unit_finished_ability(unit)
+signal unit_finished_ability(unit: UnitData, ability: Ability)
 signal unit_deselected(unit: UnitData)
 
 signal unit_attacking(unit: UnitData, hit: bool)

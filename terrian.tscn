@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://nmm557bjwm75" path="res://terrian_grid.gd" id="1_8xpmn"]
 [ext_resource type="Shader" uid="uid://dv4k873c86odx" path="res://terrian.gdshader" id="1_ktu6h"]
 [ext_resource type="Script" uid="uid://4wes10opnp81" path="res://terrain/noise_grid.gd" id="2_8xpmn"]
+[ext_resource type="Script" uid="uid://b22gi878ajvuh" path="res://terrain/cell_data.gd" id="2_jeg6a"]
 
 [sub_resource type="Resource" id="Resource_jeg6a"]
 script = ExtResource("2_8xpmn")
@@ -12,7 +13,7 @@ height_ = 10
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ld24l"]
 render_priority = 0
 shader = ExtResource("1_ktu6h")
-shader_parameter/line_thickness = 1.5
+shader_parameter/line_thickness = 3.0000001425
 shader_parameter/line_color = Color(0, 0, 0, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_8xpmn"]
@@ -33,6 +34,5 @@ script = ExtResource("1_8xpmn")
 grid_ = SubResource("Resource_jeg6a")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2018636715]
-visible = false
 material_override = SubResource("ShaderMaterial_ld24l")
 mesh = SubResource("ArrayMesh_8xpmn")

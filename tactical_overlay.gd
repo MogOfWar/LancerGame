@@ -10,6 +10,7 @@ class HighlightShape:
 enum CursorGroup {
 	ACTIVE = 0,
 	PREVIEW = 1,
+	SELECTION = 2,
 	
 	NUM_CONTAINERS
 }
@@ -20,6 +21,7 @@ enum CursorGroup {
 @onready var single_hex_cursor: Node3D = $HexCursor
 @onready var active_container = $ActiveCursorsContainer
 @onready var preview_container = $PreviewCursorsContainer
+@onready var selection_container = $SelectCursorsContainer
 @onready var breadcrumb_container: Node3D = $BreadcrumbContainer
 
 # Tracks the hex currently under the mouse to prevent redundant animations
@@ -34,6 +36,7 @@ func _ready() -> void:
 	containers_.resize(CursorGroup.NUM_CONTAINERS)
 	containers_[CursorGroup.ACTIVE] = active_container
 	containers_[CursorGroup.PREVIEW] = preview_container
+	containers_[CursorGroup.SELECTION] = selection_container
 	path_overlay_ = path_overlay_scene_.instantiate()
 	add_child(path_overlay_)
 	
@@ -46,7 +49,7 @@ func draw_highlights(hexes_to_draw_qr: Array[Vector2i], color: Color, cursor_gro
 	if len(hexes_to_draw_qr) == 0:
 		#hide everything has cursor off map
 		single_hex_cursor.visible = false
-	elif len(hexes_to_draw_qr) == 1:
+	elif len(hexes_to_draw_qr) == -1:
 		single_hex_cursor.visible = true
 		single_hex_cursor.global_position = convert_hex_to_terrain_coords(hexes_to_draw_qr[0])
 	else:

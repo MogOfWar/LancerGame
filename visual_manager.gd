@@ -1,8 +1,6 @@
 extends Node
 class_name VisualManager
 
-var queue_: VisualQueue = VisualQueue.new()
-
 class VisualRegistry:
 	var registry_: Dictionary = {}
 	static var _mutex: Mutex = Mutex.new()
@@ -24,7 +22,10 @@ class VisualRegistry:
 		var ret = registry_.get_or_add(src, null)
 		_mutex.unlock()
 		return ret
-		
+
+var queue_: VisualQueue = VisualQueue.new()
+var curr_select_unit_: UnitData = null
+var tactical_overlay_: TacticalOverlay = null		
 static var visual_registry: VisualRegistry = VisualRegistry.new()
 
 # Called when the node enters the scene tree for the first time.
@@ -33,8 +34,26 @@ func _ready() -> void:
 	SignalBus.vis_unit_spawned.connect(_on_vis_unit_spawned)
 	SignalBus.unit_moved.connect(_on_unit_moved)
 	SignalBus.unit_weapon_fire.connect(_on_unit_weapon_fire)
+	SignalBus.unit_selected.connect(_on_unit_selected)
+	SignalBus.unit_finished_ability.connect(_on_unit_finished_ability)
 	pass # Replace with function body.
 
+func _on_unit_finished_ability(unit: UnitData, ability: Ability):
+	if ability.action_type_ == Ability.ActionType.MOVEMENT:
+		if unit == curr_select_unit_:
+			var method: Callable = draw_unit_selection.bind(unit.get_pos_qr())
+			queue_.add_event(VFXVisualEvent.new(method))
+
+func draw_unit_selection(unit_pos_qr: Vector2):
+	var tactical_overlay: TacticalOverlay = Level.get_current_level().get_node("Visuals/TacticalOverlay")
+	tactical_overlay.draw_highlights([unit_pos_qr], Color.AQUA, TacticalOverlay.CursorGroup.SELECTION)
+
+func _on_unit_selected(unit: UnitData):
+	curr_select_unit_ = unit
+	var qr = unit.get_pos_qr()
+	draw_unit_selection(qr)
+	
+	
 
 func _on_unit_weapon_fire(attacking_unit: UnitData, target_unit: UnitData) -> void:
 	var visual_unit: Unit = visual_registry.get_mapping(attacking_unit)
@@ -67,6 +86,9 @@ func _process(delta: float) -> void:
 	pass
 	
 func _on_unit_moved(unit: UnitData, src_hex_qry: Vector3, dst_hex_qry: Vector3):
+	if unit == curr_select_unit_:
+		var tactical_overlay: TacticalOverlay = Level.get_current_level().get_node("Visuals/TacticalOverlay")
+		tactical_overlay.clear_highlighters(TacticalOverlay.CursorGroup.SELECTION)
 	var vis_unit: Unit = visual_registry.get_mapping(unit)
 	var move_params = {
 		"unit": vis_unit,
@@ -74,3 +96,4 @@ func _on_unit_moved(unit: UnitData, src_hex_qry: Vector3, dst_hex_qry: Vector3):
 		"dst": dst_hex_qry
 	}
 	queue_.add_event(MoveVisualEvent.new(move_params))
+	

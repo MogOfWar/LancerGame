@@ -1,90 +1,90 @@
 [gd_scene format=3 uid="uid://bhlij1upffqrd"]
 
-[ext_resource type="Script" uid="uid://dbprfsv85ly28" path="res://tools/terrain_editor.gd" id="1_ttjd6"]
-[ext_resource type="Script" uid="uid://4wes10opnp81" path="res://terrain/noise_grid.gd" id="2_ahrcy"]
-[ext_resource type="Script" uid="uid://b22gi878ajvuh" path="res://terrain/cell_data.gd" id="2_tl7o3"]
-[ext_resource type="ArrayMesh" uid="uid://it5hpv8au6g" path="res://art/hex_grass.res" id="3_o7rcd"]
-[ext_resource type="Texture2D" uid="uid://c1ysgherrk01s" path="res://art/bipedal_mech_with_an_wea-Idle.png" id="5_5rybn"]
-[ext_resource type="ArrayMesh" uid="uid://c7prcucf20jj4" path="res://art/hex_water.res" id="5_5sufr"]
+[ext_resource type="Script" uid="uid://dbprfsv85ly28" path="res://tools/terrain_editor.gd" id="1_irt87"]
+[ext_resource type="Script" uid="uid://b22gi878ajvuh" path="res://terrain/cell_data.gd" id="2_wudew"]
+[ext_resource type="Script" uid="uid://4wes10opnp81" path="res://terrain/noise_grid.gd" id="3_m13xx"]
+[ext_resource type="ArrayMesh" uid="uid://c7prcucf20jj4" path="res://art/hex_water.res" id="4_etxth"]
+[ext_resource type="ArrayMesh" uid="uid://it5hpv8au6g" path="res://art/hex_grass.res" id="5_1k2qf"]
+[ext_resource type="Texture2D" uid="uid://c1ysgherrk01s" path="res://art/bipedal_mech_with_an_wea-Idle.png" id="6_p2vdj"]
 
 [sub_resource type="Resource" id="Resource_vjxp1"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 height = 0.6
 cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_ro2qm"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 1
 height = 0.65
 cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_0idto"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 2
 height = 0.7
 cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_egskd"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 3
 height = 0.65
 cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_43xw7"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 4
 height = 0.7
 cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_mhfd3"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 5
 height = 0.7
 cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_874g4"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 6
 height = 0.6
 cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_sredt"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 7
 height = 0.65
 cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_uuk00"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 8
 height = 0.6
 cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_dddec"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 9
 height = 0.6
 cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_k4dor"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 y = 1
 height = 0.6
 cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_tqrjp"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 1
 y = 1
 height = 0.75
@@ -92,7 +92,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_qhmdf"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 2
 y = 1
 height = 0.8
@@ -100,7 +100,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_egmp6"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 3
 y = 1
 height = 0.75
@@ -108,7 +108,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_0c4cb"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 4
 y = 1
 height = 0.75
@@ -116,7 +116,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_r7ner"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 5
 y = 1
 height = 0.7
@@ -124,7 +124,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_hqyaa"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 6
 y = 1
 height = 0.65
@@ -132,7 +132,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_4bjhy"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 7
 y = 1
 height = 0.7
@@ -140,7 +140,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_ysy4k"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 8
 y = 1
 height = 0.7
@@ -148,7 +148,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_e06hk"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 9
 y = 1
 height = 0.6
@@ -156,14 +156,14 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_eadtf"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 y = 2
 height = 0.6
 cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_7eh1i"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 1
 y = 2
 height = 0.75
@@ -171,7 +171,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_vfy21"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 2
 y = 2
 height = 0.8
@@ -179,7 +179,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_8m0u4"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 3
 y = 2
 height = 0.75
@@ -187,7 +187,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_ylvfb"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 4
 y = 2
 height = 0.7
@@ -195,7 +195,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_ixpeh"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 5
 y = 2
 height = 0.7
@@ -203,7 +203,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_cgs4m"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 6
 y = 2
 height = 0.7
@@ -211,7 +211,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_eq2mh"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 7
 y = 2
 height = 0.7
@@ -219,7 +219,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_ff7uh"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 8
 y = 2
 height = 0.7
@@ -227,7 +227,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_qeel1"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 9
 y = 2
 height = 0.6
@@ -235,14 +235,14 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_m3yap"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 y = 3
 height = 0.65
 cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_g3u48"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 1
 y = 3
 height = 0.75
@@ -250,7 +250,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_onoiy"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 2
 y = 3
 height = 0.8
@@ -258,7 +258,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_5i1qt"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 3
 y = 3
 height = 0.75
@@ -266,7 +266,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_k4vp2"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 4
 y = 3
 height = 0.65
@@ -274,7 +274,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_h1b1x"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 5
 y = 3
 height = 0.7
@@ -282,7 +282,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_47txm"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 6
 y = 3
 height = 0.75
@@ -290,7 +290,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_j1d1k"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 7
 y = 3
 height = 0.75
@@ -298,7 +298,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_s8vef"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 8
 y = 3
 height = 0.7
@@ -306,7 +306,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_8yqep"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 9
 y = 3
 height = 0.6
@@ -314,14 +314,14 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_tc2yc"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 y = 4
 height = 0.75
 cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_65ow0"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 1
 y = 4
 height = 0.8
@@ -329,7 +329,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_fc3re"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 2
 y = 4
 height = 0.8
@@ -337,7 +337,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_jvkvx"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 3
 y = 4
 height = 0.7
@@ -345,7 +345,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_s8tgw"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 4
 y = 4
 height = 0.7
@@ -353,7 +353,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_gdtvj"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 5
 y = 4
 height = 0.65
@@ -361,7 +361,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_bpvbg"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 6
 y = 4
 height = 0.7
@@ -369,7 +369,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_hgqxx"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 7
 y = 4
 height = 0.75
@@ -377,7 +377,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_5et1n"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 8
 y = 4
 height = 0.7
@@ -385,7 +385,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_f5xk5"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 9
 y = 4
 height = 0.6
@@ -393,14 +393,14 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_j33mj"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 y = 5
 height = 0.85
 cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_st4fh"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 1
 y = 5
 height = 0.8
@@ -408,7 +408,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_hc6na"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 2
 y = 5
 height = 0.75
@@ -416,7 +416,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_4bchr"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 3
 y = 5
 height = 0.65
@@ -424,7 +424,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_bfxhh"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 4
 y = 5
 height = 0.6
@@ -432,7 +432,7 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_8htlm"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 5
 y = 5
 height = 0.6
@@ -440,7 +440,7 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_p81nf"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 6
 y = 5
 height = 0.7
@@ -448,7 +448,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_j14gi"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 7
 y = 5
 height = 0.75
@@ -456,7 +456,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_dmhn4"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 8
 y = 5
 height = 0.7
@@ -464,7 +464,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_otuso"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 9
 y = 5
 height = 0.6
@@ -472,14 +472,14 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_lae8m"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 y = 6
 height = 0.75
 cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_eqymd"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 1
 y = 6
 height = 0.75
@@ -487,7 +487,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_6ajpq"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 2
 y = 6
 height = 0.7
@@ -495,7 +495,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_whsbl"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 3
 y = 6
 height = 0.65
@@ -503,7 +503,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_ctl5j"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 4
 y = 6
 height = 0.6
@@ -511,7 +511,7 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_hh5j5"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 5
 y = 6
 height = 0.65
@@ -519,7 +519,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_2gler"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 6
 y = 6
 height = 0.7
@@ -527,7 +527,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_gk67n"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 7
 y = 6
 height = 0.75
@@ -535,7 +535,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_p84ie"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 8
 y = 6
 height = 0.65
@@ -543,7 +543,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_6f63r"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 9
 y = 6
 height = 0.65
@@ -551,14 +551,14 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_kygyu"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 y = 7
 height = 0.75
 cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_t2eqd"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 1
 y = 7
 height = 0.7
@@ -566,7 +566,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_k0stb"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 2
 y = 7
 height = 0.65
@@ -574,7 +574,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_cmil0"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 3
 y = 7
 height = 0.65
@@ -582,7 +582,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_gko3n"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 4
 y = 7
 height = 0.6
@@ -590,7 +590,7 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_qdgwp"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 5
 y = 7
 height = 0.65
@@ -598,7 +598,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_h5itf"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 6
 y = 7
 height = 0.7
@@ -606,7 +606,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_fli2s"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 7
 y = 7
 height = 0.7
@@ -614,7 +614,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_no8jv"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 8
 y = 7
 height = 0.6
@@ -622,7 +622,7 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_qbgcn"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 9
 y = 7
 height = 0.6
@@ -630,14 +630,14 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_thr7e"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 y = 8
 height = 0.75
 cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_jmamx"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 1
 y = 8
 height = 0.7
@@ -645,7 +645,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_1yvd4"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 2
 y = 8
 height = 0.65
@@ -653,7 +653,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_ghey5"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 3
 y = 8
 height = 0.6
@@ -661,7 +661,7 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_yu0s0"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 4
 y = 8
 height = 0.6
@@ -669,7 +669,7 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_qas12"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 5
 y = 8
 height = 0.65
@@ -677,7 +677,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_sm6l7"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 6
 y = 8
 height = 0.65
@@ -685,7 +685,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_jcrbs"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 7
 y = 8
 height = 0.65
@@ -693,7 +693,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_fk466"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 8
 y = 8
 height = 0.6
@@ -701,7 +701,7 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_ec4pr"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 9
 y = 8
 height = 0.6
@@ -709,14 +709,14 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_k35qu"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 y = 9
 height = 0.7
 cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_bypav"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 1
 y = 9
 height = 0.7
@@ -724,7 +724,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_ehm0q"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 2
 y = 9
 height = 0.6
@@ -732,7 +732,7 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_tjf02"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 3
 y = 9
 height = 0.6
@@ -740,7 +740,7 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_k2jns"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 4
 y = 9
 height = 0.6
@@ -748,7 +748,7 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_igcjl"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 5
 y = 9
 height = 0.65
@@ -756,7 +756,7 @@ cost = 1.0
 type = "Grass"
 
 [sub_resource type="Resource" id="Resource_x8png"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 6
 y = 9
 height = 0.65
@@ -764,7 +764,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_tupv8"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 7
 y = 9
 height = 0.65
@@ -772,7 +772,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_fg8ta"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 8
 y = 9
 height = 0.65
@@ -780,7 +780,7 @@ cost = 1.5
 type = "Forest"
 
 [sub_resource type="Resource" id="Resource_o7wpx"]
-script = ExtResource("2_tl7o3")
+script = ExtResource("2_wudew")
 x = 9
 y = 9
 height = 0.6
@@ -788,45 +788,45 @@ cost = 1.0
 type = "Water"
 
 [sub_resource type="Resource" id="Resource_tl7o3"]
-script = ExtResource("2_ahrcy")
+script = ExtResource("3_m13xx")
 width_ = 10
 height_ = 10
-cells_ = Array[ExtResource("2_tl7o3")]([SubResource("Resource_vjxp1"), SubResource("Resource_ro2qm"), SubResource("Resource_0idto"), SubResource("Resource_egskd"), SubResource("Resource_43xw7"), SubResource("Resource_mhfd3"), SubResource("Resource_874g4"), SubResource("Resource_sredt"), SubResource("Resource_uuk00"), SubResource("Resource_dddec"), SubResource("Resource_k4dor"), SubResource("Resource_tqrjp"), SubResource("Resource_qhmdf"), SubResource("Resource_egmp6"), SubResource("Resource_0c4cb"), SubResource("Resource_r7ner"), SubResource("Resource_hqyaa"), SubResource("Resource_4bjhy"), SubResource("Resource_ysy4k"), SubResource("Resource_e06hk"), SubResource("Resource_eadtf"), SubResource("Resource_7eh1i"), SubResource("Resource_vfy21"), SubResource("Resource_8m0u4"), SubResource("Resource_ylvfb"), SubResource("Resource_ixpeh"), SubResource("Resource_cgs4m"), SubResource("Resource_eq2mh"), SubResource("Resource_ff7uh"), SubResource("Resource_qeel1"), SubResource("Resource_m3yap"), SubResource("Resource_g3u48"), SubResource("Resource_onoiy"), SubResource("Resource_5i1qt"), SubResource("Resource_k4vp2"), SubResource("Resource_h1b1x"), SubResource("Resource_47txm"), SubResource("Resource_j1d1k"), SubResource("Resource_s8vef"), SubResource("Resource_8yqep"), SubResource("Resource_tc2yc"), SubResource("Resource_65ow0"), SubResource("Resource_fc3re"), SubResource("Resource_jvkvx"), SubResource("Resource_s8tgw"), SubResource("Resource_gdtvj"), SubResource("Resource_bpvbg"), SubResource("Resource_hgqxx"), SubResource("Resource_5et1n"), SubResource("Resource_f5xk5"), SubResource("Resource_j33mj"), SubResource("Resource_st4fh"), SubResource("Resource_hc6na"), SubResource("Resource_4bchr"), SubResource("Resource_bfxhh"), SubResource("Resource_8htlm"), SubResource("Resource_p81nf"), SubResource("Resource_j14gi"), SubResource("Resource_dmhn4"), SubResource("Resource_otuso"), SubResource("Resource_lae8m"), SubResource("Resource_eqymd"), SubResource("Resource_6ajpq"), SubResource("Resource_whsbl"), SubResource("Resource_ctl5j"), SubResource("Resource_hh5j5"), SubResource("Resource_2gler"), SubResource("Resource_gk67n"), SubResource("Resource_p84ie"), SubResource("Resource_6f63r"), SubResource("Resource_kygyu"), SubResource("Resource_t2eqd"), SubResource("Resource_k0stb"), SubResource("Resource_cmil0"), SubResource("Resource_gko3n"), SubResource("Resource_qdgwp"), SubResource("Resource_h5itf"), SubResource("Resource_fli2s"), SubResource("Resource_no8jv"), SubResource("Resource_qbgcn"), SubResource("Resource_thr7e"), SubResource("Resource_jmamx"), SubResource("Resource_1yvd4"), SubResource("Resource_ghey5"), SubResource("Resource_yu0s0"), SubResource("Resource_qas12"), SubResource("Resource_sm6l7"), SubResource("Resource_jcrbs"), SubResource("Resource_fk466"), SubResource("Resource_ec4pr"), SubResource("Resource_k35qu"), SubResource("Resource_bypav"), SubResource("Resource_ehm0q"), SubResource("Resource_tjf02"), SubResource("Resource_k2jns"), SubResource("Resource_igcjl"), SubResource("Resource_x8png"), SubResource("Resource_tupv8"), SubResource("Resource_fg8ta"), SubResource("Resource_o7wpx")])
+cells_ = Array[ExtResource("2_wudew")]([SubResource("Resource_vjxp1"), SubResource("Resource_ro2qm"), SubResource("Resource_0idto"), SubResource("Resource_egskd"), SubResource("Resource_43xw7"), SubResource("Resource_mhfd3"), SubResource("Resource_874g4"), SubResource("Resource_sredt"), SubResource("Resource_uuk00"), SubResource("Resource_dddec"), SubResource("Resource_k4dor"), SubResource("Resource_tqrjp"), SubResource("Resource_qhmdf"), SubResource("Resource_egmp6"), SubResource("Resource_0c4cb"), SubResource("Resource_r7ner"), SubResource("Resource_hqyaa"), SubResource("Resource_4bjhy"), SubResource("Resource_ysy4k"), SubResource("Resource_e06hk"), SubResource("Resource_eadtf"), SubResource("Resource_7eh1i"), SubResource("Resource_vfy21"), SubResource("Resource_8m0u4"), SubResource("Resource_ylvfb"), SubResource("Resource_ixpeh"), SubResource("Resource_cgs4m"), SubResource("Resource_eq2mh"), SubResource("Resource_ff7uh"), SubResource("Resource_qeel1"), SubResource("Resource_m3yap"), SubResource("Resource_g3u48"), SubResource("Resource_onoiy"), SubResource("Resource_5i1qt"), SubResource("Resource_k4vp2"), SubResource("Resource_h1b1x"), SubResource("Resource_47txm"), SubResource("Resource_j1d1k"), SubResource("Resource_s8vef"), SubResource("Resource_8yqep"), SubResource("Resource_tc2yc"), SubResource("Resource_65ow0"), SubResource("Resource_fc3re"), SubResource("Resource_jvkvx"), SubResource("Resource_s8tgw"), SubResource("Resource_gdtvj"), SubResource("Resource_bpvbg"), SubResource("Resource_hgqxx"), SubResource("Resource_5et1n"), SubResource("Resource_f5xk5"), SubResource("Resource_j33mj"), SubResource("Resource_st4fh"), SubResource("Resource_hc6na"), SubResource("Resource_4bchr"), SubResource("Resource_bfxhh"), SubResource("Resource_8htlm"), SubResource("Resource_p81nf"), SubResource("Resource_j14gi"), SubResource("Resource_dmhn4"), SubResource("Resource_otuso"), SubResource("Resource_lae8m"), SubResource("Resource_eqymd"), SubResource("Resource_6ajpq"), SubResource("Resource_whsbl"), SubResource("Resource_ctl5j"), SubResource("Resource_hh5j5"), SubResource("Resource_2gler"), SubResource("Resource_gk67n"), SubResource("Resource_p84ie"), SubResource("Resource_6f63r"), SubResource("Resource_kygyu"), SubResource("Resource_t2eqd"), SubResource("Resource_k0stb"), SubResource("Resource_cmil0"), SubResource("Resource_gko3n"), SubResource("Resource_qdgwp"), SubResource("Resource_h5itf"), SubResource("Resource_fli2s"), SubResource("Resource_no8jv"), SubResource("Resource_qbgcn"), SubResource("Resource_thr7e"), SubResource("Resource_jmamx"), SubResource("Resource_1yvd4"), SubResource("Resource_ghey5"), SubResource("Resource_yu0s0"), SubResource("Resource_qas12"), SubResource("Resource_sm6l7"), SubResource("Resource_jcrbs"), SubResource("Resource_fk466"), SubResource("Resource_ec4pr"), SubResource("Resource_k35qu"), SubResource("Resource_bypav"), SubResource("Resource_ehm0q"), SubResource("Resource_tjf02"), SubResource("Resource_k2jns"), SubResource("Resource_igcjl"), SubResource("Resource_x8png"), SubResource("Resource_tupv8"), SubResource("Resource_fg8ta"), SubResource("Resource_o7wpx")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5sufr"]
-atlas = ExtResource("5_5rybn")
+atlas = ExtResource("6_p2vdj")
 region = Rect2(0, 0, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cub4p"]
-atlas = ExtResource("5_5rybn")
+atlas = ExtResource("6_p2vdj")
 region = Rect2(0, 68, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jnnoe"]
-atlas = ExtResource("5_5rybn")
+atlas = ExtResource("6_p2vdj")
 region = Rect2(68, 68, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mdj8d"]
-atlas = ExtResource("5_5rybn")
+atlas = ExtResource("6_p2vdj")
 region = Rect2(136, 68, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_le0qt"]
-atlas = ExtResource("5_5rybn")
+atlas = ExtResource("6_p2vdj")
 region = Rect2(204, 68, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7dwxt"]
-atlas = ExtResource("5_5rybn")
+atlas = ExtResource("6_p2vdj")
 region = Rect2(272, 68, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w5uau"]
-atlas = ExtResource("5_5rybn")
+atlas = ExtResource("6_p2vdj")
 region = Rect2(340, 68, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_345w4"]
-atlas = ExtResource("5_5rybn")
+atlas = ExtResource("6_p2vdj")
 region = Rect2(408, 68, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d7jxj"]
-atlas = ExtResource("5_5rybn")
+atlas = ExtResource("6_p2vdj")
 region = Rect2(476, 68, 68, 68)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yf5fn"]
@@ -865,7 +865,7 @@ animations = [{
 }]
 
 [node name="Node3D" type="Node3D" unique_id=846666774]
-script = ExtResource("1_ttjd6")
+script = ExtResource("1_irt87")
 grid_ = SubResource("Resource_tl7o3")
 mode = 0
 sea_level_ = 0.6
@@ -874,403 +874,403 @@ sea_level_ = 0.6
 
 [node name="@MeshInstance3D@37094" type="MeshInstance3D" parent="Entities" unique_id=889360236]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37096" type="MeshInstance3D" parent="Entities" unique_id=544702545]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0.65, 0)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37098" type="MeshInstance3D" parent="Entities" unique_id=1431780328]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0.7, 0)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37099" type="MeshInstance3D" parent="Entities" unique_id=2076428164]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0.65, 0)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37100" type="MeshInstance3D" parent="Entities" unique_id=1558696995]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.928203, 0.7, 0)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37102" type="MeshInstance3D" parent="Entities" unique_id=1009706391]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.6602545, 0.7, 0)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37103" type="MeshInstance3D" parent="Entities" unique_id=73562461]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.392304, 0.6, 0)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37105" type="MeshInstance3D" parent="Entities" unique_id=1791971820]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.124355, 0.65, 0)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37106" type="MeshInstance3D" parent="Entities" unique_id=2054365058]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.856406, 0.6, 0)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37107" type="MeshInstance3D" parent="Entities" unique_id=1580950024]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.588457, 0.6, 0)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37108" type="MeshInstance3D" parent="Entities" unique_id=1525620125]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8660254, 0.6, 1.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37110" type="MeshInstance3D" parent="Entities" unique_id=789486915]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.598076, 0.75, 1.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37112" type="MeshInstance3D" parent="Entities" unique_id=737571151]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3301272, 0.8, 1.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37113" type="MeshInstance3D" parent="Entities" unique_id=1659749753]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0621777, 0.75, 1.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37114" type="MeshInstance3D" parent="Entities" unique_id=1156865937]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7942286, 0.75, 1.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37116" type="MeshInstance3D" parent="Entities" unique_id=617106661]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.526279, 0.7, 1.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37118" type="MeshInstance3D" parent="Entities" unique_id=446381343]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.25833, 0.65, 1.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37119" type="MeshInstance3D" parent="Entities" unique_id=883796845]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.990381, 0.7, 1.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37120" type="MeshInstance3D" parent="Entities" unique_id=2079731375]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.722432, 0.7, 1.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37121" type="MeshInstance3D" parent="Entities" unique_id=571114036]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.454483, 0.6, 1.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37122" type="MeshInstance3D" parent="Entities" unique_id=2081126743]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 3)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37124" type="MeshInstance3D" parent="Entities" unique_id=1941741453]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0.75, 3)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37125" type="MeshInstance3D" parent="Entities" unique_id=1775430122]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0.8, 3)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37126" type="MeshInstance3D" parent="Entities" unique_id=1645000507]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0.75, 3)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37128" type="MeshInstance3D" parent="Entities" unique_id=213038943]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.928203, 0.7, 3)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37130" type="MeshInstance3D" parent="Entities" unique_id=616618757]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.6602545, 0.7, 3)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37131" type="MeshInstance3D" parent="Entities" unique_id=1309837346]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.392304, 0.7, 3)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37132" type="MeshInstance3D" parent="Entities" unique_id=431266030]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.124355, 0.7, 3)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37133" type="MeshInstance3D" parent="Entities" unique_id=1819252898]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.856406, 0.7, 3)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37134" type="MeshInstance3D" parent="Entities" unique_id=1689897389]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.588457, 0.6, 3)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37136" type="MeshInstance3D" parent="Entities" unique_id=697835516]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8660254, 0.65, 4.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37138" type="MeshInstance3D" parent="Entities" unique_id=361032828]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.598076, 0.75, 4.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37139" type="MeshInstance3D" parent="Entities" unique_id=1323621648]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3301272, 0.8, 4.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37140" type="MeshInstance3D" parent="Entities" unique_id=1307418365]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0621777, 0.75, 4.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37141" type="MeshInstance3D" parent="Entities" unique_id=127239076]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7942286, 0.65, 4.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37143" type="MeshInstance3D" parent="Entities" unique_id=2048306217]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.526279, 0.7, 4.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37144" type="MeshInstance3D" parent="Entities" unique_id=2121810146]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.25833, 0.75, 4.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37145" type="MeshInstance3D" parent="Entities" unique_id=1842503880]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.990381, 0.75, 4.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37146" type="MeshInstance3D" parent="Entities" unique_id=1111983068]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.722432, 0.7, 4.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37147" type="MeshInstance3D" parent="Entities" unique_id=1630008906]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.454483, 0.6, 4.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37149" type="MeshInstance3D" parent="Entities" unique_id=694500432]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 6)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37150" type="MeshInstance3D" parent="Entities" unique_id=2145359212]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0.8, 6)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37151" type="MeshInstance3D" parent="Entities" unique_id=1219901385]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0.8, 6)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37152" type="MeshInstance3D" parent="Entities" unique_id=585193967]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0.7, 6)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37153" type="MeshInstance3D" parent="Entities" unique_id=575898751]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.928203, 0.7, 6)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37154" type="MeshInstance3D" parent="Entities" unique_id=1270168025]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.6602545, 0.65, 6)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37156" type="MeshInstance3D" parent="Entities" unique_id=208862682]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.392304, 0.7, 6)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37157" type="MeshInstance3D" parent="Entities" unique_id=1214393440]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.124355, 0.75, 6)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37158" type="MeshInstance3D" parent="Entities" unique_id=185259786]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.856406, 0.7, 6)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37159" type="MeshInstance3D" parent="Entities" unique_id=2065566197]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.588457, 0.6, 6)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37161" type="MeshInstance3D" parent="Entities" unique_id=238629566]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8660254, 0.85, 7.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37162" type="MeshInstance3D" parent="Entities" unique_id=1661999140]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.598076, 0.8, 7.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37163" type="MeshInstance3D" parent="Entities" unique_id=38163133]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3301272, 0.75, 7.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37164" type="MeshInstance3D" parent="Entities" unique_id=131852362]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0621777, 0.65, 7.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37165" type="MeshInstance3D" parent="Entities" unique_id=1076398394]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7942286, 0.6, 7.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37166" type="MeshInstance3D" parent="Entities" unique_id=1311125093]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.526279, 0.6, 7.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37167" type="MeshInstance3D" parent="Entities" unique_id=887147164]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.25833, 0.7, 7.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37168" type="MeshInstance3D" parent="Entities" unique_id=1499785736]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.990381, 0.75, 7.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37169" type="MeshInstance3D" parent="Entities" unique_id=66477065]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.722432, 0.7, 7.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37170" type="MeshInstance3D" parent="Entities" unique_id=563434086]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.454483, 0.6, 7.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37171" type="MeshInstance3D" parent="Entities" unique_id=1257487842]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 9)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37172" type="MeshInstance3D" parent="Entities" unique_id=741725330]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0.75, 9)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37173" type="MeshInstance3D" parent="Entities" unique_id=1033574643]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0.7, 9)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37174" type="MeshInstance3D" parent="Entities" unique_id=129826982]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0.65, 9)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37175" type="MeshInstance3D" parent="Entities" unique_id=159658575]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.928203, 0.6, 9)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37176" type="MeshInstance3D" parent="Entities" unique_id=328942058]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.6602545, 0.65, 9)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37177" type="MeshInstance3D" parent="Entities" unique_id=1051551245]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.392304, 0.7, 9)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37178" type="MeshInstance3D" parent="Entities" unique_id=12037392]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.124355, 0.75, 9)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37179" type="MeshInstance3D" parent="Entities" unique_id=1190136204]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.856406, 0.65, 9)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37180" type="MeshInstance3D" parent="Entities" unique_id=1344008152]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.588457, 0.65, 9)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37181" type="MeshInstance3D" parent="Entities" unique_id=769178361]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8660254, 0.75, 10.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37182" type="MeshInstance3D" parent="Entities" unique_id=388916544]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.598076, 0.7, 10.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37183" type="MeshInstance3D" parent="Entities" unique_id=1840916228]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3301272, 0.65, 10.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37184" type="MeshInstance3D" parent="Entities" unique_id=1466716445]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0621777, 0.65, 10.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37185" type="MeshInstance3D" parent="Entities" unique_id=2125029210]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7942286, 0.6, 10.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37186" type="MeshInstance3D" parent="Entities" unique_id=1439265644]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.526279, 0.65, 10.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37187" type="MeshInstance3D" parent="Entities" unique_id=2117152474]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.25833, 0.7, 10.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37188" type="MeshInstance3D" parent="Entities" unique_id=612117850]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.990381, 0.7, 10.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37189" type="MeshInstance3D" parent="Entities" unique_id=696294852]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.722432, 0.6, 10.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37190" type="MeshInstance3D" parent="Entities" unique_id=1941939142]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.454483, 0.6, 10.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37191" type="MeshInstance3D" parent="Entities" unique_id=1194115048]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 12)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37192" type="MeshInstance3D" parent="Entities" unique_id=1103536459]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0.7, 12)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37193" type="MeshInstance3D" parent="Entities" unique_id=1323273396]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0.65, 12)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37194" type="MeshInstance3D" parent="Entities" unique_id=1763436713]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0.6, 12)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37195" type="MeshInstance3D" parent="Entities" unique_id=668275107]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.928203, 0.6, 12)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37196" type="MeshInstance3D" parent="Entities" unique_id=315261839]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.6602545, 0.65, 12)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37198" type="MeshInstance3D" parent="Entities" unique_id=930984282]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.392304, 0.65, 12)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37199" type="MeshInstance3D" parent="Entities" unique_id=532656282]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.124355, 0.65, 12)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37200" type="MeshInstance3D" parent="Entities" unique_id=409942471]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.856406, 0.6, 12)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37201" type="MeshInstance3D" parent="Entities" unique_id=1630078315]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.588457, 0.6, 12)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37202" type="MeshInstance3D" parent="Entities" unique_id=1842194198]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8660254, 0.7, 13.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37203" type="MeshInstance3D" parent="Entities" unique_id=681060513]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.598076, 0.7, 13.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37204" type="MeshInstance3D" parent="Entities" unique_id=1180004034]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3301272, 0.6, 13.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37205" type="MeshInstance3D" parent="Entities" unique_id=1329264046]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0621777, 0.6, 13.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37206" type="MeshInstance3D" parent="Entities" unique_id=747120679]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7942286, 0.6, 13.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="@MeshInstance3D@37207" type="MeshInstance3D" parent="Entities" unique_id=1316913150]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.526279, 0.65, 13.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37209" type="MeshInstance3D" parent="Entities" unique_id=1161411367]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.25833, 0.65, 13.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37211" type="MeshInstance3D" parent="Entities" unique_id=1139011376]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.990381, 0.65, 13.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37213" type="MeshInstance3D" parent="Entities" unique_id=1706708586]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.722432, 0.65, 13.5)
-mesh = ExtResource("3_o7rcd")
+mesh = ExtResource("5_1k2qf")
 
 [node name="@MeshInstance3D@37214" type="MeshInstance3D" parent="Entities" unique_id=2021030612]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.454483, 0.6, 13.5)
-mesh = ExtResource("5_5sufr")
+mesh = ExtResource("4_etxth")
 
 [node name="Sprite3D" type="AnimatedSprite3D" parent="." unique_id=1540619422]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.296268, 2.4218085, 1.1347818)

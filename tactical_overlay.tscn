@@ -17,3 +17,5 @@ visible = false
 [node name="BreadcrumbContainer" type="Node3D" parent="." unique_id=833405664]
 
 [node name="PreviewCursorsContainer" type="Node" parent="." unique_id=963721717]
+
+[node name="SelectCursorsContainer" type="Node3D" parent="." unique_id=1297306711]
