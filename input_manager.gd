@@ -51,8 +51,14 @@ func _raycast_mouse_to_hex() -> Vector2i:
 	if result: 
 		debug_sphere.global_position = result.position
 	if result and result.collider is StaticBody3D:
+		
 		var local_hit = result.collider.to_local(result.position)
-		return HexUtils.world_to_axial(local_hit)
+		var qr = HexUtils.world_to_axial(local_hit)
+		if Level.get_current_level().game_board_ and Level.get_current_level().game_board_.grid_:
+			if not Level.get_current_level().game_board_.grid_.check_hex_in_grid(qr):
+				return Vector2i(-9999, -9999)
+
+		return qr
 	return Vector2i(-9999, -9999)
 
 func create_debug_sphere() -> void:

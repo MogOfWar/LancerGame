@@ -7,21 +7,25 @@ var hex_size: float = HexUtils.hex_size
 @export var grid_: GridData = null
 
 func _ready() -> void:
-	if grid_:	
-		generate_rectangle_hex_grid(grid_)
+	pass
+	#if grid_:	
+	#	print("generated blue grid")
+	#	generate_rectangle_hex_grid(grid_)
+
 
 func initalize(grid: GridData) -> void:
 	if grid_:
 		Utils.log_error("GridData: grid already initalized")
 	grid_ = grid
-	generate_rectangle_hex_grid(grid_)
+	render_tactical_grid(grid_)
+	generate_physics_grid(grid_)
 	
 			
 func finalize_mesh(st: SurfaceTool):
 	var new_mesh = st.commit()
 	
 	# Extract the triangle layout and assign it
-	$CollisionShape3D.shape = new_mesh.create_trimesh_shape()
+	#$CollisionShape3D.shape = new_mesh.create_trimesh_shape()
 		
 	return new_mesh
 	
@@ -107,3 +111,116 @@ func get_biome_color(y: float) -> Color:
 	if y < 0: return Color.hex(0x2a75ff)
 	if y < 2.5: return Color.hex(0x3bb143)
 	return Color.hex(0x808080)
+	
+# 1. Define your asset library (you could also export this as a Dictionary in the Inspector)
+var mesh_library: Dictionary = {
+	"Grass": preload("res://art/hex_grass.res"),
+	"Water": preload("res://art/hex_water.res"),
+	"River": preload("res://art/hex_water.res"),
+	"Forest": preload("res://art/trees_A_medium.res")
+}
+
+func render_tactical_grid(grid: GridData) -> void:
+	# 2. Prepare buckets to hold the Transform3D for each instance
+	var transform_buckets: Dictionary = {
+		"Grass": [],
+		"Water": [],
+		"Forest": [],
+		"River": []
+	}
+	
+	# 3. Pass 1: Analyze the logical grid and bucket the transforms
+	var total_cells: int = grid.cells_.size() #
+	for i in range(total_cells):
+		var cell: CellData = grid.cells_[i] #[cite: 1]
+		var qr = HexUtils.arr_idx_to_axial(cell.x, cell.y)
+		# Calculate 3D position
+		
+		var center_2d = HexUtils.axial_to_world(qr)
+		var pos := Vector3(center_2d.x, cell.height, center_2d.z) #[cite: 1, 2]
+		var hex_transform := Transform3D().scaled(Vector3(0.8, 0.8, 0.8)).translated(pos)
+		
+		# --- TERRAIN MESH BUCKETING ---
+		if cell.type == "Forest":
+			transform_buckets["Grass"].append(hex_transform)
+			var tree_pos = pos + Vector3(0, 0.1, 0)
+			
+			# Optional: Give trees a random rotation so the forest looks organic
+			var tree_transform = Transform3D().translated(tree_pos)
+			#tree_transform = tree_transform.rotated(Vector3.UP, randf() * TAU)
+			
+			transform_buckets["Forest"].append(tree_transform)
+		else:
+			transform_buckets[cell.type].append(hex_transform)
+			
+		
+			
+
+	# 4. Pass 2: Create a MultiMeshInstance3D for each populated bucket
+	for mesh_key in transform_buckets:
+		var transforms: Array = transform_buckets[mesh_key]
+		var instance_count: int = transforms.size()
+		
+		if instance_count == 0:
+			continue # Skip if no hexes/doodads of this type exist
+			
+		var mmi := MultiMeshInstance3D.new()
+		var multimesh := MultiMesh.new()
+		multimesh.transform_format = MultiMesh.TRANSFORM_3D
+		multimesh.mesh = mesh_library[mesh_key]
+		
+		# You MUST set the instance_count before assigning transforms
+		multimesh.instance_count = instance_count
+		
+		for j in range(instance_count):
+			multimesh.set_instance_transform(j, transforms[j])
+			
+		mmi.multimesh = multimesh
+		add_child(mmi)
+
+func generate_hex_collision_shape() -> ConvexPolygonShape3D:
+	var shape = ConvexPolygonShape3D.new()
+	var points = PackedVector3Array()
+	
+	var thickness = 0.05
+	
+	for i in range(6):
+		# Standard pointy-topped hex math[cite: 2]
+		var angle_rad = deg_to_rad(60 * i - 30) 
+		var corner_x = HexUtils.hex_size * cos(angle_rad)
+		var corner_z = HexUtils.hex_size * sin(angle_rad)
+		
+		# Add a top point and a bottom point for each corner
+		points.append(Vector3(corner_x, thickness, corner_z))
+		points.append(Vector3(corner_x, -thickness, corner_z))
+		
+	shape.points = points
+	return shape
+
+func generate_cylinder_collision_shape() -> CylinderShape3D:
+	var shape = CylinderShape3D.new()
+	shape.height = 0.05 # Give it some thickness 
+	shape.radius = HexUtils.hex_size * 0.866
+	return shape
+	
+func generate_physics_grid(grid: GridData) -> void:
+	var total_cells: int = grid.cells_.size()
+	for i in range(total_cells):
+		var cell: CellData = grid.cells_[i]
+		
+		# Generate a hex-shaped collision cylinder
+		
+		
+		# Create the collision node
+		var collision_node = CollisionShape3D.new()
+		collision_node.shape = generate_hex_collision_shape()
+		
+		# Position it exactly where the MultiMesh instance is
+		var qr = HexUtils.arr_idx_to_axial(cell.x, cell.y)
+		var center_2d = HexUtils.axial_to_world(qr)
+		
+		# Center the collision shape on the hex's vertical midpoint
+		var pos_y = cell.height 
+		collision_node.position = Vector3(center_2d.x, pos_y, center_2d.z)
+		
+		add_child(collision_node)

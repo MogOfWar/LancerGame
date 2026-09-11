@@ -4,7 +4,8 @@ class_name NoiseGrid
 @export var noise_: Noise
 @export var height_multiplier_: float = 5.0
 
-func _init(w: int, h: int, noise_height_map: Noise) -> void:
+#default params for resource loading
+func _init(w: int = 0, h: int = 0, noise_height_map: Noise = null) -> void:
 	width_ = w
 	height_ = h
 	noise_ = noise_height_map
@@ -18,9 +19,11 @@ func _init(w: int, h: int, noise_height_map: Noise) -> void:
 				cell_data.y = row
 				cell_data.height = get_height_from_noise(col, row, noise_) * height_multiplier_
 				cell_data.cost = 1
+				cell_data.type = "Grass"
 				cells[index] = cell_data
+
 	
-	super.init_from_cells(cells)
+	super.init_from_cells(cells, width_, height_)
 
 static func get_height_from_noise(col: int, row: int, noise: Noise) -> float:
 	if noise:

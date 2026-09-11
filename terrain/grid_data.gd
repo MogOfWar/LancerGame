@@ -1,21 +1,16 @@
 extends Resource
 class_name GridData
 
-class CellData:
-	var entities = []
-	var x: int
-	var y: int
-	var height: float
-	var cost: float
-
 @export var width_: int 
 @export var height_: int
-var cells_: Array[CellData]
+@export var cells_: Array[CellData]
 var astar_: AStar2D
 
 
 # function takes refrence from cells so don't change cells afterwards
-func init_from_cells(cells: Array[CellData]) -> void:
+func init_from_cells(cells: Array[CellData], width: int, height: int) -> void:
+	width_ = width
+	height_ = height
 	astar_ = AStar2D.new()
 	cells_ = cells 
 	for i in range(len(cells_)):
@@ -68,3 +63,7 @@ func check_hex_in_grid(hex_qr: Vector2i) -> bool:
 
 func set_point_disabled(hex_qr, disabled: bool) -> void:
 	astar_.set_point_disabled(get_grid_index(hex_qr), disabled)
+	
+func get_cell_from_cr(col, row):
+	var hex_index = row * width_ + col
+	return cells_[hex_index]
