@@ -43,6 +43,8 @@ func _on_unit_finished_ability(unit: UnitData, ability: Ability):
 		if unit == curr_select_unit_:
 			var method: Callable = draw_unit_selection.bind(unit.get_pos_qr())
 			queue_.add_event(VFXVisualEvent.new(method))
+	var vis_unit: Unit = visual_registry.get_mapping(unit)
+	queue_.add_event(VFXVisualEvent.new(vis_unit.play_idle_animation))
 
 func draw_unit_selection(unit_pos_qr: Vector2):
 	var tactical_overlay: TacticalOverlay = Level.get_current_level().get_node("Visuals/TacticalOverlay")
