@@ -65,10 +65,18 @@ func initalize(unit_data: UnitData) -> void:
 	#quick_action_epilog()
 	#return damage
 
-func set_location(pos_qry: Vector3) -> void:
-	var loc_qr = Vector2i(pos_qry.x, pos_qry.y)
-	var new_pos: Vector3 = HexUtils.axial_to_world(loc_qr)
+func calc_location_from_qry(pos_qry: Vector3) -> Vector3:
+	var loc_qr = Vector2(pos_qry.x, pos_qry.y)
+	var new_pos: Vector3 = Vector3.ZERO
+	var occupied_hexes = HexUtils.get_occupied_hexes(loc_qr, unit_data_.get_size())
+	for ocp in occupied_hexes:
+		new_pos += HexUtils.axial_to_world(ocp)
+	new_pos /= len(occupied_hexes)
 	new_pos.y = pos_qry.z
+	return new_pos
+	
+func set_location(pos_qry: Vector3) -> void:
+	var new_pos: Vector3 = calc_location_from_qry(pos_qry)
 	set_position(new_pos)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -130,7 +138,7 @@ func move(src_qry: Vector3, hex_qry: Vector3):
 		anim.loop_mode = Animation.LOOP_LINEAR
 	animation_player_.play(anim_name)
 	
-	var target_pos: Vector3 = HexUtils.axial_to_world(Vector2(hex_qry.x, hex_qry.y))
+	var target_pos: Vector3 = calc_location_from_qry(hex_qry)
 	target_pos.y = hex_qry.z
 	# 2. Tween to the next point (adjust duration per tile as needed)
 	var distance = global_position.distance_to(target_pos)

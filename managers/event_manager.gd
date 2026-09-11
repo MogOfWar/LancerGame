@@ -4,6 +4,9 @@ class_name EventManager
 var events_: Array[Event]
 var log_: bool = false
 
+func initalize(log: bool):
+	log_ = log
+
 func handle_event(event: Event):
 	event.apply()
 	if log_:

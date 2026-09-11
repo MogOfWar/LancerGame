@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MechChassis" format=3 uid="uid://bvl28gngoc22w"]
+
+[ext_resource type="Script" uid="uid://cxbp04m8uq5me" path="res://mechs/chassis_mount.gd" id="1_qncfm"]
+[ext_resource type="Script" uid="uid://dveh4dobbdtqk" path="res://mechs/mech_chassis.gd" id="2_j664e"]
+
+[sub_resource type="Resource" id="Resource_hsxky"]
+script = ExtResource("1_qncfm")
+mount_type = 1
+metadata/_custom_type_script = "uid://cxbp04m8uq5me"
+
+[resource]
+script = ExtResource("2_j664e")
+chassis_name_ = "big_mech"
+size_ = 2
+max_hp_ = 100
+evasion_ = 5
+speed_ = 1000
+mounts_ = Array[ExtResource("1_qncfm")]([SubResource("Resource_hsxky")])
+metadata/_custom_type_script = "uid://dveh4dobbdtqk"

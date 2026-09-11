@@ -153,6 +153,8 @@ func deselect():
 func apply_condition(condition):
 	conditions_.append(condition)
 	
+func get_size():
+	return mech_type_.size_
 	
 func finished_ability(ability: Ability):
 	if ability.action_type_ == Ability.ActionType.QUICK_ACTION:

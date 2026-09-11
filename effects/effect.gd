@@ -25,6 +25,15 @@ func get_server_packet() -> Effect:
 func require_targeting() -> bool:
 	return target_type_ != TargetType.NONE
 
+func get_affected_units(affected_hexes: Array[Vector2i]) -> Array[UnitData]:
+	var gb: GameBoard = Level.get_current_level().game_board_
+	var affected_units: Array[UnitData] = []
+	for hex in affected_hexes:
+		var data = gb.get_hex_data(hex)
+		if data.unit != null and data.unit not in affected_units:
+			affected_units.append(data.unit)
+	return affected_units
+	
 # return viable hexes in axial coordinates
 # specialized effects can override this function to supply their own viable picks like move
 func get_viable_targets(context: ActionContext) -> Array[Vector2i]:

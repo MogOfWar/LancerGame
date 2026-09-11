@@ -14,4 +14,5 @@ func apply(context: ActionContext, target_qr: Vector2i):
 	
 func get_viable_targets(context: ActionContext) -> Array[Vector2i]:
 	var total_speed = context.source_unit_.get_movement_points()
-	return context.game_board_.get_movement_range(context.source_unit_.get_pos_qr(), total_speed)
+	var size = context.source_unit_.get_size()
+	return context.game_board_.get_movement_range(context.source_unit_.get_pos_qr(), total_speed, size)

@@ -41,19 +41,18 @@ func _ready() -> void:
 func _on_unit_finished_ability(unit: UnitData, ability: Ability):
 	if ability.action_type_ == Ability.ActionType.MOVEMENT:
 		if unit == curr_select_unit_:
-			var method: Callable = draw_unit_selection.bind(unit.get_pos_qr())
+			var method: Callable = draw_unit_selection.bind(unit)
 			queue_.add_event(VFXVisualEvent.new(method))
 	var vis_unit: Unit = visual_registry.get_mapping(unit)
 	queue_.add_event(VFXVisualEvent.new(vis_unit.play_idle_animation))
 
-func draw_unit_selection(unit_pos_qr: Vector2):
+func draw_unit_selection(unit: UnitData):
 	var tactical_overlay: TacticalOverlay = Level.get_current_level().get_node("Visuals/TacticalOverlay")
-	tactical_overlay.draw_highlights([unit_pos_qr], Color.AQUA, TacticalOverlay.CursorGroup.SELECTION)
+	tactical_overlay.draw_highlights(HexUtils.get_occupied_hexes(unit.get_pos_qr(), unit.get_size()), Color.AQUA, TacticalOverlay.CursorGroup.SELECTION)
 
 func _on_unit_selected(unit: UnitData):
 	curr_select_unit_ = unit
-	var qr = unit.get_pos_qr()
-	draw_unit_selection(qr)
+	draw_unit_selection(unit)
 	
 	
 

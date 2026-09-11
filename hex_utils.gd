@@ -133,6 +133,17 @@ static func arr_idx_to_axial(col: int, row: int) -> Vector2i:
 	return Vector2i(q,r)
 	
 
+static func get_occupied_hexes(hex_qr: Vector2, size: float) -> Array[Vector2i]:
+	if size == 1:
+		return [hex_qr]
+	if size == 2:
+		#anchor hex is the top left so +1q +1 r
+		return [hex_qr, hex_qr + Vector2(0,1), hex_qr + Vector2(1,0)]
+	else:
+		Utils.log_error("Un recognized size")
+		return []
+	
+
 static func cube_round(fractional_q: float, fractional_r: float) -> Vector2i:
 	var q_float = fractional_q
 	var r_float = fractional_r

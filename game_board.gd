@@ -18,7 +18,8 @@ func get_hex_data(hex: Vector2i) -> HexData:
 		
 
 func add_unit(unit_data: UnitData) -> void:
-	units[unit_data.get_pos_qr()] = unit_data
+	for ocp in HexUtils.get_occupied_hexes(unit_data.get_pos_qr(), unit_data.get_size()):
+		units[ocp] = unit_data
 
 func roll_attack(attacking_unit: UnitData, defending_unit: UnitData, accuracy: int) -> Vector2i:
 	var attack_roll: int = randi_range(1, 20) 
@@ -74,15 +75,23 @@ func initalize(grid: GridData):
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
-	
+
+func update_unit_location(unit:UnitData, new_location: Vector3):
+	var occupied_hexes: Array[Vector2i] = HexUtils.get_occupied_hexes(unit.get_pos_qr(), unit.get_size())
+	for ocp_hex: Vector2i in occupied_hexes:
+		units.erase(ocp_hex)
+		add_unit(unit)
+	unit.move(new_location, 1)
+
 func get_move_path(moving_unit: UnitData, start_pos_qr: Vector2i, end_pos_qr: Vector2i) -> Array[Vector2i]:
 	var temporarily_solid_hexes: Array[int] = []
 	for other_unit: UnitData in units.values():
 		if other_unit == moving_unit:
 			continue
-		var hex_index: int = grid_.get_grid_index(other_unit.get_pos_qr())
-		grid_.astar_.set_point_disabled(hex_index, true)
-		temporarily_solid_hexes.append(hex_index) # Track it!
+		for ocp in HexUtils.get_occupied_hexes(other_unit.get_pos_qr(), other_unit.get_size()):
+			var hex_index: int = grid_.get_grid_index(ocp)
+			grid_.astar_.set_point_disabled(hex_index, true)
+			temporarily_solid_hexes.append(hex_index) # Track it!
 	
 	var path = grid_.astar_.get_id_path(grid_.get_grid_index(start_pos_qr), grid_.get_grid_index(end_pos_qr))
 	
@@ -97,7 +106,7 @@ func get_move_path(moving_unit: UnitData, start_pos_qr: Vector2i, end_pos_qr: Ve
 	
 
 # function that returns all hex in axial coordinates that can be reached from source_hex in < range movement points
-func get_movement_range(source_hex: Vector2i, mv_range: int) -> Array[Vector2i]:
+func get_movement_range(source_hex: Vector2i, mv_range: int, unit_size: int) -> Array[Vector2i]:
 	var source_index: int = grid_.get_grid_index(source_hex)
 	var frontier: Array[int] = [source_index]
 	var reachable: Dictionary[int, int] = {source_index : mv_range}
@@ -106,7 +115,15 @@ func get_movement_range(source_hex: Vector2i, mv_range: int) -> Array[Vector2i]:
 		var current_mp = reachable[current_hex_index]
 		for neighbour in grid_.get_neighbours(current_hex_index):
 			# cant move through any units
-			if units.has(grid_.get_position(neighbour)):
+			var pos_qr = grid_.get_position(neighbour)
+			var neighbour_ok: bool = true
+			for ocp in HexUtils.get_occupied_hexes(pos_qr, unit_size):
+				if ocp == source_hex:
+					#source hex will contain this unit and will break on next if
+					continue 
+				if units.has(ocp) or not grid_.check_hex_in_grid(ocp):
+					neighbour_ok = false
+			if not neighbour_ok:
 				continue
 			var cost = grid_.get_cost(neighbour)
 			var next_mp = current_mp - cost
