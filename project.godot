@@ -27,6 +27,11 @@ Utils="*uid://ci0glvd70u4rn"
 VFXManager="*uid://1c8o4cy0ki2e"
 NetworkManager="*uid://v3y6mdj4a48t"
 
+[display]
+
+window/size/viewport_width=1200
+window/size/viewport_height=800
+
 [filesystem]
 
 import/blender/enabled=false

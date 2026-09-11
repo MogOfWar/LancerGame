@@ -37,6 +37,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		global_position += global_transform.basis * drag_dir
 		
 		
+func zoom_out(value: float):
+	target_zoom = value
 
 func _process(delta: float) -> void:
 	# --- WASD / Arrow Key Panning ---

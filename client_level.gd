@@ -99,7 +99,7 @@ func _ready() -> void:
 	
 	
 	$Visuals/Terrian.initalize(grid)
-	# for now init a flat terrain for debug
+	$Visuals/CameraPivot.global_position = HexUtils.axial_to_world(grid.get_center_qr())
 	
 	turn_manager_.start_battle()
 

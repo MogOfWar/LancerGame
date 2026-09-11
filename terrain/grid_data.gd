@@ -67,3 +67,6 @@ func set_point_disabled(hex_qr, disabled: bool) -> void:
 func get_cell_from_cr(col, row):
 	var hex_index = row * width_ + col
 	return cells_[hex_index]
+	
+func get_center_qr() -> Vector2:
+	return HexUtils.arr_idx_to_axial(width_/2, height_/2)
