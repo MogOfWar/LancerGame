@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://su6h5qsex41t"]
+
+[ext_resource type="Script" uid="uid://52cli860ifcy" path="res://vfx/jet_trails.gd" id="1_vk1dh"]
+
+[sub_resource type="Gradient" id="Gradient_wv50o"]
+offsets = PackedFloat32Array(0.009925558, 0.9975186)
+colors = PackedColorArray(0.41215247, 0.41215247, 0.41215247, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fcnqv"]
+gradient = SubResource("Gradient_wv50o")
+
+[sub_resource type="Curve" id="Curve_vk1dh"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5623582, 0.9859155), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_57qmd"]
+curve = SubResource("Curve_vk1dh")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g4v7s"]
+direction = Vector3(0, -1, 0)
+spread = 12.0
+initial_velocity_min = 10.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_57qmd")
+color_ramp = SubResource("GradientTexture1D_fcnqv")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ydjvx"]
+transparency = 1
+vertex_color_use_as_albedo = true
+emission_enabled = true
+emission = Color(1, 0.9647059, 0.25490198, 1)
+emission_energy_multiplier = 5.0
+use_particle_trails = true
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_cxldu"]
+material = SubResource("StandardMaterial3D_ydjvx")
+size = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t46v8"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_y86jt"]
+material = SubResource("StandardMaterial3D_t46v8")
+radius = 0.3
+height = 0.5
+radial_segments = 8
+rings = 8
+
+[node name="JetTrails" type="Node3D" unique_id=618065918]
+script = ExtResource("1_vk1dh")
+
+[node name="JetExhaust" type="GPUParticles3D" parent="." unique_id=1866930069]
+emitting = false
+amount = 30
+lifetime = 0.09999999999999999
+visibility_aabb = AABB(-2.8020697, -24.999619, -2.7286093, 5.8543262, 25.999485, 5.4567976)
+trail_enabled = true
+trail_lifetime = 0.15000000000000002
+process_material = SubResource("ParticleProcessMaterial_g4v7s")
+draw_pass_1 = SubResource("RibbonTrailMesh_cxldu")
+
+[node name="SmokeTrail" type="GPUParticles3D" parent="." unique_id=414811839]
+emitting = false
+amount = 120
+lifetime = 2.0
+visibility_aabb = AABB(-2.8020697, -24.999619, -2.7286093, 5.8543262, 25.999485, 5.4567976)
+trail_lifetime = 0.15000000000000002
+process_material = SubResource("ParticleProcessMaterial_g4v7s")
+draw_pass_1 = SubResource("SphereMesh_y86jt")

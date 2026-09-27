@@ -1,81 +1,82 @@
 [gd_scene format=3 uid="uid://br22133ulvc1"]
 
-[ext_resource type="Script" uid="uid://dpvb1pl8dpc5f" path="res://unit.gd" id="1_btf8p"]
-[ext_resource type="Texture2D" uid="uid://dst43rj35jh6" path="res://art/selection_ring.png" id="2_ctwoc"]
-[ext_resource type="Texture2D" uid="uid://c1ysgherrk01s" path="res://art/bipedal_mech_with_an_wea-Idle.png" id="2_davkp"]
-[ext_resource type="AnimationLibrary" uid="uid://6trnb7tlswg3" path="res://art/mech_library.res" id="3_5wnup"]
-[ext_resource type="AnimationLibrary" uid="uid://dnkhmmeo8nrh7" path="res://art/mech_ani_library_2.res" id="4_of1k5"]
+[ext_resource type="Script" uid="uid://dpvb1pl8dpc5f" path="res://unit_sprite.gd" id="1_u3jah"]
+[ext_resource type="Texture2D" uid="uid://brq6smyq5yuma" path="res://art/momo-walk_r.png" id="2_4ri1y"]
+[ext_resource type="Texture2D" uid="uid://c1ysgherrk01s" path="res://art/bipedal_mech_with_an_wea-Idle.png" id="3_fvadc"]
+[ext_resource type="AnimationLibrary" uid="uid://dnkhmmeo8nrh7" path="res://art/mech_ani_library_2.res" id="4_mwsqc"]
+[ext_resource type="AnimationLibrary" uid="uid://6trnb7tlswg3" path="res://art/mech_library.res" id="5_g4s4j"]
+[ext_resource type="Texture2D" uid="uid://dst43rj35jh6" path="res://art/selection_ring.png" id="6_q0khl"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_k4y1u"]
 height = 0.2
 radial_segments = 6
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_b8r7s"]
-atlas = ExtResource("2_davkp")
-region = Rect2(0, 68, 68, 68)
+[sub_resource type="AtlasTexture" id="AtlasTexture_ti2or"]
+atlas = ExtResource("2_4ri1y")
+region = Rect2(0, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_davkp"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(0, 680, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5wnup"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(68, 680, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1sk4h"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(136, 680, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_baxm0"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(204, 680, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_of1k5"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(272, 680, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_74e6i"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(340, 680, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yjdlg"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(408, 680, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ltb4x"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(476, 680, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f764t"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(0, 612, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3040u"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(68, 612, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p81dm"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(136, 612, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y43xi"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(204, 612, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3ksgb"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(272, 612, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wsgbi"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(340, 612, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2k6xw"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(408, 612, 68, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3dcl6"]
-atlas = ExtResource("2_davkp")
+atlas = ExtResource("3_fvadc")
 region = Rect2(476, 612, 68, 68)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_g4v7s"]
@@ -145,7 +146,7 @@ animations = [{
 }]
 
 [node name="Unit" type="Node3D" unique_id=722785469]
-script = ExtResource("1_btf8p")
+script = ExtResource("1_u3jah")
 
 [node name="Visuals" type="Node3D" parent="." unique_id=1002284540]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
@@ -159,7 +160,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7113326, 0)
 cast_shadow = 2
 pixel_size = 0.03
 alpha_cut = 1
-texture = SubResource("AtlasTexture_b8r7s")
+texture = SubResource("AtlasTexture_ti2or")
 
 [node name="MuzzleFire" type="Node3D" parent="Visuals/MechSprite" unique_id=1869851293]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23573805, 0.51911515, 0.018868446)
@@ -170,8 +171,8 @@ sprite_frames = SubResource("SpriteFrames_g4v7s")
 animation = &"walk_se"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Visuals" unique_id=67885212]
-libraries/mech_ani_library_2 = ExtResource("4_of1k5")
-libraries/mech_library = ExtResource("3_5wnup")
+libraries/mech_ani_library_2 = ExtResource("4_mwsqc")
+libraries/mech_library = ExtResource("5_g4s4j")
 
 [node name="SelectionRing" type="Sprite3D" parent="." unique_id=2072324230]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
@@ -180,4 +181,4 @@ cast_shadow = 0
 modulate = Color(1, 1, 0.43529412, 1)
 pixel_size = 0.006
 axis = 1
-texture = ExtResource("2_ctwoc")
+texture = ExtResource("6_q0khl")

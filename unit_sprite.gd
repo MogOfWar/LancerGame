@@ -1,8 +1,8 @@
-class_name Unit
-extends Node3D
+class_name UnitSprite
+extends Unit
 
 var targeting_: bool = false
-var unit_data_: UnitData
+
 
 @onready var animation_player_ = $Visuals/AnimationPlayer
 
@@ -12,73 +12,9 @@ func _set_up_animations() -> void:
 	
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	SignalBus.vis_unit_spawned.emit(self)
-	unit_data_.unit_selected.connect(select)
-	unit_data_.unit_deselected.connect(deselect)
 	_set_up_animations()
 	play_idle_animation()
 	
-func initalize(unit_data: UnitData) -> void:
-	unit_data_ = unit_data
-	set_location(unit_data_.get_pos_qry())
-
-#func quick_action_epilog() -> void:
-#	quick_actions = max(quick_actions - 1, 0)
-#	full_actions = max(full_actions - 1, 0)
-
-#func quick_attack(target: Unit) -> int:
-#	quick_action_prolouge()
-#	var gun: WeaponType = curr_select_weapon_.weapon_
-#	var projectile = gun.weapon_scene.instantiate()
-#	get_tree().current_scene.add_child(projectile)
-#	var spawn_offset := Vector3(0, 1.5, 0) # Raise spawn point so it doesn't clip into the floor
-#	projectile.global_position = global_position + spawn_offset
-	
-	# 2. Aim at the target
-	# In 3D, look_at requires a target position and an "Up" vector to know which way is top
-#	var target_center = target.global_position + spawn_offset
-#	projectile.look_at(target_center, Vector3.UP)
-
-	# 3. Create the Tween
-#	var tween = create_tween()
-
-	# Optional: Calculate time based on distance for consistent speed
-	# var distance = projectile.global_position.distance_to(target_center)
-	# var travel_time = distance / 10.0 # 10 units per second
-#	var travel_time = 0.5 
-
-	# 4. Animate the position to the target
-#	tween.tween_property(projectile, "global_position", target_center, travel_time).set_trans(Tween.TRANS_LINEAR)
-
-	# 5. Halt execution until the projectile arrives
-#	await tween.finished
-
-	# 6. Apply damage and clean up
-#	var damage: int = gun.roll_damage()
-#	target.apply_damage(damage)
-#	projectile.impact()
-#	
-	# 7. clear targeting
-#	targeting_ = false
-	
-	# 8. use action points
-	#quick_action_epilog()
-	#return damage
-
-func calc_location_from_qry(pos_qry: Vector3) -> Vector3:
-	var loc_qr = Vector2(pos_qry.x, pos_qry.y)
-	var new_pos: Vector3 = Vector3.ZERO
-	var occupied_hexes = HexUtils.get_occupied_hexes(loc_qr, unit_data_.get_size())
-	for ocp in occupied_hexes:
-		new_pos += HexUtils.axial_to_world(ocp)
-	new_pos /= len(occupied_hexes)
-	new_pos.y = pos_qry.z
-	return new_pos
-	
-func set_location(pos_qry: Vector3) -> void:
-	var new_pos: Vector3 = calc_location_from_qry(pos_qry)
-	set_position(new_pos)
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
@@ -159,10 +95,5 @@ func play_idle_animation() -> void:
 
 func get_weapon_global_pos() -> Vector3:
 	return $Visuals/MechSprite/MuzzleFire.global_position
-	
-
-func _exit_tree():
-	# Important: Tell the manager to delete the UI when this unit is destroyed    
-	SignalBus.unit_died.emit(self)
 	
 	

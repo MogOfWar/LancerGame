@@ -8,8 +8,8 @@
 script = ExtResource("2_mh80c")
 damage = Array[int]([1])
 target_type_ = 3
-target_mode_ = 1
-target_mode_radius_ = 2
+target_mode_ = 2
+target_mode_radius_ = 10
 range_ = 10
 metadata/_custom_type_script = "uid://b1wspiv67a7wh"
 

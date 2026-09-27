@@ -1,7 +1,7 @@
 extends Node
 class_name Level
 
-const UnitScene = preload("res://unit.tscn")
+const UnitScene = preload("res://units/unit_pawn.tscn")
 
 var mech_types_ = {}
 
@@ -92,7 +92,7 @@ func _ready() -> void:
 	load_unit_types()
 	# DEBUG just debug stuff for start
 	var unit_a: UnitData = add_unit(mech_types_["Everest"], Vector2i(0,0), grid.get_height_from_qr(Vector2i(0,0)), player_1)
-	var unit_b: UnitData = add_unit(mech_types_["big_mech"], Vector2i(-2,5), grid.get_height_from_qr(Vector2i(-2,5)), player_2)
+	var unit_b: UnitData = add_unit(mech_types_["Everest"], Vector2i(-2,5), grid.get_height_from_qr(Vector2i(-2,5)), player_2)
 	unit_a.add_weapon(load("res://weapons/assualt_rifle.tres"), MechChassis.MountType.HEAVY)
 	
 	game_board_.add_unit(unit_a)

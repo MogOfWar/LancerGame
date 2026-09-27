@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://cy25t3veui33d"]
+
+[ext_resource type="Script" uid="uid://c8kl8wdku448s" path="res://units/unit_pawn.gd" id="1_mmhlr"]
+[ext_resource type="PackedScene" uid="uid://c6x5thqgd5f2p" path="res://art/model_1.fbx" id="2_exg3c"]
+[ext_resource type="PackedScene" uid="uid://su6h5qsex41t" path="res://vfx/jet_trails.tscn" id="3_f5amy"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_g4v7s"]
+height = 0.2
+radial_segments = 6
+
+[node name="UnitPawn" type="Node3D" unique_id=2095824787]
+script = ExtResource("1_mmhlr")
+
+[node name="Base" type="MeshInstance3D" parent="." unique_id=383685354]
+mesh = SubResource("CylinderMesh_g4v7s")
+
+[node name="model_1" parent="." unique_id=1904288424 instance=ExtResource("2_exg3c")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.58385575, 0.08337152)
+
+[node name="Boosters" type="Marker3D" parent="." unique_id=632909012]
+transform = Transform3D(1, 0, 0, 0, 0.6233925, -0.78190905, 0, 0.78190905, 0.6233925, 0.07280892, 0.72557914, -0.23763728)
+
+[node name="JetTrails" parent="Boosters" unique_id=618065918 instance=ExtResource("3_f5amy")]
+
+[node name="Muzzle" type="Marker3D" parent="." unique_id=1401400944]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.20204759, 0.93491954, 0.10500485)
