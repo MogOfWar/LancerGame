@@ -39,7 +39,7 @@ func execute_ability(ability: Ability, unit: UnitData, sub_name: String) -> void
 func execute_reaction(context: ActionContext, src_ability: Ability, src_effect: Effect, reaction_params: Dictionary, reacting_unit: UnitData, valid_reactions: Array[ReactionManager.Reaction]) -> void:
 	# Await user selection (UI popup or RPC packet)
 	var chosen_reaction: ReactionManager.Reaction = await choose_reaction(context, src_ability, src_effect, reaction_params, reacting_unit, valid_reactions)
-	print("player chosen reaction")
+	
 	# If player selects "Pass" / "Skip"
 	if chosen_reaction == null:
 		return

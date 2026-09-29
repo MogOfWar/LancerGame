@@ -41,7 +41,7 @@ func move(src_qry: Vector3, hex_qry: Vector3):
 	await tween.finished
 	anim_player.stop()
 	
-func play_attack_animation(tar_global_pos: Vector3) -> void:
+func play_attack_animation(tar_global_pos: Vector3, type: int) -> void:
 	look_at(tar_global_pos, Vector3.UP, true)
 	
 func play_idle_animation() -> void:

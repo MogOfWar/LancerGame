@@ -2,11 +2,6 @@ extends Node3D
 
 class_name TacticalOverlay
 
-class HighlightShape:
-	var template: WeaponType.TargetMode = WeaponType.TargetMode.Single
-	var radius: int = 0
-	var origin_pos
-
 enum CursorGroup {
 	ACTIVE = 0,
 	PREVIEW = 1,
@@ -26,7 +21,6 @@ enum CursorGroup {
 
 # Tracks the hex currently under the mouse to prevent redundant animations
 var current_hovered_hex: Vector2i = Vector2i(-9999, -9999) 
-var current_shape_: HighlightShape = HighlightShape.new()
 var terrain_: TerrainGrid = null
 var spawned_dots_: Array[Node3D] = []
 var containers_: Array[Node]

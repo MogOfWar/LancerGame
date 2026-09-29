@@ -57,8 +57,50 @@ func _update_arc_position(start: Vector3, target: Vector3, t: float) -> void:
 	
 	position = current_pos
 
-func play_attack_animation(tar_global_pos: Vector3) -> void:
-	pass
+func _play_melee_animation(target_pos: Vector3) -> void:
+	var start_pos = global_position
+	var lunge_distance: float = 1.0
+		
+	# Calculate a flat 3D direction vector (ignoring Y so characters don't tilt up/down)
+	var lunge_dir = start_pos.direction_to(target_pos)
+	lunge_dir.y = 0 
+	lunge_dir = lunge_dir.normalized()
+	
+	var lunge_pos = start_pos + (lunge_dir * lunge_distance)
+	var tween = create_tween()
+	
+	# 1. Quick lunge forward
+	tween.tween_property(self, "global_position", lunge_pos, 0.12)\
+		 .set_trans(Tween.TRANS_QUAD)\
+		 .set_ease(Tween.EASE_OUT)
+	
+	# 2. Impact callback: Trigger hit-stop and knockback
+	tween.tween_callback(func():
+		_apply_hitstop()
+		#_apply_target_knockback(target, lunge_dir)
+		#_spawn_3d_slash_vfx(target_pos, lunge_dir)
+		# target.take_damage(damage_amount)
+	)
+	
+	# 3. Step back to original hex
+	tween.tween_property(self, "global_position", start_pos, 0.2)\
+		 .set_trans(Tween.TRANS_CUBIC)\
+		 .set_ease(Tween.EASE_IN_OUT)
+
+func _apply_hitstop(duration: float = 0.08) -> void:
+	# Dramatically slow down the entire game engine for a split second
+	Engine.time_scale = 0.05
+	
+	# Create a timer that explicitly IGNORES time_scale so it actually finishes
+	await get_tree().create_timer(duration, true, false, true).timeout
+	
+	# Snap game speed back to normal
+	Engine.time_scale = 1.0
+
+func play_attack_animation(tar_global_pos: Vector3, type: int) -> void:
+	if type == 1:
+		_play_melee_animation(tar_global_pos)
+	
 	
 func play_idle_animation() -> void:
 	pass

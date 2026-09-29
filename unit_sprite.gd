@@ -85,7 +85,7 @@ func move(src_qry: Vector3, hex_qry: Vector3):
 	await tween.finished
 	animation_player_.stop()
 
-func play_attack_animation(tar_global_pos: Vector3) -> void:
+func play_attack_animation(tar_global_pos: Vector3, type: int) -> void:
 	var direction: Vector3 = (tar_global_pos - global_position)
 	animation_player_.play(get_animation2(direction, "attacking"))
 	

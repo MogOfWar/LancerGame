@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="WeaponType" format=3 uid="uid://dvlkxa6bwr2e0"]
+
+[ext_resource type="Script" uid="uid://cyb6x4nqhmfqk" path="res://effects/effect.gd" id="1_vsiw5"]
+[ext_resource type="Script" uid="uid://b1wspiv67a7wh" path="res://effects/damage_effect.gd" id="2_8pnih"]
+[ext_resource type="Script" uid="uid://ce6ms41q13kg1" path="res://weapons/weapon.gd" id="2_xwxup"]
+
+[sub_resource type="Resource" id="Resource_8pnih"]
+script = ExtResource("2_8pnih")
+damage = Array[int]([0, 0, 1])
+extra_damage = 2
+melee_ = true
+animation_type_ = 1
+threat_range_ = 1
+target_type_ = 3
+range_ = 1
+metadata/_custom_type_script = "uid://b1wspiv67a7wh"
+
+[resource]
+script = ExtResource("2_xwxup")
+weapon_name_ = "anime_sword"
+effects_ = Array[ExtResource("1_vsiw5")]([SubResource("Resource_8pnih")])
+metadata/_custom_type_script = "uid://ce6ms41q13kg1"

@@ -16,9 +16,5 @@ metadata/_custom_type_script = "uid://b1wspiv67a7wh"
 [resource]
 script = ExtResource("1_8q6ym")
 weapon_name_ = "Assault Rifle"
-damage = Array[int]([0, 1])
-range = 10
-target_mode_ = 2
-target_mode_radius_ = 3
 effects_ = Array[ExtResource("1_qtb00")]([SubResource("Resource_qtb00")])
 metadata/_custom_type_script = "uid://ce6ms41q13kg1"

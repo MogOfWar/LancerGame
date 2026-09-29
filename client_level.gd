@@ -48,8 +48,9 @@ func add_unit(chassis: MechChassis, pos_qr: Vector2i, height: float, own_player:
 func _on_unit_gained_ability(unit: UnitData, ability: Ability) -> void:
 	if ability.action_type_ == Ability.ActionType.REACTION:
 		var reaction: ReactionManager.Reaction = ability.get_reaction()
-		var reaction_type: ReactionManager.ReactionType = ability.get_reaction_type()
-		reaction_manager_.register_reaction(ability.get_reaction_type(), unit, turn_manager_.get_player_by_id(unit.own_player_id_), ability.get_reaction())
+		if reaction:
+			var reaction_type: ReactionManager.ReactionType = ability.get_reaction_type()
+			reaction_manager_.register_reaction(reaction_type, unit, turn_manager_.get_player_by_id(unit.own_player_id_), reaction)
 
 func _ready() -> void:
 	register_level(self)
@@ -84,7 +85,7 @@ func _ready() -> void:
 	grid.init_from_cells(grid.cells_, grid.width_, grid.height_)
 	turn_manager_.initalize()
 	game_board_.initalize(grid)
-	reaction_manager_.initalize(false)
+	reaction_manager_.initalize()
 	event_manager_.initalize(multiplayer.is_server())
 	
 	
@@ -94,7 +95,7 @@ func _ready() -> void:
 	var unit_a: UnitData = add_unit(mech_types_["Everest"], Vector2i(0,0), grid.get_height_from_qr(Vector2i(0,0)), player_1)
 	var unit_b: UnitData = add_unit(mech_types_["Everest"], Vector2i(-2,5), grid.get_height_from_qr(Vector2i(-2,5)), player_2)
 	unit_a.add_weapon(load("res://weapons/assualt_rifle.tres"), MechChassis.MountType.HEAVY)
-	
+	unit_b.add_weapon(load("res://weapons/awesome_anime_sword.tres"), MechChassis.MountType.HEAVY)
 	game_board_.add_unit(unit_a)
 	game_board_.add_unit(unit_b)
 	
@@ -155,6 +156,10 @@ func request_reaction(req_id:int, message: String, reaction_strings: Array[Strin
 	var reaction_id: int = await player.user_choose_reaction(message, reaction_strings)
 	recieve_reaction.rpc_id(1, req_id, reaction_id)
 	
+@rpc("authority", "call_local", "reliable")
+func request_handle_reaction(req_id:int, message: String, reaction_strings: Array[String]):
+	
+
 @rpc("any_peer", "call_local", "reliable")
 func recieve_reaction(req_id: int, reaction_id: int):
 	if not multiplayer.is_server():

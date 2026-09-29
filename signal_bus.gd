@@ -11,7 +11,7 @@ signal unit_died(unit: UnitData)
 signal unit_action_selected(unit: UnitData, ability: Ability, sub_name: String)
 signal unit_gained_ability(unit: UnitData, ability: Ability)
 signal unit_moved(unit: UnitData, src_hex_qry: Vector3, dst_hex_qry: Vector3)
-signal unit_weapon_fire(unit: UnitData, target_unit: UnitData)
+signal unit_weapon_fire(unit: UnitData, target_unit: UnitData, animation_id: int)
 
 signal end_turn()
 signal start_round(round_number: int)

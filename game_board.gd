@@ -80,8 +80,8 @@ func update_unit_location(unit:UnitData, new_location: Vector3):
 	var occupied_hexes: Array[Vector2i] = HexUtils.get_occupied_hexes(unit.get_pos_qr(), unit.get_size())
 	for ocp_hex: Vector2i in occupied_hexes:
 		units.erase(ocp_hex)
-		add_unit(unit)
 	unit.move(new_location, 1)
+	add_unit(unit)
 
 func get_move_path(moving_unit: UnitData, start_pos_qr: Vector2i, end_pos_qr: Vector2i) -> Array[Vector2i]:
 	var temporarily_solid_hexes: Array[int] = []
@@ -154,7 +154,7 @@ func get_units_in_range(source_hex_qr: Vector2i, ab_range: int) -> Array[Vector2
 	var ret : Array[Vector2i] = []
 	for unit_pos_qr in units.keys():
 		var dist: int = HexUtils.get_axial_distance(source_hex_qr, unit_pos_qr)
-		if dist < ab_range and dist > 0:
+		if dist <= ab_range and dist > 0:
 			ret.append(unit_pos_qr)
 			#also check los
 	return ret

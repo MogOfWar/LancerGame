@@ -56,10 +56,10 @@ func _on_unit_selected(unit: UnitData):
 	
 	
 
-func _on_unit_weapon_fire(attacking_unit: UnitData, target_unit: UnitData) -> void:
+func _on_unit_weapon_fire(attacking_unit: UnitData, target_unit: UnitData, animation_id_: int) -> void:
 	var visual_unit: Unit = visual_registry.get_mapping(attacking_unit)
 	var target_vis_unit: Unit = visual_registry.get_mapping(target_unit)
-	queue_.add_event(WeaponFireVisualEvent.new(visual_unit, target_vis_unit.global_position))
+	queue_.add_event(WeaponFireVisualEvent.new(visual_unit, target_vis_unit.global_position, animation_id_))
 	
 func _on_vis_unit_spawned(unit: Unit) -> void:
 	visual_registry.register(unit.unit_data_, unit)

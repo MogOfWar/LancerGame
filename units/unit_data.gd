@@ -102,6 +102,7 @@ func _init(mech_type: MechChassis, pos_qr: Vector2i, height: float, player: Play
 	add_ability(MoveAbility.new(0))
 	add_ability(SkirimishAbility.new(1, self))
 	add_ability(BraceAbility.new(2))
+	add_ability(OverwatchAbility.new(3, self))
 
 func _on_start_round(round_number: int) -> void:
 	refresh_action_points()
@@ -197,6 +198,20 @@ func add_weapon(gun: WeaponType, mount: MechChassis.MountType ):
 	var mount_to_add: MountPoint = mounts_[mount_data.mount_type]
 	mount_to_add.add_weapon(gun)
 	
+	# update abilities with new weapon
+	for ability in abilities_:
+		if ability.ability_name_ == SkirimishAbility.NAME:
+			(ability as SkirimishAbility).update_effect_list()
+		elif ability.ability_name_ == OverwatchAbility.NAME:
+			var ow: OverwatchAbility = ability as OverwatchAbility
+			ow.update_effect_list()
+			# need to update reaction 
+			var reaction: ReactionManager.Reaction = ow.get_reaction()
+			if reaction:
+				var type = ow.get_reaction_type()
+				var player: PlayerController = Level.get_current_level().turn_manager_.get_player_by_id(own_player_id_)
+				Level.get_current_level().reaction_manager_.register_reaction(type, self, player, reaction)
+				
 func get_mounts() -> Array[WeaponInstance]:
 	var ret: Array[WeaponInstance] = []
 	for mount in mounts_.values():

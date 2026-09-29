@@ -35,6 +35,6 @@ func _exit_tree():
 	SignalBus.unit_died.emit(self)
 
 @abstract func move(src_qry: Vector3, hex_qry: Vector3)
-@abstract func play_attack_animation(tar_global_pos: Vector3) -> void
+@abstract func play_attack_animation(tar_global_pos: Vector3, type: int) -> void
 @abstract func play_idle_animation() -> void
 @abstract func get_weapon_global_pos() -> Vector3

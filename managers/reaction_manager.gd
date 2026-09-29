@@ -4,7 +4,8 @@ class_name ReactionManager
 const REACTION_TYPE_KEY = "type"
 
 enum ReactionType {
-	ATTACK_DAMAGE
+	ATTACK_DAMAGE,
+	MOVE
 }
 
 class Reaction:

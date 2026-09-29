@@ -4,7 +4,9 @@ class_name DamageEffect
 @export var damage: Array[int] = []
 @export var extra_damage: int = 0
 @export var damage_type_: Constants.DamageType = Constants.DamageType.KINETIC
-
+@export var melee_: bool = false
+@export var animation_type_: int = 0
+@export var threat_range_: int = 0
 
 func _init():
 	target_type_ = TargetType.ENEMY
@@ -22,7 +24,7 @@ func apply(action_context: ActionContext, target_hex: Vector2i):
 	var src_unit = action_context.source_unit_
 	var affected_hexes: Array[Vector2i] = gb.get_affected_hexes(target_hex, self, src_unit.get_pos_qr())
 	var level: Level = Level.get_current_level()
-	level.event_manager_.handle_event(WeaponFireEvent.new([src_unit.unit_id_, target_hex.x, target_hex.y, 1, target_mode_]))
+	level.event_manager_.handle_event(WeaponFireEvent.new([src_unit.unit_id_, target_hex.x, target_hex.y, 1, target_mode_, animation_type_]))
 	for target_unit in get_affected_units(affected_hexes):
 			var is_hit: bool = true
 			var is_crit: bool = false
