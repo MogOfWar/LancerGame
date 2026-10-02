@@ -54,11 +54,20 @@ func initalize(enabled = true):
 
 func push_new_player(player_id: int) -> void:
 	current_player_.push_back(player_id)
-	SignalBus.debug_player_reaction.emit(player_id)
+	# Assuming LockLevel.NONE is 0, and LockLevel.ACTIONS_LOCKED is 1
+	var lock_level: int = Constants.TurnLockLevel.NONE if current_player_.size() == 1 else Constants.TurnLockLevel.ACTIONS_LOCKED
+	
+	var level = Level.get_current_level()
+	level.request_sync_input_authority.rpc(player_id, lock_level)
 	
 func pop_player() -> void:
 	current_player_.pop_back()
-	SignalBus.debug_player_reaction.emit(current_player_[-1])
+	var active_player_id = current_player_[-1]
+	
+	var lock_level: int = Constants.TurnLockLevel.NONE if current_player_.size() == 1 else Constants.TurnLockLevel.ACTIONS_LOCKED
+	
+	var level := Level.get_current_level()
+	level.request_sync_input_authority.rpc(active_player_id, lock_level)
 
 func handle_reaction(context: ActionContext, effect: Effect, reaction_params: Dictionary) -> void:
 	var level: Level = Level.get_current_level()

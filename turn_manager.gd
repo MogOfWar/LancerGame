@@ -61,10 +61,9 @@ func end_turn():
 	if current_player_turn_ == num_players_:
 		#end round
 		end_round()
-	_advance_turn.rpc(current_player_turn_, round_number_)
+	_advance_turn(current_player_turn_, round_number_)
 
 # seperate function because clients might not hold right number of players
-@rpc("authority", "call_local", "reliable")
 func _advance_turn(current_player, round_number):
 	current_player_turn_ = current_player
 	round_number_ = round_number
@@ -80,7 +79,8 @@ func try_to_end_turn():
 	
 	# Verify sender actually owns the active player controller
 	if active_player and active_player.peer_id_ == sender_id:
-		end_turn()
+		Level.get_current_level().event_manager_.handle_event(AdvanceTurnEvent.new(current_player_turn_, round_number_))
+		Level.get_current_level().flush_events()
 	else:
 		Utils.log_error("Unauthorized end turn request from peer: %d" % sender_id)
 

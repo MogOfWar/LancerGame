@@ -41,7 +41,6 @@ func _ready() -> void:
 	SignalBus.unit_weapon_fire.connect(_on_unit_weapon_fire)
 	SignalBus.unit_selected.connect(_on_unit_selected)
 	SignalBus.unit_finished_ability.connect(_on_unit_finished_ability)
-	pass # Replace with function body.
 
 func _on_unit_finished_ability(unit: UnitData, ability: Ability):
 	if ability.action_type_ == Ability.ActionType.MOVEMENT:

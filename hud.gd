@@ -14,6 +14,8 @@ class_name HUD
 @onready var end_turn_button_ = $GeneralButtons/EndTurnButton
 var current_selected_unit: UnitData
 var current_player_turn_: int = -1
+var turn_lock_level_: Constants.TurnLockLevel
+var local_is_turn_owner_: bool = false
 
 signal reaction_selected(chosen_reaction: ReactionManager.Reaction)
 
@@ -24,6 +26,7 @@ func _ready():
 	SignalBus.unit_finished_ability.connect(_on_unit_finished_ability)
 	SignalBus.start_round.connect(_on_start_round)
 	SignalBus.start_turn.connect(_on_start_turn)
+	SignalBus.input_authority_changed.connect(_on_input_authority_changed)
 	
 	# Hide the menu by default
 	action_menu.hide()
@@ -32,6 +35,17 @@ func _ready():
 	popup_menu_.hide()
 	end_turn_button_.hide()
 	
+
+func _on_input_authority_changed(authorized_player_id: int, lock_level: Constants.TurnLockLevel) -> void:
+	turn_lock_level_ = lock_level
+	
+	# Refresh End Turn button visibility
+	end_turn_button_.visible = (local_is_turn_owner_ and turn_lock_level_ == Constants.TurnLockLevel.NONE)
+	
+	# Hide action menus if actions are locked during a reaction pause
+	if turn_lock_level_ != Constants.TurnLockLevel.NONE:
+		action_menu.hide()
+		sub_ability_menu_.hide()
 
 func clear_menu(menu: Container):
 	for child in menu.get_children():
@@ -52,16 +66,27 @@ func show_menu_for_unit(unit: UnitData):
 	current_selected_unit = unit
 	update_stats_menu(unit)
 	update_action_menu(unit)
-	action_menu.show()
-	stats_menu_.show()
+	# ONLY show Action Menu if:
+	# 1. Actions are not locked
+	# 2. It's the unit owner's active turn
+	if local_is_turn_owner_ and turn_lock_level_ == Constants.TurnLockLevel.NONE:
+		update_action_menu(unit)
+		action_menu.show()
+	else:
+		action_menu.hide()
 
 func update_stats_menu(unit: UnitData) -> void:
 	actions_display_.text = ("Actions: None")
 	movement_display_.text = ("Movement: %s" % unit.get_movement_points())
 
 func show_reaction_menu(reaction_string: String, reactions: Array[String]) -> int:
+	# Ensure the action menu hides when the reaction popup opens
+	action_menu.hide()
+	sub_ability_menu_.hide()
+	
 	for child in popup_menu_list_.get_children():
 			child.queue_free()
+			
 	for i in range(len(reactions)):
 		var btn = Button.new()
 		btn.text = reactions[i]
@@ -79,7 +104,9 @@ func _on_start_round(round_number: int) -> void:
 
 func _on_start_turn(player_number: int, peer_id: int) -> void:
 	current_player_turn_ = player_number
-	if multiplayer.get_unique_id() == peer_id:
+	local_is_turn_owner_ = (multiplayer.get_unique_id() == peer_id)
+	
+	if local_is_turn_owner_:
 		end_turn_button_.show()
 	else:
 		end_turn_button_.hide()

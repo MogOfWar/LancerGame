@@ -17,6 +17,7 @@ signal end_turn()
 signal start_round(round_number: int)
 signal start_turn(player_number: int, peer_id: int)
 signal debug_player_reaction(player_id: int) # switch player
+signal input_authority_changed(authorized_player: int, lock_level: Constants.TurnLockLevel)
 
 # visual signals
 signal vis_unit_spawned(unit: Unit)

@@ -26,7 +26,6 @@ func _ready() -> void:
 	SignalBus.start_turn.connect(_on_start_turn)
 	SignalBus.debug_player_reaction.connect(_on_start_turn)
 	input_manager_.tactical_input.connect(_on_tactical_input)
-	pass # Replace with function body.
 
 func _on_end_turn() -> void:
 	if current_selected_unit_ and current_playing_:
@@ -178,7 +177,7 @@ func choose_reaction(src_ability: Ability, reaction_params: Dictionary, reacting
 	var message = "please select a reaction"
 	var reaction_id = await user_choose_reaction(message, reaction_strings)
 	# hud should return < 0 when no reaciton is chosen
-	if reaction_id > 0:
+	if reaction_id >= 0:
 		return valid_reactions[reaction_id]
 	return null
 				

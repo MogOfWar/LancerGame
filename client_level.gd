@@ -160,6 +160,8 @@ func sync_events(event_data: Array):
 			new_event = StatusEvent.new(packet[1], StatusCondition.from_array(packet[2]))
 		elif type == Event.EventType.LOG:
 			new_event = LogEvent.new(packet[1])
+		elif type == Event.EventType.ADVANCE_TURN:
+			new_event = AdvanceTurnEvent.from_array(packet.slice(1,len(packet)))
 		else:
 			Utils.log_error("Unhandled sync event")
 		event_manager_.handle_event(new_event)
@@ -170,10 +172,16 @@ func request_reaction(req_id:int, reaction_type: ReactionManager.ReactionType, s
 	
 	var player: HumanPlayerController = turn_manager_.get_player_by_peer_id(multiplayer.get_unique_id()) as HumanPlayerController
 	var reacting_unit = get_unit_by_id(reacting_unit_id)
-	var ability: Ability = reacting_unit.get_ability_by_id(src_ability_id)
+	### current bug need to pass src unit id
+	#var src_unit = get_unit_by_id(reaction_params["unit_src_ability"].unit_id_)
+	var ability: Ability = null #src_unit.get_ability_by_id(src_ability_id)
 	var valid_reactions: Array[ReactionManager.Reaction] = reaction_manager_.get_reaction_by_ids(reaction_type, reacting_unit, valid_reactions_id)
 	await player.execute_reaction(ability, reaction_params, reacting_unit, valid_reactions)
 	recieve_reaction.rpc_id(1, req_id)
+
+@rpc("authority", "call_local", "reliable")
+func request_sync_input_authority(authorized_player_id: int, lock_level_int: int) -> void:
+	SignalBus.input_authority_changed.emit(authorized_player_id, lock_level_int)
 
 @rpc("any_peer", "call_local", "reliable")
 func recieve_reaction(req_id: int):

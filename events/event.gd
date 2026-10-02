@@ -9,7 +9,8 @@ enum EventType {
 	DAMAGE,
 	STATUS,
 	UNIT_SPAWN,
-	LOG
+	LOG,
+	ADVANCE_TURN,
 }
 
 var type_: EventType
