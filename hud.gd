@@ -132,4 +132,4 @@ func _on_info_banner_timer_timeout() -> void:
 
 func _on_pass_button_pressed() -> void:
 	popup_menu_.hide()
-	reaction_selected.emit(null)
+	reaction_selected.emit(-1)

@@ -171,11 +171,14 @@ func handle_click(hex: Vector2i) -> void:
 func user_choose_reaction(reaction_msg: String, valid_reactions_string: Array[String]):
 	return await hud_.show_reaction_menu(reaction_msg, valid_reactions_string)
 
-func choose_reaction(src_ability: Ability, reaction_params: Dictionary, reacting_unit: UnitData, valid_reactions: Array[ReactionManager.Reaction]):
+func choose_reaction(src_ability: Ability, reaction_params: Dictionary, reacting_unit: UnitData, valid_reactions: Array[ReactionManager.Reaction]) -> ReactionManager.Reaction:
 	var reaction_strings: Array[String] = []
 	for rxn in valid_reactions:
 		reaction_strings.append(rxn.ability.get_ui_name())
 	var message = "please select a reaction"
 	var reaction_id = await user_choose_reaction(message, reaction_strings)
-	return valid_reactions[reaction_id]
+	# hud should return < 0 when no reaciton is chosen
+	if reaction_id > 0:
+		return valid_reactions[reaction_id]
+	return null
 				
