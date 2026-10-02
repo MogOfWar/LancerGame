@@ -28,6 +28,11 @@ var curr_select_unit_: UnitData = null
 var tactical_overlay_: TacticalOverlay = null		
 static var visual_registry: VisualRegistry = VisualRegistry.new()
 
+func wait_until_queue_empty() -> void:
+	if not queue_.is_playing_:
+		return
+	await queue_.queue_empty
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.unit_damaged.connect(_on_unit_damaged)

@@ -20,7 +20,7 @@ func apply():
 	SignalBus.unit_weapon_fire.emit(unit, target_unit, animation_id_)
 
 func to_log():
-	return ""
+	return "unit %s fired %s at %s" % [src_unit_id_, animation_id_, target_qry_]
 
 func get_sent_packet() -> Array:
 	return [type_, src_unit_id_, target_qry_.x, target_qry_.y, target_qry_.z, target_mode_, animation_id_]

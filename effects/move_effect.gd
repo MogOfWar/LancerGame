@@ -11,7 +11,7 @@ func apply(context: ActionContext, target_qr: Vector2i):
 						self,
 						{
 							ReactionManager.REACTION_TYPE_KEY: ReactionManager.ReactionType.MOVE, 
-							"target_unit": context.source_unit_
+							"target_unit": context.source_unit_.unit_id_
 						}
 						
 					)

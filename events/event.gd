@@ -7,17 +7,10 @@ enum EventType {
 	WEAPON_FIRE,
 	ROLL,
 	DAMAGE,
-	STATUS
+	STATUS,
+	UNIT_SPAWN,
+	LOG
 }
-
-"const type_to_class_map = {
-	EventType.MOVE : MoveEvent,
-	EventType.WEAPON_FIRE : WeaponFireEvent,
-	EventType.ROLL : RollEvent,
-	EventType.DAMAGE : DamageEvent
-	
-	
-}"
 
 var type_: EventType
 

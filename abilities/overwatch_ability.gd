@@ -35,6 +35,9 @@ func get_reaction() -> ReactionManager.Reaction:
 				return false
 			else:
 				var target_unit = reaction_context["unit_src_ability"]
+				if target_unit == unit_data_:
+					#dont overwatch yourself
+					return false
 				var range_to_target = HexUtils.get_axial_distance(unit_data_.get_pos_qr(), target_unit.get_pos_qr())
 				for eff: DamageEffect in effects:
 					if range_to_target <= eff.threat_range_:

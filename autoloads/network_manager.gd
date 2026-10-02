@@ -122,3 +122,9 @@ func _register_barrier_ack(barrier_id: String, peer_id: int) -> void:
 func _broadcast_release_barrier(barrier_id: String) -> void:
 	barrier_released.emit(barrier_id)
 	
+static var _next_request_id: int = 0
+static func get_next_request_id() -> int:
+	var ret_id = _next_request_id
+	_next_request_id += 1
+	return ret_id
+	

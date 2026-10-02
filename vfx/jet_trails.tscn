@@ -57,7 +57,7 @@ script = ExtResource("1_vk1dh")
 [node name="JetExhaust" type="GPUParticles3D" parent="." unique_id=1866930069]
 emitting = false
 amount = 30
-lifetime = 0.09999999999999999
+lifetime = 0.1
 visibility_aabb = AABB(-2.8020697, -24.999619, -2.7286093, 5.8543262, 25.999485, 5.4567976)
 trail_enabled = true
 trail_lifetime = 0.15000000000000002

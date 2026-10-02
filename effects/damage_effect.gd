@@ -53,7 +53,7 @@ func apply(action_context: ActionContext, target_hex: Vector2i):
 						self,
 						{
 							ReactionManager.REACTION_TYPE_KEY: ReactionManager.ReactionType.ATTACK_DAMAGE, 
-							"target_unit": target_unit
+							"target_unit": target_unit.unit_id_
 						}
 						
 					)

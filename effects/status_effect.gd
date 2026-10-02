@@ -12,4 +12,4 @@ func apply(action_context: ActionContext, target_hex: Vector2i):
 		var data: GameBoard.HexData = gb.get_hex_data(hex)
 		if data.unit != null:
 			for cond in conditions_:
-				gb.state_apply_status_condition(cond, data.unit)
+				Level.get_current_level().event_manager_.handle_event(StatusEvent.new(data.unit.unit_id_, cond))

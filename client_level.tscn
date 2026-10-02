@@ -57,6 +57,7 @@ shadow_enabled = true
 [node name="Entities" type="Node" parent="Visuals" unique_id=1877057957]
 
 [node name="VisualManager" parent="Visuals" unique_id=425750451 instance=ExtResource("7_ij4ns")]
+unique_name_in_owner = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Visuals" unique_id=71478673]
 environment = SubResource("Environment_g4v7s")

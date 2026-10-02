@@ -8,14 +8,7 @@ var _next_request_id: int = 0
 func get_picked_hexes(context: ActionContext, viable_hexes: Array[Vector2i], effect: Effect) -> Vector2i:
 	return Vector2i(-1, -1)
 
-func execute_reaction(context: ActionContext, src_ability: Ability, src_effect: Effect, reaction_params: Dictionary, reacting_unit: UnitData, valid_reactions: Array[ReactionManager.Reaction]) -> void:
-	var req_id = _next_request_id
-	_next_request_id += 1
-	
-	var level: Level = Level.get_current_level()
-	level.request_handle_reaction.rpc_id(peer_id_, req_id, src_ability.id_, 0, reaction_params)
-	
-func choose_reaction(context: ActionContext, src_ability: Ability, src_effect: Effect, reaction_params: Dictionary, reacting_unit: UnitData, valid_reactions: Array[ReactionManager.Reaction]) -> ReactionManager.Reaction:
+func choose_reaction(src_ability: Ability, reaction_params: Dictionary, reacting_unit: UnitData, valid_reactions: Array[ReactionManager.Reaction]) -> ReactionManager.Reaction:
 	# Assign a unique transaction ID for this specific reaction window
 	var req_id = _next_request_id
 	_next_request_id += 1

@@ -73,6 +73,7 @@ func refresh_action_points() -> void:
 	action_points_[Ability.ActionType.QUICK_ACTION] = 2
 	action_points_[Ability.ActionType.FULL_ACTION] = 1
 	action_points_[Ability.ActionType.MOVEMENT] = 1000
+	action_points_[Ability.ActionType.REACTION] = 1
 
 func add_ability(ability: Ability) -> void:
 	ability.id_ = len(abilities_)

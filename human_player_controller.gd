@@ -81,8 +81,8 @@ func clear_preview(context: ActionContext, effect: Effect):
 
 # --- THE EXECUTION COROUTINE ---
 func get_picked_hexes(context: ActionContext, viable_hexes: Array[Vector2i], effect: Effect) -> Vector2i:
-	if not current_playing_:
-		return Vector2i(-1, -1)
+	#if not current_playing_:
+	#	return Vector2i(-1, -1)
 	current_viable_hexes_ = viable_hexes
 	current_context = context
 	current_state_ = State.TARGETING_0
@@ -123,8 +123,8 @@ func handle_hover(hovered_hex_qr) -> void:
 	
 # --- THE STATE MACHINE ---
 func _on_tactical_input(action: InputManager.Action, hex: Vector2i) -> void:
-	if not current_playing_:
-		return
+	#if not current_playing_:
+	#	return
 	match action:
 		InputManager.Action.HOVER:
 			handle_hover(hex)
@@ -138,8 +138,6 @@ func _on_tactical_input(action: InputManager.Action, hex: Vector2i) -> void:
 				clicked_hex.emit(null) # Emitting null cleanly aborts the ability
 
 func handle_click(hex: Vector2i) -> void:
-	if not current_playing_:
-		return
 	match current_state_:
 		State.IDLE:
 			# Normal gameplay clicks (selecting units, checking stats, etc.)
@@ -173,8 +171,10 @@ func handle_click(hex: Vector2i) -> void:
 func user_choose_reaction(reaction_msg: String, valid_reactions_string: Array[String]):
 	return await hud_.show_reaction_menu(reaction_msg, valid_reactions_string)
 
-func choose_reaction(context: ActionContext, src_ability: Ability, src_effect: Effect, reaction_params: Dictionary, reacting_unit: UnitData, valid_reactions: Array[ReactionManager.Reaction]):
-	var reaction_strings = valid_reactions.map(func(x): x.ability.get_ui_string())
+func choose_reaction(src_ability: Ability, reaction_params: Dictionary, reacting_unit: UnitData, valid_reactions: Array[ReactionManager.Reaction]):
+	var reaction_strings: Array[String] = []
+	for rxn in valid_reactions:
+		reaction_strings.append(rxn.ability.get_ui_name())
 	var message = "please select a reaction"
 	var reaction_id = await user_choose_reaction(message, reaction_strings)
 	return valid_reactions[reaction_id]

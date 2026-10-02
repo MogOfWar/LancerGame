@@ -3,16 +3,21 @@ class_name Level
 
 const UnitScene = preload("res://units/unit_pawn.tscn")
 
-var mech_types_ = {}
+
 
 @onready var turn_manager_: TurnManager = %TurnManager
 @onready var game_board_: GameBoard = %GameBoard
 @onready var reaction_manager_: ReactionManager = %ReactionManager
 @onready var event_manager_: EventManager = %EventManager
+@onready var visual_manager_: VisualManager = %VisualManager
 
+var mech_types_ = {}
 var last_sync_point_: int = 0
 var units_: Dictionary[int, UnitData] = {}
 var peer_id_: int
+
+signal effect_execution_finished(req_id: int, success: bool)
+signal reaction_execution_finished(req_id: int, success: bool)
 
 static var current_level_: Level = null
 
@@ -110,7 +115,7 @@ func get_unit_by_id(unit_id: int) -> UnitData:
 	return units_[unit_id]
 	
 @rpc("any_peer", "call_local", "reliable")
-func request_apply_effect(unit_id: int, ability_id: int, group_name: String, effect_id: int, target_hex) -> void:
+func request_apply_effect(req_id: int, unit_id: int, ability_id: int, group_name: String, effect_id: int, target_hex) -> void:
 	if not multiplayer.is_server():
 		return
 
@@ -129,7 +134,14 @@ func request_apply_effect(unit_id: int, ability_id: int, group_name: String, eff
 	
 	var effect: Effect = ability.get_effect_by_id(group_name, effect_id)
 	var action_context: ActionContext = ActionContext.new(game_board_, unit, ability, reaction_manager_)
-	effect.apply(action_context, target_hex)
+	await effect.apply(action_context, target_hex)
+	
+	# Send completion response back to client
+	effect_completed.rpc_id(sender_id, req_id, true)
+	
+@rpc("authority", "call_local", "reliable")
+func effect_completed(req_id: int, success: bool) -> void:
+	effect_execution_finished.emit.call_deferred(req_id, success)
 
 @rpc("authority", "call_remote", "reliable")
 func sync_events(event_data: Array):
@@ -146,18 +158,34 @@ func sync_events(event_data: Array):
 			new_event = DamageEvent.new(packet.slice(1, len(packet)))
 		elif type == Event.EventType.STATUS:
 			new_event = StatusEvent.new(packet[1], StatusCondition.from_array(packet[2]))
+		elif type == Event.EventType.LOG:
+			new_event = LogEvent.new(packet[1])
 		else:
 			Utils.log_error("Unhandled sync event")
 		event_manager_.handle_event(new_event)
+
+@rpc("authority", "call_local", "reliable")
+func request_reaction2(req_id:int, reaction_type: ReactionManager.ReactionType, src_ability_id: int, reaction_params: Dictionary, reacting_unit_id: int, valid_reactions_id: Array[int]):
+	await visual_manager_.wait_until_queue_empty()
+	
+	var player: HumanPlayerController = turn_manager_.get_player_by_peer_id(multiplayer.get_unique_id()) as HumanPlayerController
+	var reacting_unit = get_unit_by_id(reacting_unit_id)
+	var ability: Ability = reacting_unit.get_ability_by_id(src_ability_id)
+	var valid_reactions: Array[ReactionManager.Reaction] = reaction_manager_.get_reaction_by_ids(reaction_type, reacting_unit, valid_reactions_id)
+	await player.execute_reaction(ability, reaction_params, reacting_unit, valid_reactions)
+	recieve_reaction2.rpc_id(1, req_id)
+
+@rpc("any_peer", "call_local", "reliable")
+func recieve_reaction2(req_id: int):
+	if not multiplayer.is_server():
+		return
+	reaction_execution_finished.emit.call_deferred(req_id, true)
 
 @rpc("authority", "call_local", "reliable")
 func request_reaction(req_id:int, message: String, reaction_strings: Array[String]):
 	var player: HumanPlayerController = turn_manager_.get_player_by_peer_id(multiplayer.get_unique_id()) as HumanPlayerController
 	var reaction_id: int = await player.user_choose_reaction(message, reaction_strings)
 	recieve_reaction.rpc_id(1, req_id, reaction_id)
-	
-@rpc("authority", "call_local", "reliable")
-func request_handle_reaction(req_id:int, message: String, reaction_strings: Array[String]):
 	
 
 @rpc("any_peer", "call_local", "reliable")
@@ -168,8 +196,8 @@ func recieve_reaction(req_id: int, reaction_id: int):
 	var sender_id = multiplayer.get_remote_sender_id()
 	var player: RemotePlayerController = turn_manager_.get_player_by_peer_id(sender_id) as RemotePlayerController
 	player.reaction_received.emit(req_id, reaction_id)
-	
-func _process(delta: float) -> void:
+
+func flush_events() -> void:
 	if len(event_manager_.events_) > last_sync_point_:
 		var sent_data = []
 		for event in event_manager_.events_.slice(last_sync_point_, len(event_manager_.events_)):
@@ -177,3 +205,6 @@ func _process(delta: float) -> void:
 			sent_data.append(serialzied_event)
 		sync_events.rpc(sent_data)
 	last_sync_point_ = len(event_manager_.events_)
+	
+func _process(delta: float) -> void:
+	flush_events()

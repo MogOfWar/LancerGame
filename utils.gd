@@ -14,7 +14,10 @@ static func log_error(str: String, to_file: bool = false) -> void:
 		print("Error[%s,%s] %s" % [file, func_name, str])
 
 static func log_combat(time: int, str: String) -> void:
-	print("Combat[%s] %s" % [time, str])
+	print("COMBAT[%s]: %s" % [time, str])
+	
+static func log_info(str: String) -> void:
+	print("INFO: %s" % str)
 	
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

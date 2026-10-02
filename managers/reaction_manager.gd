@@ -37,6 +37,8 @@ var reaction_registry: Dictionary[ReactionType, UnitReactionCollection] = {}
 var current_player_: Array[int] = []
 var _reaction_enabled: bool = true #for debugging can turn off reaction
 
+
+
 func register_reaction(type: ReactionType, unit: UnitData, player: PlayerController, reaction: Reaction):
 	if not _reaction_enabled:
 		return
@@ -59,38 +61,56 @@ func pop_player() -> void:
 	SignalBus.debug_player_reaction.emit(current_player_[-1])
 
 func handle_reaction(context: ActionContext, effect: Effect, reaction_params: Dictionary) -> void:
-	var type_: ReactionType = reaction_params.get(REACTION_TYPE_KEY, -1)
-	if not reaction_registry.has(type_):
+	var level: Level = Level.get_current_level()
+	var type: ReactionType = reaction_params.get(REACTION_TYPE_KEY, -1)
+	if not reaction_registry.has(type):
 		return
 
-	var collection: UnitReactionCollection = reaction_registry[type_]
+	var collection: UnitReactionCollection = reaction_registry[type]
 
 	for reacting_unit: UnitReaction in collection.collection_.values():
-		var eligible_reactions: Array[Reaction] = []
-		
+		var eligible_reactions: Array[int] = []
+		var target_unit: UnitData = level.get_unit_by_id(reaction_params["target_unit"])
 		# Filter reactions valid right now
-		for reaction: Reaction in reacting_unit.reactions_:
+		for reaction_id in range(len(reacting_unit.reactions_)):
 			var reaction_context = {
 				"ability_to_react" : context.ability_,
 				"unit_reacting" : reacting_unit.unit_,
 				"unit_src_ability": context.source_unit_,
-				"unit_dst_ability": reaction_params["target_unit"],
+				"unit_dst_ability": target_unit,
 				"src_ability_context": context
 			}
+			var reaction: Reaction = reacting_unit.reactions_[reaction_id]
 			if reaction.check(reaction_context):
-				eligible_reactions.append(reaction)
+				eligible_reactions.append(reaction_id)
 		
 		if eligible_reactions.is_empty():
 			continue
 
 		# Await the player's choice and resolution before moving to the next unit
-		print("waiting for player reaction")
 		push_new_player(reacting_unit.player_.player_id_)
-		await reacting_unit.player_.execute_reaction(
-			context, context.ability_, effect, reaction_params, reacting_unit.unit_, eligible_reactions
-		)
+		# Assign a unique transaction ID for this specific reaction window
+		
+		level.flush_events()
+		
+		var req_id = NetworkManager.get_next_request_id()
+		level.request_reaction2.rpc_id(reacting_unit.player_.peer_id_, req_id, type, context.ability_.id_, reaction_params,  reacting_unit.unit_.unit_id_, eligible_reactions)
+		while true:
+			var response = await Level.get_current_level().reaction_execution_finished
+			Utils.log_info("Reaction got response %d for req %d" % [response[0], req_id])
+			if response[0] == req_id:
+				break
 		pop_player()
-		print("player executed reaction")
+
+
+func get_reaction_by_ids(reaction_type: ReactionType, unit_data: UnitData, reaction_ids: Array[int]) -> Array[Reaction]:
+	var ret: Array[Reaction] = []
+	var collection: UnitReactionCollection = reaction_registry[reaction_type]
+	var reacting_unit: UnitReaction = collection.collection_.get(unit_data, null)
+	for reaction_id in reaction_ids:
+		ret.append(reacting_unit.reactions_[reaction_id])
+	return ret
+	
 
 func _on_start_turn(player_id: int, peer_id: int):
 	if len(current_player_) > 1:
