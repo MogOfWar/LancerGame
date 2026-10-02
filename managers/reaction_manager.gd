@@ -94,7 +94,7 @@ func handle_reaction(context: ActionContext, effect: Effect, reaction_params: Di
 		level.flush_events()
 		
 		var req_id = NetworkManager.get_next_request_id()
-		level.request_reaction2.rpc_id(reacting_unit.player_.peer_id_, req_id, type, context.ability_.id_, reaction_params,  reacting_unit.unit_.unit_id_, eligible_reactions)
+		level.request_reaction.rpc_id(reacting_unit.player_.peer_id_, req_id, type, context.ability_.id_, reaction_params,  reacting_unit.unit_.unit_id_, eligible_reactions)
 		while true:
 			var response = await Level.get_current_level().reaction_execution_finished
 			Utils.log_info("Reaction got response %d for req %d" % [response[0], req_id])

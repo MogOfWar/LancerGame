@@ -165,7 +165,7 @@ func sync_events(event_data: Array):
 		event_manager_.handle_event(new_event)
 
 @rpc("authority", "call_local", "reliable")
-func request_reaction2(req_id:int, reaction_type: ReactionManager.ReactionType, src_ability_id: int, reaction_params: Dictionary, reacting_unit_id: int, valid_reactions_id: Array[int]):
+func request_reaction(req_id:int, reaction_type: ReactionManager.ReactionType, src_ability_id: int, reaction_params: Dictionary, reacting_unit_id: int, valid_reactions_id: Array[int]):
 	await visual_manager_.wait_until_queue_empty()
 	
 	var player: HumanPlayerController = turn_manager_.get_player_by_peer_id(multiplayer.get_unique_id()) as HumanPlayerController
@@ -173,29 +173,13 @@ func request_reaction2(req_id:int, reaction_type: ReactionManager.ReactionType, 
 	var ability: Ability = reacting_unit.get_ability_by_id(src_ability_id)
 	var valid_reactions: Array[ReactionManager.Reaction] = reaction_manager_.get_reaction_by_ids(reaction_type, reacting_unit, valid_reactions_id)
 	await player.execute_reaction(ability, reaction_params, reacting_unit, valid_reactions)
-	recieve_reaction2.rpc_id(1, req_id)
+	recieve_reaction.rpc_id(1, req_id)
 
 @rpc("any_peer", "call_local", "reliable")
-func recieve_reaction2(req_id: int):
+func recieve_reaction(req_id: int):
 	if not multiplayer.is_server():
 		return
 	reaction_execution_finished.emit.call_deferred(req_id, true)
-
-@rpc("authority", "call_local", "reliable")
-func request_reaction(req_id:int, message: String, reaction_strings: Array[String]):
-	var player: HumanPlayerController = turn_manager_.get_player_by_peer_id(multiplayer.get_unique_id()) as HumanPlayerController
-	var reaction_id: int = await player.user_choose_reaction(message, reaction_strings)
-	recieve_reaction.rpc_id(1, req_id, reaction_id)
-	
-
-@rpc("any_peer", "call_local", "reliable")
-func recieve_reaction(req_id: int, reaction_id: int):
-	if not multiplayer.is_server():
-		return
-		
-	var sender_id = multiplayer.get_remote_sender_id()
-	var player: RemotePlayerController = turn_manager_.get_player_by_peer_id(sender_id) as RemotePlayerController
-	player.reaction_received.emit(req_id, reaction_id)
 
 func flush_events() -> void:
 	if len(event_manager_.events_) > last_sync_point_:
