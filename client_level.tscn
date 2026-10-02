@@ -10,8 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://due6g0ko08p51" path="res://hud.tscn" id="5_fa1qs"]
 [ext_resource type="Script" uid="uid://bgie15366w13r" path="res://managers/event_manager.gd" id="5_uivss"]
 [ext_resource type="PackedScene" uid="uid://bfrl0khn7468q" path="res://ui_manager.tscn" id="6_4drit"]
-[ext_resource type="PackedScene" uid="uid://bpmkawp4exddv" path="res://input_manager.tscn" id="7_fa1qs"]
-[ext_resource type="PackedScene" uid="uid://cbs75d632et1c" path="res://visual_manager.tscn" id="7_ij4ns"]
+[ext_resource type="PackedScene" uid="uid://bpmkawp4exddv" path="res://managers/input_manager.tscn" id="7_fa1qs"]
+[ext_resource type="PackedScene" uid="uid://cbs75d632et1c" path="res://managers/visual_manager.tscn" id="7_ij4ns"]
 
 [sub_resource type="Environment" id="Environment_g4v7s"]
 glow_enabled = true

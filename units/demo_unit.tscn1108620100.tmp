@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bfu3q0qb7l0f0"]
+
+[ext_resource type="Script" uid="uid://danmpfuxuryqc" path="res://units/unit_3d.gd" id="1_10hnt"]
+[ext_resource type="PackedScene" uid="uid://dt6nvj7gv0ohu" path="res://art/ven.gltf" id="2_vqrai"]
+
+[node name="Node3D" type="Node3D" unique_id=612871764]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+script = ExtResource("1_10hnt")
+
+[node name="AuxScene" parent="." unique_id=1887799931 instance=ExtResource("2_vqrai")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 9.591217, 0)
+
+[node name="GunMuzzle" type="Node3D" parent="." unique_id=1899968696]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0531578, 15.4715, 0)

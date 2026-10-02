@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://br22133ulvc1"]
 
-[ext_resource type="Script" uid="uid://dpvb1pl8dpc5f" path="res://unit_sprite.gd" id="1_u3jah"]
+[ext_resource type="Script" uid="uid://dpvb1pl8dpc5f" path="res://units/unit_sprite.gd" id="1_u3jah"]
 [ext_resource type="Texture2D" uid="uid://brq6smyq5yuma" path="res://art/momo-walk_r.png" id="2_4ri1y"]
 [ext_resource type="Texture2D" uid="uid://c1ysgherrk01s" path="res://art/bipedal_mech_with_an_wea-Idle.png" id="3_fvadc"]
 [ext_resource type="AnimationLibrary" uid="uid://dnkhmmeo8nrh7" path="res://art/mech_ani_library_2.res" id="4_mwsqc"]
