@@ -16,6 +16,7 @@ enum TargetMode {Single, Blast, Cone, Burst, Line}
 @export var target_mode_: TargetMode = TargetMode.Single
 @export var target_mode_radius_: int = 0
 @export var range_: int = 0
+@export var require_los_: bool = true
 
 @abstract func apply(action_context: ActionContext, target_hex: Vector2i)
 

@@ -36,6 +36,23 @@ func apply(action_context: ActionContext, target_hex: Vector2i):
 			else:
 				var accuracy: int = src_unit.get_attack_accuracy()
 				accuracy += target_unit.get_defense_accuracy()
+				
+				# --- INSERT LOS & COVER CHECK HERE ---
+				if self.require_los_:
+					var los_result = gb.calculate_los(src_unit.get_pos_qr(), target_unit.get_pos_qr())
+					
+					if los_result == gb.LOSResult.BLOCKED:
+						is_hit = false
+						# You may want to emit a specific "Attack Blocked" event here
+						continue # Skip attack roll entirely for this target
+						
+					elif los_result == gb.LOSResult.HARD_COVER:
+						accuracy -= 2 # Apply Lancer's -2 Difficulty for Hard Cover
+						
+					elif los_result == gb.LOSResult.SOFT_COVER:
+						accuracy -= 1 # Apply Lancer's -1 Difficulty for Soft Cover
+			# -------------------------------------
+				
 				var attack_res: Vector2i = gb.roll_attack(src_unit, target_unit, accuracy)
 				var attack_roll: int = attack_res.x + attack_res.y
 				var target_evasion: int = target_unit.get_evasion()

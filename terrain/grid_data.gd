@@ -64,7 +64,7 @@ func check_hex_in_grid(hex_qr: Vector2i) -> bool:
 func set_point_disabled(hex_qr, disabled: bool) -> void:
 	astar_.set_point_disabled(get_grid_index(hex_qr), disabled)
 	
-func get_cell_from_cr(col, row):
+func get_cell_from_cr(col, row) -> CellData:
 	var hex_index = row * width_ + col
 	return cells_[hex_index]
 	

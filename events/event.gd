@@ -11,6 +11,7 @@ enum EventType {
 	UNIT_SPAWN,
 	LOG,
 	ADVANCE_TURN,
+	TERRAIN_HAZZARD
 }
 
 var type_: EventType

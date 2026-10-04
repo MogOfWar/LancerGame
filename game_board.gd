@@ -3,9 +3,18 @@ class_name GameBoard
 
 class HexData:
 	var unit: UnitData = null
+	
+enum LOSResult {
+	CLEAR,
+	BLOCKED,
+	HARD_COVER,
+	SOFT_COVER
+}
 
 var grid_ : GridData
 var units: Dictionary[Vector2i, UnitData] = {}
+var terrain_effects_: Dictionary[Vector2i, Array] = {} # this will be the terrain effect
+var terrain_tag_: Dictionary[Vector2i, int] = {}
 var mech_types_ = {}
 
 var current_player: int = 0
@@ -15,8 +24,18 @@ func get_hex_data(hex: Vector2i) -> HexData:
 	if hex in units.keys():
 		ret.unit = units[hex]
 	return ret
-		
 
+func calculate_terrain_mask(hazzards: Array) -> int:
+	var ret_mask = 0
+	for hzzrd : TerrainEffect.TerrainHazzard in hazzards:
+		ret_mask |= hzzrd.terrain_effect_type_
+	return ret_mask
+	
+func add_terrain_effect(hex_qr: Vector2i, terrain_eff: TerrainEffect.TerrainHazzard) -> void:
+	var effects = terrain_effects_.get_or_add(hex_qr, [])
+	effects.append(terrain_eff)
+	terrain_tag_[hex_qr] = calculate_terrain_mask(effects)
+	
 func add_unit(unit_data: UnitData) -> void:
 	for ocp in HexUtils.get_occupied_hexes(unit_data.get_pos_qr(), unit_data.get_size()):
 		units[ocp] = unit_data
@@ -71,7 +90,15 @@ func get_affected_hexes(center_hex: Vector2i, effect: Effect, origin_hex: Vector
 
 func initalize(grid: GridData):
 	grid_ = grid
-
+	var cover_hazzard: TerrainEffect.TerrainHazzard = TerrainEffect.TerrainHazzard.new(-1, TerrainEffect.TerrainEffectType.SOFT_COVER)
+	for y in range(grid_.height_):
+		for x in range(grid_.width_):
+			var cell = grid_.get_cell_from_cr(x, y)
+			if cell.type == "Forest":
+				var hex_qr: Vector2i = HexUtils.arr_idx_to_axial(x, y)
+				add_terrain_effect(hex_qr, cover_hazzard)
+		
+	
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
@@ -162,4 +189,24 @@ func get_units_in_range(source_hex_qr: Vector2i, ab_range: int) -> Array[Vector2
 func state_apply_status_condition(condition: StatusCondition, unit: UnitData):
 	unit.apply_condition(condition)
 	
+func calculate_los(src_qr: Vector2i, target_qr: Vector2i) -> LOSResult:
+	var path := HexUtils.stride_lerp(src_qr, target_qr, 1000)
+	var ret: int = -1
+	for hex in path:
+		if hex in terrain_tag_.keys():
+			var terrain_mask: int = terrain_tag_[hex]
+			if (terrain_mask & TerrainEffect.TerrainEffectType.SOFT_COVER) != 0:
+				ret = max(ret, TerrainEffect.TerrainEffectType.SOFT_COVER)
+			if (terrain_mask & TerrainEffect.TerrainEffectType.HARD_COVER) != 0:
+				ret = max(ret, TerrainEffect.TerrainEffectType.HARD_COVER)
+			if (terrain_mask & TerrainEffect.TerrainEffectType.LOS_BLOCK) != 0:
+				ret = max(ret, TerrainEffect.TerrainEffectType.LOS_BLOCK)
+		
+	if ret == TerrainEffect.TerrainEffectType.SOFT_COVER:
+		return LOSResult.SOFT_COVER
+	elif ret == TerrainEffect.TerrainEffectType.HARD_COVER:
+		return LOSResult.HARD_COVER
+	elif ret == TerrainEffect.TerrainEffectType.LOS_BLOCK:
+		return LOSResult.BLOCKED
+	return LOSResult.CLEAR
 	

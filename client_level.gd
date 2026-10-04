@@ -162,6 +162,8 @@ func sync_events(event_data: Array):
 			new_event = LogEvent.new(packet[1])
 		elif type == Event.EventType.ADVANCE_TURN:
 			new_event = AdvanceTurnEvent.from_array(packet.slice(1,len(packet)))
+		elif type == Event.EventType.TERRAIN_HAZZARD:
+			new_event = TerrainEffectEvent.new(packet[1], TerrainEffect.TerrainHazzard.from_array(packet[2]))
 		else:
 			Utils.log_error("Unhandled sync event")
 		event_manager_.handle_event(new_event)
