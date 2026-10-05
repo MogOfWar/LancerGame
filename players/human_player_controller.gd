@@ -108,16 +108,34 @@ func get_picked_hexes(context: ActionContext, viable_hexes: Array[Vector2i], eff
 				break
 	return Vector2i(-1,-1)
 
+func get_color_from_los(los: GameBoard.LOSResult) -> Color:
+	match los:
+		GameBoard.LOSResult.CLEAR:
+			return Color.GREEN
+		GameBoard.LOSResult.SOFT_COVER:
+			return Color.YELLOW_GREEN
+		GameBoard.LOSResult.HARD_COVER:
+			return Color.CORAL
+		GameBoard.LOSResult.BLOCKED:
+			return Color.RED
+	return Color.RED
+			
+
 func handle_hover(hovered_hex_qr) -> void:
 	if not current_playing_:
 		return
 	var active_draw : Array[Vector2i] = []
 	if hovered_hex_qr != Vector2i(-9999, -9999):
 		if current_state_ == State.TARGETING_1 or current_state_ == State.TARGETING_2 or current_state_ == State.TARGETING_0:
-			active_draw.append_array(game_board_.get_affected_hexes(hovered_hex_qr, current_effect_, current_context.source_unit_.get_pos_qr()))
+			var src_qr = current_context.source_unit_.get_pos_qr()
+			active_draw.append_array(game_board_.get_affected_hexes(hovered_hex_qr, current_effect_, src_qr))
+			if current_effect_.require_los_:
+				var result = game_board_.calculate_los(src_qr, hovered_hex_qr)
+				tactical_overlay_.draw_targeting_arcs(current_context.source_unit_.get_pos_qr(), [{"hex" : hovered_hex_qr, "color" : get_color_from_los(result)}])
 		else:
 			active_draw.append(hovered_hex_qr)
 	tactical_overlay_.draw_highlights(active_draw, Color.WHITE, TacticalOverlay.CursorGroup.ACTIVE)
+		
 		
 	
 # --- THE STATE MACHINE ---
