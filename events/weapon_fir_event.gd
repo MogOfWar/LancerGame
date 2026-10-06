@@ -16,7 +16,7 @@ func _init(params: Array):
 func apply():
 	var level: Level = Level.get_current_level()
 	var unit: UnitData = level.get_unit_by_id(src_unit_id_)
-	var target_unit = level.game_board_.get_hex_data(Vector2i(target_qry_.x, target_qry_.y)).unit
+	var target_unit: UnitData = level.game_board_.get_selectable_unit(Vector2i(target_qry_.x, target_qry_.y))
 	SignalBus.unit_weapon_fire.emit(unit, target_unit, animation_id_)
 
 func to_log():

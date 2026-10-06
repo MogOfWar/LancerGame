@@ -158,9 +158,9 @@ func handle_click(hex: Vector2i) -> void:
 	match current_state_:
 		State.IDLE:
 			# Normal gameplay clicks (selecting units, checking stats, etc.)
-			var hex_data: GameBoard.HexData = game_board_.get_hex_data(hex)
-			if hex_data.unit != null:
-				handle_select_unit(hex_data.unit)
+			var unit: UnitData = game_board_.get_selectable_unit(hex)
+			if unit != null:
+				handle_select_unit(unit)
 				
 		State.TARGETING_0:
 			# First click: Lock in the target for preview

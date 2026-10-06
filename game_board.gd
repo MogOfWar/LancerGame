@@ -2,7 +2,9 @@ extends Node
 class_name GameBoard
 
 class HexData:
-	var unit: UnitData = null
+	var units: Array[UnitData] = []
+	var terrain_effects: Array[TerrainEffect.TerrainHazzard] = []
+	var terrain_tag: int
 	
 enum LOSResult {
 	CLEAR,
@@ -12,18 +14,20 @@ enum LOSResult {
 }
 
 var grid_ : GridData
-var units: Dictionary[Vector2i, UnitData] = {}
-var terrain_effects_: Dictionary[Vector2i, Array] = {} # this will be the terrain effect
-var terrain_tag_: Dictionary[Vector2i, int] = {}
-var mech_types_ = {}
+var hexes_: Dictionary[Vector2i, HexData]
+var units: Dictionary[UnitData, Array] = {}
 
-var current_player: int = 0
+
+func get_selectable_unit(hex: Vector2i) -> UnitData:
+	var hex_data: HexData = get_hex_data(hex)
+	if hex_data.units.is_empty():
+		return null
+	else:
+		# for now only one unit can be per hex layer we will check some other critira
+		return hex_data.units[0]
 
 func get_hex_data(hex: Vector2i) -> HexData:
-	var ret: HexData = HexData.new()
-	if hex in units.keys():
-		ret.unit = units[hex]
-	return ret
+	return hexes_.get(hex, HexData.new())
 
 func calculate_terrain_mask(hazzards: Array) -> int:
 	var ret_mask = 0
@@ -32,13 +36,18 @@ func calculate_terrain_mask(hazzards: Array) -> int:
 	return ret_mask
 	
 func add_terrain_effect(hex_qr: Vector2i, terrain_eff: TerrainEffect.TerrainHazzard) -> void:
-	var effects = terrain_effects_.get_or_add(hex_qr, [])
-	effects.append(terrain_eff)
-	terrain_tag_[hex_qr] = calculate_terrain_mask(effects)
+	var hex_data: HexData = hexes_.get_or_add(hex_qr, HexData.new())
+	hex_data.terrain_effects.append(terrain_eff)
+	hex_data.terrain_tag = calculate_terrain_mask(hex_data.terrain_effects)
 	
 func add_unit(unit_data: UnitData) -> void:
+	if units.has(unit_data):
+		Utils.log_error("Adding existing unit")
+		return
+	units[unit_data] = []
 	for ocp in HexUtils.get_occupied_hexes(unit_data.get_pos_qr(), unit_data.get_size()):
-		units[ocp] = unit_data
+		var hex_data = hexes_.get_or_add(ocp, HexData.new())
+		hex_data.units.append(unit_data)
 
 func roll_attack(attacking_unit: UnitData, defending_unit: UnitData, accuracy: int) -> Vector2i:
 	var attack_roll: int = randi_range(1, 20) 
@@ -103,16 +112,28 @@ func initalize(grid: GridData):
 func _ready() -> void:
 	pass
 
-func update_unit_location(unit:UnitData, new_location: Vector3):
+func remove_unit(unit: UnitData):
+	if not units.has(unit):
+		Utils.log_error("removing non existing unit")
+	units.erase(unit)
 	var occupied_hexes: Array[Vector2i] = HexUtils.get_occupied_hexes(unit.get_pos_qr(), unit.get_size())
 	for ocp_hex: Vector2i in occupied_hexes:
-		units.erase(ocp_hex)
+		if not hexes_.has(ocp_hex):
+			Utils.log_error("Trying to remove unit which wasn't registered")
+		var hex_data: HexData = hexes_.get(ocp_hex)
+		if not hex_data.units.has(unit):
+			Utils.log_error("Trying to remove unit which wasn't registered")
+		else:
+			hex_data.units.erase(unit)
+		
+func update_unit_location(unit:UnitData, new_location: Vector3):
+	remove_unit(unit)
 	unit.move(new_location, 1)
 	add_unit(unit)
 
 func get_move_path(moving_unit: UnitData, start_pos_qr: Vector2i, end_pos_qr: Vector2i) -> Array[Vector2i]:
 	var temporarily_solid_hexes: Array[int] = []
-	for other_unit: UnitData in units.values():
+	for other_unit: UnitData in units.keys():
 		if other_unit == moving_unit:
 			continue
 		for ocp in HexUtils.get_occupied_hexes(other_unit.get_pos_qr(), other_unit.get_size()):
@@ -179,7 +200,8 @@ func get_hexes_qr_in_range(source_hex_qr: Vector2i, ab_range: int) -> Array[Vect
 	
 func get_units_in_range(source_hex_qr: Vector2i, ab_range: int) -> Array[Vector2i]:
 	var ret : Array[Vector2i] = []
-	for unit_pos_qr in units.keys():
+	for unit: UnitData in units.keys():
+		var unit_pos_qr: Vector2i = unit.get_pos_qr()
 		var dist: int = HexUtils.get_axial_distance(source_hex_qr, unit_pos_qr)
 		if dist <= ab_range and dist > 0:
 			ret.append(unit_pos_qr)
@@ -193,8 +215,8 @@ func calculate_los(src_qr: Vector2i, target_qr: Vector2i) -> LOSResult:
 	var path := HexUtils.stride_lerp(src_qr, target_qr, 1000)
 	var ret: int = -1
 	for hex in path:
-		if hex in terrain_tag_.keys():
-			var terrain_mask: int = terrain_tag_[hex]
+		if hex in hexes_.keys():
+			var terrain_mask: int = get_hex_data(hex).terrain_tag
 			if (terrain_mask & TerrainEffect.TerrainEffectType.SOFT_COVER) != 0:
 				ret = max(ret, TerrainEffect.TerrainEffectType.SOFT_COVER)
 			if (terrain_mask & TerrainEffect.TerrainEffectType.HARD_COVER) != 0:
