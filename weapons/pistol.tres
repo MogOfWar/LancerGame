@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WeaponType" format=3 uid="uid://b2hskdoaeoxqd"]
+
+[ext_resource type="Script" uid="uid://cyb6x4nqhmfqk" path="res://effects/effect.gd" id="1_m7cpi"]
+[ext_resource type="Script" uid="uid://ce6ms41q13kg1" path="res://weapons/weapon.gd" id="2_njcfc"]
+[ext_resource type="Script" uid="uid://b1wspiv67a7wh" path="res://effects/damage_effect.gd" id="2_wsttc"]
+
+[sub_resource type="Resource" id="Resource_wsttc"]
+script = ExtResource("2_wsttc")
+damage = Array[int]([1, 0])
+extra_damage = 1
+target_type_ = 3
+range_ = 5
+metadata/_custom_type_script = "uid://b1wspiv67a7wh"
+
+[resource]
+script = ExtResource("2_njcfc")
+weapon_name_ = "pistol"
+effects_ = Array[ExtResource("1_m7cpi")]([SubResource("Resource_wsttc")])
+metadata/_custom_type_script = "uid://ce6ms41q13kg1"

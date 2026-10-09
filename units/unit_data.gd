@@ -38,19 +38,31 @@ var unit_id_: int = -1:
 		return unit_id_
 		
 		
-var abilities_: Array[Ability] = []
+
+
+# current stats
 var hp_: int = 10
 var structure_: int = 4
 var evasion_: int = 5
-var action_points_: Array[int]
+
+# mech stats
 var mounts_: Dictionary[MechChassis.MountType, MountPoint] = {}
 var mech_type_: MechChassis = null
-var curr_select_weapon_: WeaponInstance = null
+
+# game logic data
 var pos_qr_: Vector2i
 var height_: float
 var own_player_id_: int = -1
+
+# abilties and status
+var abilities_: Array[Ability] = []
 var conditions_: Array[StatusCondition] = []
 
+# action econmy
+var action_budget_: int = 2 # 2 slots = 1 Full or 2 Quick
+var current_movement_: int = 0
+var overcharged_this_turn_: bool = false
+var used_reactions_this_round_: Array[String] = []
 
 @export var chassis: MechChassis
 
@@ -70,10 +82,8 @@ class IdGenerator:
 		return id
 
 func refresh_action_points() -> void:
-	action_points_[Ability.ActionType.QUICK_ACTION] = 2
-	action_points_[Ability.ActionType.FULL_ACTION] = 1
-	action_points_[Ability.ActionType.MOVEMENT] = 1000
-	action_points_[Ability.ActionType.REACTION] = 1
+	action_budget_ = 2
+	current_movement_ = mech_type_.speed_
 
 func add_ability(ability: Ability) -> void:
 	ability.id_ = len(abilities_)
@@ -87,16 +97,12 @@ func get_ability_by_id(id: int) -> Ability:
 	return abilities_[id]
 
 func _init(mech_type: MechChassis, pos_qr: Vector2i, height: float, player: PlayerController) -> void:
-	#first connect signals
-	SignalBus.start_round.connect(_on_start_round)
-	
 	#setup data mebers
 	unit_id_ = IdGenerator.get_next_id()
 	own_player_id_ = player.player_id_
 	pos_qr_ = pos_qr
 	height_ = height
 	load_mech_type(mech_type)
-	action_points_.resize(Ability.ActionType.NUM_ACTION_TYPES)
 	refresh_action_points()
 	
 	#add abilties
@@ -105,11 +111,23 @@ func _init(mech_type: MechChassis, pos_qr: Vector2i, height: float, player: Play
 	add_ability(BraceAbility.new(2))
 	add_ability(OverwatchAbility.new(3, self))
 
-func _on_start_round(round_number: int) -> void:
-	refresh_action_points()
+func refresh_abilties(policy: Ability.RefreshPolicy) -> void:
 	for ability: Ability in abilities_:
-		if ability.refresh_policy_ == Ability.RefreshPolicy.ON_TURN_START:
+		if ability.refresh_policy_ == policy:
 			ability.refresh()
+			
+func tick_status_conditions(policy: Ability.RefreshPolicy) -> void:
+	for i in range(conditions_.size() - 1, -1, -1):
+		var cond: StatusCondition = conditions_[i]
+		if cond.refresh_policy_ != policy:
+			continue
+			
+		cond.time_ -= 1
+		if cond.time_ <= 0:
+			conditions_.remove_at(i)
+			Level.get_current_level().event_manager_.handle_event(LogEvent.new("unit %d lost condition %d" % [unit_id_, cond.type_]))
+			# SignalBus.status_condition_expired.emit(self, cond)
+			
 
 func get_pos_qry() -> Vector3:
 	return Vector3(pos_qr_.x, pos_qr_.y, height_)
@@ -124,7 +142,7 @@ func get_evasion() -> int:
 	return evasion_
 	
 func get_movement_points() -> int:
-	return get_action_points(Ability.ActionType.MOVEMENT)
+	return current_movement_
 
 func get_defense_accuracy() -> int:
 	var ret: int = 0
@@ -152,7 +170,7 @@ func select():
 func deselect():
 	unit_deselected.emit()
 	
-func apply_condition(condition):
+func apply_condition(condition: StatusCondition):
 	conditions_.append(condition)
 	
 func get_size():
@@ -160,18 +178,14 @@ func get_size():
 	
 func finished_ability(ability: Ability):
 	if ability.action_type_ == Ability.ActionType.QUICK_ACTION:
-		action_points_[Ability.ActionType.QUICK_ACTION] -= 1
-		action_points_[Ability.ActionType.FULL_ACTION] -= 1
+		action_budget_ -= 1
 	elif ability.action_type_ == Ability.ActionType.FULL_ACTION:
-		action_points_[Ability.ActionType.QUICK_ACTION] = 0
-		action_points_[Ability.ActionType.FULL_ACTION] -= 1
-		
-		
-func move(dest_hex_qry: Vector3, dist: int):
+		action_budget_ -= 2
 	
-	if action_points_[Ability.ActionType.MOVEMENT] - dist < 0:
+func move(dest_hex_qry: Vector3, dist: int):
+	if current_movement_  - dist < 0:
 		Utils.log_error("Moved more units than allowed %s %s %s" % [self.unit_id_, pos_qr_, dist])
-	action_points_[Ability.ActionType.MOVEMENT] -= dist
+	current_movement_  -= dist
 	var source_qry: Vector3 = Vector3(pos_qr_.x, pos_qr_.y, height_)
 	pos_qr_ = Vector2i(dest_hex_qry.x, dest_hex_qry.y)
 	height_ = dest_hex_qry.z
@@ -220,6 +234,3 @@ func get_mounts() -> Array[WeaponInstance]:
 			var weapon: WeaponInstance = mount.get_weapon_instance(i)
 			ret.append(weapon)
 	return ret
-	
-func get_action_points(action_type: Ability.ActionType) -> int:
-	return action_points_[action_type]

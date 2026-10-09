@@ -22,14 +22,15 @@ enum StatusConditionType {
 @export var damage_type_: Constants.DamageType = Constants.DamageType.KINETIC
 @export var trigger_: ConditionTrigger = ConditionTrigger.NONE
 @export var time_: int
+@export var refresh_policy_: Ability.RefreshPolicy = Ability.RefreshPolicy.ON_TURN_END
 
 static func create_basic_defense_accuracy() -> StatusCondition:
-	var ret: StatusCondition = StatusCondition.new(StatusConditionType.ACC_MODIFER, ConditionTrigger.DEFENSE_TRIGGER, 2)
+	var ret: StatusCondition = StatusCondition.new(StatusConditionType.ACC_MODIFER, ConditionTrigger.DEFENSE_TRIGGER, 1)
 	ret.acc_modifer_ = -1
 	return ret
 	
 static func create_basic_damage_resistance() -> StatusCondition:
-	var ret: StatusCondition = StatusCondition.new(StatusConditionType.DAMAGE_RESISTANCE, ConditionTrigger.DEFENSE_TRIGGER, 2)
+	var ret: StatusCondition = StatusCondition.new(StatusConditionType.DAMAGE_RESISTANCE, ConditionTrigger.DEFENSE_TRIGGER, 1)
 	ret.damage_type_ = Constants.DamageType.KINETIC
 	return ret
 
@@ -52,3 +53,6 @@ static func from_array(params: Array) -> StatusCondition:
 	ret.acc_modifer_ = params[1]
 	ret.damage_type_ = params[2]
 	return ret
+	
+func make_copy() -> StatusCondition:
+	return from_array(serialize())

@@ -55,10 +55,11 @@ func update_action_menu(unit: UnitData) -> void:
 	clear_menu(action_menu_container_)
 	var abilities : Array[Ability] = unit.get_ability_list()
 	for ability in abilities:
-		var btn = Button.new()
-		btn.text = ability.get_ui_name()
-		btn.pressed.connect(_on_action_button_pressed.bind(ability, unit))
-		action_menu_container_.add_child(btn)
+		if ability.action_type_ != Ability.ActionType.REACTION:
+			var btn = Button.new()
+			btn.text = ability.get_ui_name()
+			btn.pressed.connect(_on_action_button_pressed.bind(ability, unit))
+			action_menu_container_.add_child(btn)
 		
 
 # Call this function when the player clicks on a valid unit
@@ -72,11 +73,12 @@ func show_menu_for_unit(unit: UnitData):
 	if local_is_turn_owner_ and turn_lock_level_ == Constants.TurnLockLevel.NONE:
 		update_action_menu(unit)
 		action_menu.show()
+		stats_menu_.show()
 	else:
 		action_menu.hide()
+		stats_menu_.hide()
 
 func update_stats_menu(unit: UnitData) -> void:
-	actions_display_.text = ("Actions: None")
 	movement_display_.text = ("Movement: %s" % unit.get_movement_points())
 
 func show_reaction_menu(reaction_string: String, reactions: Array[String]) -> int:
@@ -114,7 +116,7 @@ func _on_start_turn(player_number: int, peer_id: int) -> void:
 	$InfoBanner.show()
 	$InfoBanner/RichTextLabel.text = "Player %s turn" % player_number
 
-func _on_unit_finished_ability(unit: UnitData):
+func _on_unit_finished_ability(unit: UnitData, ability: Ability):
 	update_stats_menu(unit)
 	action_menu.show()
 	stats_menu_.show()
@@ -137,6 +139,7 @@ func _on_end_turn_button_pressed() -> void:
 	SignalBus.end_turn.emit()
 	
 func _on_action_button_pressed(ability: Ability, unit: UnitData) -> void:
+	
 	var sub_group_names: Array[String] = ability.get_effect_groups_names()
 	if !ability.has_optional_abilities():
 		SignalBus.unit_action_selected.emit(unit, ability, sub_group_names[0])

@@ -14,6 +14,7 @@ enum ActionType {
 
 enum RefreshPolicy {
 	ON_TURN_START,
+	ON_TURN_END,
 	ON_ROUND_START
 }
 

@@ -58,12 +58,18 @@ func roll_attack(attacking_unit: UnitData, defending_unit: UnitData, accuracy: i
 	return Vector2i(attack_roll, acc_val)
 
 func is_ability_executable(unit: UnitData, ability: Ability) -> bool:
-	var action_point = unit.get_action_points(ability.action_type_) 
-	if action_point == 0:
-		return false
 	if ability.charges_ <= 0:
 		return false
-	return true
+	match ability.action_type_:
+		Ability.ActionType.QUICK_ACTION:
+			return unit.action_budget_ >= 1
+		Ability.ActionType.FULL_ACTION:
+			return unit.action_budget_ >= 2
+		Ability.ActionType.MOVEMENT:
+			return unit.current_movement_ > 0
+		Ability.ActionType.REACTION:
+			return true # Evaluated against reaction triggers/round limits
+	return false
 		
 
 func damage_unit(unit: UnitData, damage_val: int, is_crit: bool) -> void:
@@ -83,7 +89,26 @@ func unit_finished_ability(unit: UnitData, ability: Ability) -> void:
 			ability.charges_ = unit.get_movement_points()
 		Ability.ActionType.QUICK_ACTION:
 			ability.charges_ -= 1
+		Ability.ActionType.FULL_ACTION:
+			ability.charges_ -= 1
+		Ability.ActionType.REACTION:
+			ability.charges_ -= 1
 	unit.finished_ability(ability)
+
+func start_round() -> void:
+	for unit: UnitData in units.keys():
+		unit.refresh_abilties(Ability.RefreshPolicy.ON_ROUND_START)
+
+func start_turn(current_player: PlayerController) -> void:
+	for unit: UnitData in units.keys():
+		if unit.own_player_id_ == current_player.player_id_:
+			unit.refresh_action_points()
+			unit.refresh_abilties(Ability.RefreshPolicy.ON_TURN_START)
+
+func end_turn(current_player: PlayerController) -> void:
+	for unit: UnitData in units.keys():
+		if unit.own_player_id_ == current_player.player_id_:
+			unit.tick_status_conditions(Ability.RefreshPolicy.ON_TURN_END)
 
 func get_affected_hexes(center_hex: Vector2i, effect: Effect, origin_hex: Vector2i) -> Array[Vector2i]:
 	var affected_hexes: Array[Vector2i]

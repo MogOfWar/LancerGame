@@ -7,6 +7,7 @@ var unit_data_: UnitData
 func _init(id: int, unit_data: UnitData):
 	super._init(id, NAME, Ability.ActionType.QUICK_ACTION, 1)
 	unit_data_ = unit_data
+	refresh_policy_ = RefreshPolicy.ON_TURN_START
 	
 func get_effect_groups_names() -> Array[String]:
 	return effects_.keys()		

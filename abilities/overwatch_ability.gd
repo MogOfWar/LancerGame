@@ -6,6 +6,7 @@ var unit_data_: UnitData
 
 func _init(id: int, unit_data: UnitData):
 	super._init(id, NAME, Ability.ActionType.REACTION, 1)
+	refresh_policy_ = Ability.RefreshPolicy.ON_ROUND_START
 	unit_data_ = unit_data
 	
 func get_effect_groups_names() -> Array[String]:
@@ -30,6 +31,8 @@ func get_reaction() -> ReactionManager.Reaction:
 		new_rec.ability = self
 		new_rec.sub_name = effects_.keys()[0]
 		new_rec._cond = func(reaction_context) -> bool:
+			if self.charges_ <= 0: 
+				return false
 			var effects = effects_[effects_.keys()[0]]
 			if effects.is_empty():
 				return false

@@ -44,6 +44,7 @@ func start_battle():
 
 func start_round():
 	current_player_turn_ = 0
+	Level.get_current_level().game_board_.start_round()
 	SignalBus.start_round.emit.call_deferred(round_number_)
 
 func end_round():
@@ -54,10 +55,13 @@ func end_round():
 func start_turn():
 	var player: PlayerController = get_player_by_id(current_player_turn_)
 	SignalBus.start_turn.emit.call_deferred(current_player_turn_, player.peer_id_)
-
+	Level.get_current_level().game_board_.start_turn(player)
 
 func end_turn():
+	var player: PlayerController = get_player_by_id(current_player_turn_)
+	Level.get_current_level().game_board_.end_turn(player)
 	current_player_turn_ = current_player_turn_ + 1 
+	
 	if current_player_turn_ == num_players_:
 		#end round
 		end_round()

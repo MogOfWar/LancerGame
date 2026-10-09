@@ -11,14 +11,15 @@ func _init(id: int):
 	effect.conditions_ = conditions
 	effect.target_type_ = Effect.TargetType.SELF
 	effects_["0"] = [effect]
-	charges_ = 1
 	
 func get_reaction() -> ReactionManager.Reaction:
 	var new_rec: ReactionManager.Reaction = ReactionManager.Reaction.new()
 	new_rec.ability = self
 	new_rec.sub_name = "0"
 	new_rec._cond = func(reaction_context) -> bool:
-		return reaction_context["unit_dst_ability"] == reaction_context["unit_reacting"]
+		var good_target: bool = reaction_context["unit_dst_ability"] == reaction_context["unit_reacting"]
+		var has_charges: bool = self.charges_ > 0
+		return good_target and has_charges
 	return new_rec
 
 func get_reaction_type() -> ReactionManager.ReactionType:
