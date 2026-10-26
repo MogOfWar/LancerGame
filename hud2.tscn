@@ -1,0 +1,191 @@
+[gd_scene format=3 uid="uid://ba0qocts0obic"]
+
+[ext_resource type="Script" uid="uid://bul8hgwecbfr" path="res://hud_2.gd" id="1_2bdiv"]
+[ext_resource type="Texture2D" uid="uid://dfnsfo11m88y6" path="res://art/MainPanel03.png" id="1_p35iy"]
+[ext_resource type="Texture2D" uid="uid://bttmfve655vs5" path="res://art/SelectPanel02.png" id="2_2bdiv"]
+
+[node name="UI" type="Control" unique_id=700952356]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2bdiv")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1520803447]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1212165361]
+layout_mode = 2
+
+[node name="TopHuD" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=488095727]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TopHuD" unique_id=902587494]
+layout_mode = 2
+
+[node name="Left" type="MarginContainer" parent="MarginContainer/VBoxContainer/TopHuD/HBoxContainer" unique_id=1576477468]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="Middle" type="MarginContainer" parent="MarginContainer/VBoxContainer/TopHuD/HBoxContainer" unique_id=17077243]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 6.0
+
+[node name="InfoBanner" type="RichTextLabel" parent="MarginContainer/VBoxContainer/TopHuD/HBoxContainer/Middle" unique_id=76440913]
+layout_mode = 2
+
+[node name="Timer" type="Timer" parent="MarginContainer/VBoxContainer/TopHuD/HBoxContainer/Middle/InfoBanner" unique_id=834442284]
+
+[node name="Right" type="MarginContainer" parent="MarginContainer/VBoxContainer/TopHuD/HBoxContainer" unique_id=1835464365]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopHuD/HBoxContainer/Right" unique_id=1303777015]
+layout_mode = 2
+
+[node name="RoundInfo" type="RichTextLabel" parent="MarginContainer/VBoxContainer/TopHuD/HBoxContainer/Right/VBoxContainer" unique_id=1791997733]
+layout_mode = 2
+
+[node name="EndTurnButton" type="Button" parent="MarginContainer/VBoxContainer/TopHuD/HBoxContainer/Right/VBoxContainer" unique_id=1471355092]
+layout_mode = 2
+text = "End Turn"
+
+[node name="MidSectionSeperator" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1387757177]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 6.0
+
+[node name="BotHuD" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=529935820]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="MarginContainer/VBoxContainer/BotHuD" unique_id=1427533791]
+custom_minimum_size = Vector2(500, 175)
+layout_mode = 2
+texture = ExtResource("1_p35iy")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect" unique_id=430540425]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="StatsBox" type="NinePatchRect" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer" unique_id=1794139520]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("2_2bdiv")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer/StatsBox" unique_id=629337788]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+
+[node name="StatsContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer/StatsBox/MarginContainer" unique_id=2068213647]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Movement" type="RichTextLabel" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer/StatsBox/MarginContainer/StatsContainer" unique_id=2121417731]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ActionsBox" type="NinePatchRect" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer" unique_id=1128503571]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+texture = ExtResource("2_2bdiv")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer/ActionsBox" unique_id=866906203]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="SubAbilityContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer/ActionsBox/MarginContainer" unique_id=1135142079]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ActionGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer/ActionsBox/MarginContainer/SubAbilityContainer" unique_id=351910407]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+columns = 3
+
+[node name="Mounts" type="NinePatchRect" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer" unique_id=1347080181]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.0
+texture = ExtResource("2_2bdiv")
+patch_margin_left = 30
+patch_margin_top = 10
+patch_margin_right = 30
+patch_margin_bottom = 10
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer/Mounts" unique_id=2003005443]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="WeaponMountGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer/Mounts/MarginContainer" unique_id=933838694]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Misc" type="NinePatchRect" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer" unique_id=366739345]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+texture = ExtResource("2_2bdiv")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer/Misc" unique_id=114389785]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="Misc2" type="NinePatchRect" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer" unique_id=715770885]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("2_2bdiv")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BotHuD/NinePatchRect/HBoxContainer/Misc2" unique_id=126528717]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
